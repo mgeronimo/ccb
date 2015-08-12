@@ -19,7 +19,7 @@ class CreateSuperAgentDeptrepTable extends Migration
             $table->String('last_name', 45);
             $table->String('username', 45);
             $table->String('password', 45);
-            $table->integer('role');
+            $table->integer('role')->nullable();
 
             $table->unsignedInteger('group_number')->nullable();
             $table->foreign('group_number')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
