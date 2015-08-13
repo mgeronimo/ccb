@@ -168,6 +168,19 @@ img { max-width: 100%; }
 	margin-top: 25px;
 }
 
+.img, .logo{
+	max-width: 50% !important;
+}
+button.btn{
+	background: #2B4BD7 !important;
+}
+.btn.raised {
+	box-shadow: 0 3px 0 0 #0D2898;
+}
+.btn.raised:hover{
+	box-shadow: none;
+}
+
 
 /***** Media queries *****/
 
