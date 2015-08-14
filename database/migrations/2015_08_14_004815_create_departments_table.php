@@ -18,7 +18,6 @@ class CreateDepartmentsTable extends Migration
             $table->integer('is_national');
         });
     }
-
     /**
      * Reverse the migrations.
      *
