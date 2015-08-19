@@ -30,9 +30,13 @@
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
 
     </head>
-   
 
- <!-- Javascript -->
+    <body>
+        @yield('content')
+    </body>
+    
+
+        <!-- Javascript -->
         <script src="../assets/js/jquery-1.11.1.min.js"></script>
         <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="../assets/js/jquery.backstretch.min.js"></script>
@@ -41,8 +45,6 @@
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>
         <![endif]-->
-
-    </body>
 </html>
-@yield('content')
+
 

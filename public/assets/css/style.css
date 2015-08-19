@@ -82,7 +82,8 @@ img { max-width: 100%; }
 /***** Top content *****/
 
 .inner-bg {
-    padding: 100px 0 170px 0;
+    /*padding: 100px 0 170px 0;*/
+    padding: 70px 0 0 0;
 }
 
 .top-content .text {
@@ -192,6 +193,9 @@ button.btn{
     padding: 0px !important;
 }
 
+footer{
+	font-size: 12px;
+}
 
 /***** Media queries *****/
 
@@ -202,6 +206,7 @@ button.btn{
 @media (max-width: 767px) {
 	
 	.inner-bg { padding: 60px 0 110px 0; }
+	.img-responsive.logo{ margin: auto; }
 
 }
 

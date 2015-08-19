@@ -11,7 +11,9 @@ class GroupTableSeeder extends Seeder
      */
     public function run()
     {
-          DB::table('groups')->insert([
+        DB::table('groups')->delete();
+
+        DB::table('groups')->insert([
             'group_name' => 'Group 1',
         ]);
     }
