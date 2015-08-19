@@ -27,7 +27,7 @@ class DashboardController extends Controller
             var_dump($user);
         }
         dd(count($users));*/
-        return view('welcome');
+        return view('dashboard');
     }
 
     /**
