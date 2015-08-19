@@ -11,11 +11,30 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'DashboardController@index');
 
 Route::controllers([
-'auth' 		=> 'Auth\AuthController',
-'password'	=> 'Auth\PasswordController'
+	'auth' 		=> 'Auth\AuthController',
+	'password'	=> 'Auth\PasswordController'
 ]);
+
+/*
+OAuth Routes
+ */
+
+/*Route::post('login', function(){
+	$credentials = app()->make('request')->input("credentials");
+    return App\Auth\Proxy::attemptLogin($credentials);
+});
+
+Route::post('refresh-token', function() {
+    return App\Auth\Proxy::attemptRefresh();
+});*/
+
+Route::post('oauth/access_token', function() {
+    return Response::json(Authorizer::issueAccessToken());
+});
+
+Route::group(['prefix' => 'api/v1', 'middleware' => 'oauth'], function(){
+	
+});
