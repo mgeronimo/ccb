@@ -61,5 +61,15 @@ class UserTableSeeder extends Seeder
             'group_number' => 1,
             'remember_token' => str_random(60),
         ]);
+
+        //Public Users
+        DB::table('users')->insert([
+            'email' => 'juan@gmail.com',
+            'password' => bcrypt('secret'),
+            'first_name' => 'Juan',
+            'last_name' => 'Dela Cruz',
+            'role'  => 3,
+            'contact_number' => '09152222222',
+        ]);
     }
 }
