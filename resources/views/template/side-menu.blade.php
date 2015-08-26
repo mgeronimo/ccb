@@ -1,16 +1,21 @@
+
 <!-- Left side column. contains the logo and sidebar -->
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
         <div class="user-panel">
-            <div class="pull-left image">
-                <img src="assets/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                <p>Juan Dela Cruz</p>
-            </div>
-        </div>
+     
+                <p class="sidetext"><strong>{{$user->username}}</strong></p>
+              <p class="stext">  @if(($user->role) == 0)
+                Administrator
+                @elseif (($user->role) ==1 )
+                Supervisor
+                 @elseif (($user->role) ==2 )
+                Agent
+                @endif</p>
+
+             
         <!-- search form -->
         <form action="#" method="get" class="sidebar-form">
             <div class="input-group">

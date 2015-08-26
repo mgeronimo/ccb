@@ -11,12 +11,25 @@
 |
 */
 
-Route::get('/', 'DashboardController@index');
+Route::get('dashboard', 'DashboardController@index');
+Route::get('/admin', 'DashboardAdminController@index');
+Route::get('/addgroup', 'DashboardAdminController@addgroup');
+Route::get('/login', 'Auth\AuthController@getLogin');
+Route::post('login', 'Auth\AuthController@postLogin');
+Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+/*Route::get('/validate', ['middleware' => 'login'], function(){
+	return view('welcome');
+});
 
-Route::controllers([
+
+
+/*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',
 	'password'	=> 'Auth\PasswordController'
-]);
+]);*/
 
 /*
 OAuth Routes
