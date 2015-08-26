@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -14,6 +14,8 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+     /*   $this->middleware('login');*/
+        $this->middleware('sup.agent');
     }
     /**
      * Display a listing of the resource.
@@ -27,7 +29,8 @@ class DashboardController extends Controller
             var_dump($user);
         }
         dd(count($users));*/
-        return view('dashboard');
+        $user =Auth::user();
+        return view('dashboard')->with('user', $user);
     }
 
     /**
