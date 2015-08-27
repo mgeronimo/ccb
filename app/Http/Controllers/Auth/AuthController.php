@@ -34,7 +34,7 @@ class AuthController extends Controller
     protected $redirectAfterLogout = '/auth/login';
    
 
-       public function __construct()
+    public function __construct()
     {
         $this->middleware('guest', ['except' => 'getLogout']);
     }

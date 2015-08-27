@@ -53,6 +53,7 @@ class UserApiController extends Controller
             'last_name'     => $request->input('last_name'),
             'email'         => $request->input('email'),
             'password'      => bcrypt($request->input('password')),
+            'contact_number' => $request->input('contact_number'),
             'role'          => '3',
             'remember_token' => str_random(60)
         ]);

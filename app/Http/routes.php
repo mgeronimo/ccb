@@ -35,6 +35,6 @@ Route::post('oauth/access_token', function() {
     return Response::json(Authorizer::issueAccessToken());
 });
 
-Route::group(['prefix' => 'api/v1', 'middleware' => 'public'], function(){
+Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('register', 'UserApiController@store');
 });
