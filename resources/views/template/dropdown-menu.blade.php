@@ -72,7 +72,7 @@
         </li>
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
-            <a href="auth/logout" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="/logout" class="dropdown-toggle" data-toggle="dropdown">
                 <!--<img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
                 <span class="hidden-xs">Juan Dela Cruz</span>-->
                 <span class="hidden-xs">Logout</span>
@@ -110,8 +110,9 @@
             </ul>
         </li>
         <!-- Control Sidebar Toggle Button -->
-        <li>
+      
+      <!--  <li>
             <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-        </li>
+        </li>-->
     </ul>
 </div>

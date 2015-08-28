@@ -31,7 +31,9 @@ class AuthController extends Controller
      */
 
     protected $username = 'username';
-    protected $redirectAfterLogout = '/auth/login';
+    protected $redirectAfterLogout = '/login';
+    protected $redirectTo = '/admin';
+    protected $loginPath = '/login';
    
 
     public function __construct()
