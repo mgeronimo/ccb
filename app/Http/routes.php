@@ -14,6 +14,7 @@
 Route::get('dashboard', 'DashboardController@index');
 Route::get('/admin', 'DashboardAdminController@index');
 Route::get('/addgroup', 'DashboardAdminController@addgroup');
+Route::post('/addgroup', 'DashboardAdminController@storegroup');
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
