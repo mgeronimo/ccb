@@ -17,24 +17,24 @@
 							</ul>
 							<fieldset>
 								<h2 class="fs-title">Enter group name</h2>
-								<input type="text" name="groupname" placeholder="Group Name" class="form-control" />
+								<input type="text" name="groupname" placeholder="Group Name" class="form-control"required />
 								<input type="button" id="next" name="next" class="next action-button" value="Next" />
 							</fieldset>
 						<fieldset>
 							<h2 class="fs-title">Supervisor's details</h2>
-							<input type="text"	name="sfirstname" placeholder="Supervisor's firstname">
-							<input type="text" name="slastname" placeholder="Supervisor's lastname" />
+							<input type="text"	name="sfirstname" placeholder="Supervisor's firstname" required>
+							<input type="text" name="slastname" placeholder="Supervisor's lastname" required/>
 							<input type="email" name="sEmail" placeholder="Email" />
 							<input type="button" id="previous" name="previous" class="previous action-button" value="Previous" />
-							<input type="button" id="next" name="next" class="next action-button" value="Next" />
+							<input type="button" id="next2" name="next" class="next action-button" value="Next" />
 						</fieldset>
 						<fieldset class="formgroup">
 							<h2 class="fs-title">Agent Details</h2>
 								<div id="addagent" class="addagent">
 									<p>
-										<input type="text" name="agentfname[]" placeholder="First Name" />
-										<input type="text" name="agentlname[]" placeholder="Last Name" />
-										<input type="email" name="agentemail[]" placeholder="Email" />
+										<input type="text" name="agentfname[]" placeholder="First Name" required />
+										<input type="text" name="agentlname[]" placeholder="Last Name" required />
+										<input type="email" name="agentemail[]" placeholder="Email" required/>
 									</p>
 								</div>
 							<h3><a href="#" id="addBtn" class="addButton"> Add agent </a></h3>
@@ -66,7 +66,7 @@ jQuery(document).ready(function() {
 	$(addBtn).click( function(e){
 		e.preventDefault();
 		i++;
-		$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" /><input type="text" name="agentlname []" placeholder="Last Name" /><input type="email" name="agentemail[]" placeholder="Email" /><a href="#" id="removeBtn">Remove</a></p></div>')
+		$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" /><input type="text" name="agentlname[]" placeholder="Last Name" /><input type="email" name="agentemail[]" placeholder="Email" /><a href="#" id="removeBtn">Remove</a></p></div>')
 		
 	});
 	$(wrap).on("click", "#removeBtn", function(e){
@@ -92,9 +92,88 @@ jQuery(document).ready(function() {
 var current_fs, next_fs, previous_fs; //fieldsets
 var left, opacity, scale; //fieldset properties which we will animate
 var animating; //flag to prevent quick multi-click glitches
+$('#msform fieldset').eq(0).keydown(function (e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        $('#next').click();    
+        return false;
+    }
+});
+$('#msform fieldset').eq(1).keydown(function (e) {
+    if (e.keyCode == 13) {
+        e.preventDefault();
+        $('#next2').click();
+        return false;
+    }
+});
+$('#msform fieldset').eq(2).keydown(function (e) {
+    if (e.keyCode == 13) {
+     	  $('#submit').click();
+    }
+});
 
 $(".next").click(function(e){
 	e.preventDefault();
+	var form = $('#msform');
+	 form.validate({
+	 	 framework: 'bootstrap',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+	 	errorElement: 'span',
+					errorClass: 'help-block',
+					highlight: function(element, errorClass, validClass) {
+						$(element).closest('.form-group').addClass("has-error");
+					},
+					unhighlight: function(element, errorClass, validClass) {
+						$(element).closest('.form-group').removeClass("has-error");
+					},
+	 
+		rules: {
+					groupname: 
+					{
+						required: true,
+
+					},
+					sfirstname: 
+					{
+						required: true,
+					},
+					slastname: 
+					{
+						required: true,
+					},
+					sEmail: 
+					{
+						required: true,
+					},
+
+
+				},
+				messages: 
+				{
+					groupname: 
+					{
+						required: "Groupname required",
+					},
+					sfirstname:
+					{
+						required: "Supervisor's name is required"
+					},
+					slastname:
+					{
+						required: "Supervisor's name is required"
+					},
+					sEmail:
+					{
+						required: "Supervisor's email is required"
+					},
+				},
+	});
+	 if(form.valid()==true)
+	 {
 	if(animating) return false;
 	animating = true;
 	
@@ -127,6 +206,9 @@ $(".next").click(function(e){
 		//this comes from the custom easing plugin
 		easing: 'easeInOutBack'
 	});
+
+
+}
 });
 
 $(".previous").click(function(){

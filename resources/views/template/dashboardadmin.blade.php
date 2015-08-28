@@ -60,8 +60,9 @@
         <!-- jQuery 2.1.4 -->
        <!-- <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
+        
             <script src="assets/js/jquery-1.11.1.min.js"></script>
-         <script src="assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+       <!--  <script src="assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>-->
         <script src="assets/jquery/dist/jquery.min.js"></script>
 
       
@@ -79,7 +80,9 @@
         <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="assets/bower_components/jquery.steps/build/jquery.steps.min.js"></script>
         <script src="assets/js/jquery.easing-82496a9/jquery.easing.1.3.js"></script>
-     
+         <script src="assets/jquery-validation-1.14.0/dist/jquery.validate.js"></script>
+       <script src="assets/js/jquery.validate.min.js"></script>
+
         <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
         <!-- AdminLTE App -->
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
