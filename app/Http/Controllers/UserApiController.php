@@ -45,7 +45,7 @@ class UserApiController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $validator->errors();
+            return response()->json(['msg' => 'The email has already been taken.'], 400);
         }
 
         $user = User::create([
