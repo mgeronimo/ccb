@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('contact_number', 45)->nullabe();
             $table->integer('role')->nullable();
-            $table->String('contact_number', 45)->nullable();
             $table->rememberToken();
          // $table->timestamps();
         });
