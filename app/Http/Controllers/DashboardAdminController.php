@@ -50,24 +50,31 @@ class DashboardAdminController extends Controller
         //
         $group = new Group;
         $user = new User;
-          $group->group_name = $request->input('groupname');
+        $group->group_name = $request->input('groupname');
         $group->save();
         $input = $request->all();
-        return $input;
-        $user->first_name = $request->$input['sfirstname'];
-        $user->last_name = $request->$input['slastname'];
-        $user->email = $request->$input['sEmail'];
-
-        $user->first_name = $request->$input['agentfname'];
-        $user->last_name = $request->$input['agentlname'];
-        $user->email = $request->$input['agentemail'];
-
+        $user->first_name = $input['sfirstname'];
+        $user->last_name = $input['slastname'];
+        $user->email = $input['sEmail'];
         $groups = Group::where('group_name', $group->group_name)->firstOrFail();
-        //return $groups;
-
         $groups->users()->save($user);
+        //$user->save();
+       // $agentuser = new User;
 
-        return redirect('/addgroup');
+        $agent = count($input['agentfname']);
+        for($i=0; $agent > $i; $i++)
+        {  
+            $agentuser = new User;
+            $agentuser->first_name = $input['agentfname'][$i];
+            $agentuser->last_name =$input['agentlname'][$i];
+            $agentuser->email = $input['agentemail'][$i];
+            $groups = Group::where('group_name', $group->group_name)->firstOrFail();
+            $groups->users()->save($agentuser);
+          
+        }
+
+      
+        return redirect('/admin');
     }
 
 

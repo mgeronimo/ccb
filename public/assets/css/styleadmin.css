@@ -135,15 +135,16 @@ body {
 	content: '';
 	width: 190%;
 	height: 2px;
-	/*color-background: black !important;*/
 	position: absolute;
 	left: -90%;
 	top: 9px;
 	z-index: -1; /*put it behind the numbers*/
+
 }
 #progressbar li:first-child:after {
 	/*connector not needed before the first step*/
 	content: none; 
+	
 }
 /*marking active/completed steps green*/
 /*The number of the step and the connector before it = green*/
