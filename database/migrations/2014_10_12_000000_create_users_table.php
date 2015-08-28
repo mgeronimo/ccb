@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('password', 60);
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('contact_number', 45)->nullabe();
             $table->integer('role')->nullable();
             $table->String('contact_number', 45)->nullable();
             $table->rememberToken();

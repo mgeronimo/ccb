@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Group;
+use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -43,6 +45,31 @@ class DashboardAdminController extends Controller
         $user = Auth::user();
         return view('admin.addgroup')->with('user', $user);
     }
+    public function storegroup(Request $request)
+    {
+        //
+        $group = new Group;
+        $user = new User;
+          $group->group_name = $request->input('groupname');
+        $group->save();
+        $input = $request->all();
+        return $input;
+        $user->first_name = $request->$input['sfirstname'];
+        $user->last_name = $request->$input['slastname'];
+        $user->email = $request->$input['sEmail'];
+
+        $user->first_name = $request->$input['agentfname'];
+        $user->last_name = $request->$input['agentlname'];
+        $user->email = $request->$input['agentemail'];
+
+        $groups = Group::where('group_name', $group->group_name)->firstOrFail();
+        //return $groups;
+
+        $groups->users()->save($user);
+
+        return redirect('/addgroup');
+    }
+
 
     /**
      * Store a newly created resource in storage.
