@@ -15,6 +15,8 @@
         <link rel="stylesheet" href="assets/dist/css/AdminLTE.min.css">
         <!-- AdminLTE Skins -->
         <link rel="stylesheet" href="assets/dist/css/skins/_all-skins.min.css">
+        <!-- Custom Styles -->
+        <link rel="stylesheet" href="assets/css/custom.css">
         @yield('heads')
     </head>
     <body class="skin-blue sidebar-mini">
@@ -22,11 +24,12 @@
 
         <header class="main-header">
             <!-- Logo -->
-            <a href="index2.html" class="logo">
+            <a href="/" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>A</b>LT</span>
+                <!--<span class="logo-mini"><b>A</b>LT</span>-->
+                <!--<img src="assets/img/logo/logo-small.png" class="img-responsive  logi-mini">-->
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>Admin</b>LTE</span>
+                <img src="assets/img/logo/logo-white-with-icon-small.png" class="img-responsive smlogo logi-lg">
             </a>
 
             <!-- Header Navbar: style can be found in header.less -->

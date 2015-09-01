@@ -6,15 +6,15 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
      
-                <p class="sidetext"><strong>{{$user->username}}</strong></p>
-              <p class="stext">  @if(($user->role) == 0)
+                <p><span class="user-name">{{ $user->first_name." ".$user->last_name }}</span><br/>
+                @if(($user->role) == 0)
                 Administrator
                 @elseif (($user->role) ==1 )
                 Supervisor
                  @elseif (($user->role) ==2 )
                 Agent
                 @endif</p>
-
+        </div>
              
         <!-- search form -->
         <form action="#" method="get" class="sidebar-form">

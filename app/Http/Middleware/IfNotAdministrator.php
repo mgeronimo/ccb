@@ -23,8 +23,8 @@ class IfNotAdministrator
         }
        else if($user->role != 0)
         {
-            return redirect('dashboard');
+            return redirect('/');
         }
-        return $next($request);
+        
     }
 }

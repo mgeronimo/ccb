@@ -11,10 +11,11 @@
 |
 */
 
-Route::get('dashboard', 'DashboardController@index');
-Route::get('/admin', 'DashboardAdminController@index');
-Route::get('/addgroup', 'DashboardAdminController@addgroup');
-Route::post('/addgroup', 'DashboardAdminController@storegroup');
+Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
+//Route::get('dashboard', 'DashboardController@index');
+//Route::get('/admin', 'DashboardAdminController@index');
+Route::get('/addgroup', 'GroupController@addgroup');
+Route::post('/addgroup', ['middleware' => 'admin', 'GroupController@storegroup']);
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');

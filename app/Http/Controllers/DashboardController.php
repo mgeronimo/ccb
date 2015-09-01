@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         $this->middleware('auth');
      /*   $this->middleware('login');*/
-        $this->middleware('sup.agent');
+        //$this->middleware('sup.agent');
     }
     /**
      * Display a listing of the resource.
@@ -24,13 +24,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        /*$users = User::all();
-        foreach ($users as $key => $user) {
-            var_dump($user);
-        }
-        dd(count($users));*/
-        $user =Auth::user();
-        return view('dashboard')->with('user', $user);
+        $user = Auth::user();
+        $groups = Group::all();
+        
+        if($user->role==0)
+            return view('admin.index')->with('user', $user)->with('groups', $groups);
+        else if($user->role==2)
+            return view('dashboard')->with('user', $user);
     }
 
     /**
