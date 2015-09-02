@@ -3,11 +3,6 @@
 	margin-left: 20px;
 	width: 80% !important;
 }
-.smlogo{
-	width: 140px;
-    margin: auto;
-    margin-top: 4px;
-}
 .sidetext{
 	color:white;
 	font-weight: 30px;
@@ -121,15 +116,21 @@ html {
 #progressbar li:before {
 	content: counter(step);
 	counter-increment: step;
-	width: 60px;
+	width: 30px;
 	line-height: 30px;
 	display: block;
 	font-size: 20px;
-	color: #333;
-	background: white;
-	border-radius: 3px;
+	color: white;
+	background: #D8D8D8;
+	border-radius: 15px;
+	border: solid 1px #D4D4D4;
 	margin: 0 auto 5px auto;
 }
+
+#progressbar li.active:before{
+	border: solid 1px #9CC5DC;
+}
+
 /*progressbar connectors*/
 #progressbar li:after {
 	content: '';
@@ -149,7 +150,7 @@ html {
 /*marking active/completed steps green*/
 /*The number of the step and the connector before it = green*/
 #progressbar li.active:before,  #progressbar li.active:after{
-	background: #3C8DBC;
+	background: #A4D2EC;
 	color: white;
 }
 

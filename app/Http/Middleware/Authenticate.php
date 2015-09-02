@@ -52,11 +52,11 @@ class Authenticate
                 /*
                 This will be termorarily placed here. Still to be optimized
                  */
-                $groups = Group::all();
+                $groups = Group::orderBy('group_name')->get();
                 foreach ($groups as $key => $group) {
                     $supervisor = User::where('group_number', $group->id)
                                 ->where('role', 1)->first();
-                    $group->supervisor = $supervisor->first_name;
+                    $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
                     //dd($supervisor);
                 }
 

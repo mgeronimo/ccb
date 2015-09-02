@@ -19,7 +19,7 @@ class GroupController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('admin.dashboard-admin')->with('user', $user);
+        return view('admin.addgroup')->with('user', $user);
     }
 
     /**
@@ -27,28 +27,26 @@ class GroupController extends Controller
      *
      * @return Response
      */
-    public function addgroup()
-    {
-        //
-        $user = Auth::user();
-        return view('admin.addgroup')->with('user', $user);
-    }
+    
     public function storegroup(Request $request)
     {
-        //
         $group = new Group;
         $user = new User;
+
+        //Saves group name
         $group->group_name = $request->input('groupname');
         $group->save();
+
+        //Saves supervisor
         $input = $request->all();
         $user->first_name = $input['sfirstname'];
         $user->last_name = $input['slastname'];
         $user->email = $input['sEmail'];
+        $user->role = 1;
         $groups = Group::where('group_name', $group->group_name)->firstOrFail();
         $groups->users()->save($user);
-        //$user->save();
-       // $agentuser = new User;
 
+        //Saves agent
         $agent = count($input['agentfname']);
         for($i=0; $agent > $i; $i++)
         {  
@@ -56,13 +54,13 @@ class GroupController extends Controller
             $agentuser->first_name = $input['agentfname'][$i];
             $agentuser->last_name =$input['agentlname'][$i];
             $agentuser->email = $input['agentemail'][$i];
+            $agentuser->role = 2;
             $groups = Group::where('group_name', $group->group_name)->firstOrFail();
             $groups->users()->save($agentuser);
           
         }
-
       
-        return redirect('/admin');
+        return redirect('/')->with('message', 'Group successfully added.');
     }
 
 
@@ -85,7 +83,12 @@ class GroupController extends Controller
      */
     public function show($id)
     {
-        //
+        $group = Group::find($id);
+        $user = Auth::user();
+        $supervisor = User::where('role', 1)->where('group_number', $group->id)->firstOrFail();
+        $agents = User::where('role', 2)->where('group_number', $group->id)->get();
+
+        return view('admin.group.show-group')->with('group', $group)->with('user', $user)->with('supervisor', $supervisor)->with('agents', $agents);
     }
 
     /**
