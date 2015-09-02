@@ -5,15 +5,14 @@
     <section class="sidebar">
         <!-- Sidebar user panel -->
         <div class="user-panel">
-     
-                <p><span class="user-name">{{ $user->first_name." ".$user->last_name }}</span><br/>
-                @if(($user->role) == 0)
+            <p><span class="user-name">{{ $user->first_name." ".$user->last_name }}</span><br/>
+            @if(($user->role) == 0)
                 Administrator
-                @elseif (($user->role) ==1 )
+            @elseif (($user->role) ==1 )
                 Supervisor
-                 @elseif (($user->role) ==2 )
+            @elseif (($user->role) ==2 )
                 Agent
-                @endif</p>
+            @endif</p>
         </div>
              
         <!-- search form -->

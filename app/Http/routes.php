@@ -14,6 +14,7 @@
 Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
 //Route::get('dashboard', 'DashboardController@index');
 //Route::get('/admin', 'DashboardAdminController@index');
+
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
@@ -33,6 +34,7 @@ Route::get('group/{id}', 'GroupController@show');
 Agent Routes
  */
 Route::get('agent/delete/{id}', 'AgentController@delete');
+
 
 /*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',

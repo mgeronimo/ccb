@@ -1,7 +1,7 @@
 @extends('template.dashboard')
 
 @section('title')
-  Dashboard - Contact Center ng Bayan
+	Add Group
 @stop
 
 @section('heads')

@@ -25,6 +25,5 @@ class IfNotAdministrator
         {
             return redirect('/');
         }
-        
     }
 }

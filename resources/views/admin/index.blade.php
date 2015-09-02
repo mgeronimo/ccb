@@ -85,42 +85,40 @@
             </div>
         </div><!-- ./col -->
     </div><!-- /.row -->
-    <div class="row">
-        <div class="box col-md-12">
-            <div class="box-header with-border">
-                <h3 class="box-title col-md-10">Groups</h3>
-                <a class="btn btn-sm btn-primary btn-flat pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                Add Group</a>
-            </div><!-- /.box-header -->
-            <div class="box-body">
-                <table class="table table-bordered">
+    <div class="box col-md-12">
+        <div class="box-header with-border">
+            <h3 class="box-title col-md-10">Groups</h3>
+            <a class="btn btn-sm btn-primary btn-flat pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+            Add Group</a>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Group Name</th>
+                </tr>
+                @foreach($groups as $group)
                     <tr>
-                        <th style="width: 10px">#</th>
-                        <th>Group Name</th>
+                        <td>{{ $group->id }}</td>
+                        <td><a href="/group/{{$group->id}}">{{ $group->group_name }}</a><br>
+                        <sub> Supervisor: {{ $group->supervisor }}</sub></td>
                     </tr>
-                    @foreach($groups as $group)
-                        <tr>
-                            <td>{{ $group->id }}</td>
-                            <td><a href="/group/{{$group->id}}">{{ $group->group_name }}</a><br>
-                            <sub> Supervisor: {{ $group->supervisor }}</sub></td>
-                        </tr>
-                    @endforeach
-                </table>
-            </div><!-- /.box-body -->
-            
-            <!-- Pagination -->
-            <!--<div class="box-footer clearfix">
-                <ul class="pagination pagination-sm no-margin pull-right">
-                    <li><a href="#">&laquo;</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">&raquo;</a></li>
-                </ul>
-            </div>-->
+                @endforeach
+            </table>
+        </div><!-- /.box-body -->
+        
+        <!-- Pagination -->
+        <!--<div class="box-footer clearfix">
+            <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+        </div>-->
 
-        </div><!-- /.box -->
-    </div><!-- ./col -->
+    </div><!-- /.box -->
 @stop
 
 
