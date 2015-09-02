@@ -69,5 +69,7 @@
                 </div>
             </div><!-- ./col -->
         </div><!-- /.row -->
+
+        @yield('content')
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->

@@ -25,6 +25,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
+    
     protected $fillable = ['username', 'email', 'password', 'first_name', 'last_name', 'contact_number', 'role', 'remember_token'];
 
     /**
@@ -33,4 +34,21 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    public function group()
+    {
+        return $this -> belongsTo('App/Group');
+    }
+    public function supervisor()
+    {
+         $this->role = 1;
+         $this->save();
+    }
+     public function agent()
+    {
+         $this->role = 2;
+         $this->save();
+    }
+
+
 }
