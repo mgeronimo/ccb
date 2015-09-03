@@ -1,3 +1,13 @@
+jQuery(document).ready(function() {
+    
+    /*
+        Fullscreen background
+    */
+    $.backstretch("../assets/img/backgrounds/login-bg.jpg");
+    
+    
+});
+
 jQuery(document).on("click",".del-agent", function (event) {
     event.preventDefault();
     var href = $(this).attr("href");
