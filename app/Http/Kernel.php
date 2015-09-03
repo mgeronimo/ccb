@@ -33,7 +33,7 @@ class Kernel extends HttpKernel
         'oauth' => 'LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware',
         'oauth-owner' => 'LucaDegasperi\OAuth2Server\Middleware\OAuthOwnerMiddleware',
         'check-authorization-params' => 'LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware',
-        'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
+        //'csrf' => \App\Http\Middleware\VerifyCsrfToken::class,
         'public' => \App\Http\Middleware\CheckIfPublicUser::class,
         'login' =>\App\Http\Middleware\LoginRedirect::class,
         'admin' =>\App\Http\Middleware\IfNotAdministrator::class,
