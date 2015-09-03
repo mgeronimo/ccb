@@ -15,7 +15,7 @@ class AddFkTicketsTable extends Migration
         Schema::table('tickets', function (Blueprint $table) {
             //
             $table->unsignedInteger('created_by')->nullable();
-            $table->foreign('created_by')->references('id')->on('public_users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
             $table->unsignedInteger('assignee')->nullable();
             $table->foreign('assignee')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

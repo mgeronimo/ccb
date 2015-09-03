@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
         $this->call(GroupTableSeeder::class);
         $this->call(UserTableSeeder::class);
-        $this->call(PublicUserTableSeeder::class);
         $this->call(OAuthSeeder::class);
         Model::reguard();
     }

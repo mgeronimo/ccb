@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "00f6f376bb374e2c8fa3ea496de494cd",
+    "hash": "4b14a927b040f8c594fe76f151f1f474",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -388,6 +388,52 @@
             "time": "2015-08-15 19:32:36"
         },
         {
+            "name": "illuminate/html",
+            "version": "v5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/illuminate/html.git",
+                "reference": "3d1009bb8e0f25720c914af5c1f4015dd373c9ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/illuminate/html/zipball/3d1009bb8e0f25720c914af5c1f4015dd373c9ef",
+                "reference": "3d1009bb8e0f25720c914af5c1f4015dd373c9ef",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "~5.0",
+                "illuminate/session": "~5.0",
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Html\\": ""
+                },
+                "files": [
+                    "helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "time": "2015-01-01 16:31:18"
+        },
+        {
             "name": "jakub-onderka/php-console-color",
             "version": "0.1",
             "source": {
@@ -661,6 +707,56 @@
             "time": "2015-08-12 18:16:08"
         },
         {
+            "name": "laravelcollective/html",
+            "version": "v5.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "59f124084c9135a6a8d87323e5c5562ab823deb4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/59f124084c9135a6a8d87323e5c5562ab823deb4",
+                "reference": "59f124084c9135a6a8d87323e5c5562ab823deb4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "5.1.*",
+                "illuminate/routing": "5.1.*",
+                "illuminate/session": "5.1.*",
+                "illuminate/support": "5.1.*",
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                },
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                }
+            ],
+            "time": "2015-07-28 03:18:41"
+        },
+        {
             "name": "league/event",
             "version": "2.1.2",
             "source": {
@@ -861,12 +957,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lucadegasperi/oauth2-server-laravel.git",
-                "reference": "e9146c327931018cac1e75a7b37aa1a8fd8f5a95"
+                "reference": "e12b5585fd78e9bb6c1df672891669d017411137"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lucadegasperi/oauth2-server-laravel/zipball/e9146c327931018cac1e75a7b37aa1a8fd8f5a95",
-                "reference": "e9146c327931018cac1e75a7b37aa1a8fd8f5a95",
+                "url": "https://api.github.com/repos/lucadegasperi/oauth2-server-laravel/zipball/e12b5585fd78e9bb6c1df672891669d017411137",
+                "reference": "e12b5585fd78e9bb6c1df672891669d017411137",
                 "shasum": ""
             },
             "require": {
@@ -920,7 +1016,7 @@
                 "oauth2",
                 "server"
             ],
-            "time": "2015-08-07 10:40:23"
+            "time": "2015-08-19 06:06:42"
         },
         {
             "name": "monolog/monolog",

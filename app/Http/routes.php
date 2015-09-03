@@ -11,12 +11,35 @@
 |
 */
 
-Route::get('/', 'DashboardController@index');
+Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
+//Route::get('dashboard', 'DashboardController@index');
+//Route::get('/admin', 'DashboardAdminController@index');
 
-Route::controllers([
+Route::get('/login', 'Auth\AuthController@getLogin');
+Route::post('login', 'Auth\AuthController@postLogin');
+Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/welcome', function () {
+    return view('welcome');
+});
+
+/*
+Group Routes
+ */
+Route::get('/addgroup', 'GroupController@index');
+Route::post('/addgroup', 'GroupController@storegroup');
+Route::get('group/{id}', 'GroupController@show');
+
+
+/*
+Agent Routes
+ */
+Route::get('agent/delete/{id}', 'AgentController@delete');
+
+
+/*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',
 	'password'	=> 'Auth\PasswordController'
-]);
+]);*/
 
 /*
 OAuth Routes
@@ -35,6 +58,6 @@ Route::post('oauth/access_token', function() {
     return Response::json(Authorizer::issueAccessToken());
 });
 
-Route::group(['prefix' => 'api/v1', 'middleware' => 'oauth'], function(){
-	
+Route::group(['prefix' => 'api/v1'], function(){
+	Route::post('register', 'UserApiController@store');
 });
