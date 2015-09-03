@@ -27,7 +27,7 @@
 				<fieldset>
 					<h2 class="fs-title">Enter group name</h2>
 					<input type="text" name="groupname" placeholder="Group Name" required />
-					<a href="/"><input type="button" class="action-button btndesign" value="Cancel" /></a>
+					<a href="/cancel-add" class="action-button btndesign" style="padding: 10px 25px">Cancel</a>
 					<input type="button" id="next" name="next" class="next action-button " value="Next" />
 				</fieldset>
 			<fieldset>
