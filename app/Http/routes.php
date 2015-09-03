@@ -21,12 +21,13 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 Route::get('/welcome', function () {
     return view('welcome');
 });
-
+Route::get('confirm', function () {
+    return view('confirm');
+});
 /*
 Registration Routes
  */
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
-
 /*
 Group Routes
  */
@@ -40,6 +41,9 @@ Agent Routes
  */
 Route::get('agent/delete/{id}', 'AgentController@delete');
 
+Route::get('email', function(){
+return view('emails.verification');
+});
 
 /*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',

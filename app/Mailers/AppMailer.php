@@ -35,7 +35,7 @@ class AppMailer{
 	{
 		$this->mailer->send($this->view, $this->data, function($message){
 			$message->from($this->from, 'Contact Center ng Bayan')
-					->to($this->to);
+					->to($this->to)->subject('Verify your account');
 		});
 	}
 } 
