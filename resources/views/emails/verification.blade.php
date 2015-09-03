@@ -7,6 +7,7 @@
 <body>
 	<h1>Thanks for signing up!</h1>
 	<p>
+
 		We just need you to verify your email address real quick.<br><br>
 		<a href='{{ url("register/confirm/{$user->token}") }}' 
 						style="  color: #fff;
@@ -25,6 +26,7 @@
                          border: 1px solid transparent;
   						 border-radius: 4px;
   						 text-decoration:none; ">  <strong> Confirm Email Address</strong></a>
+
 	</p>
 </body>
 </html>

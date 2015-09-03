@@ -36,6 +36,11 @@ Route::get('cancel-add', function(){
 });
 
 /*
+Registration Routes
+ */
+Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
+
+/*
 Group Routes
  */
 Route::get('/addgroup', 'GroupController@index');

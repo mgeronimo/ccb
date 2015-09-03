@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+
 use App\Mailers\AppMailer;
+
 use Mail;
 use App\Group;
 use App\User;
@@ -54,6 +56,10 @@ class GroupController extends Controller
         });*/
 
 
+
+        Mail::send('emails.verification', ['user' => $user], function ($m) use ($user) {
+            $m->to($user->email, $user->first_name)->subject('Your Reminder!');
+        });
 
         //Saves agent
         $agent = count($input['agentfname']);

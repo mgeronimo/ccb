@@ -60,6 +60,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $user->token = str_random(10);
         });
     }
+
     public function confirm(){
         $this->is_verified = 1;
         $this->save();

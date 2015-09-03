@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Mailers\AppMailer;
 use App\User;
+
+
 class RegistrationController extends Controller
 {
     /**
@@ -19,7 +21,18 @@ class RegistrationController extends Controller
     {
         //
     }
-  
+
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        //
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -84,9 +97,12 @@ class RegistrationController extends Controller
      */
     public function confirmEmail($token)
     {
+<<<<<<< HEAD
         User::where('token', $token)->firstOrFail()->confirm();
         return redirect('confirm');
 
+=======
+>>>>>>> 1b985947c3b81721434f4279a1a9d0775d918ffd
         
     }    
 }
