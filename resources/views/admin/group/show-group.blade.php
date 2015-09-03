@@ -53,12 +53,11 @@
 						<tr>
 							<td>{{ $agent->id }}</td>
 							<td>{{ $agent->first_name." ".$agent->last_name }}</td>
-							<td><a class="btn btn-sm btn-danger" href="/agent/delete/{{ $agent->id }}" role="button"><i class="fa fa-fw fa-trash"></i></a></td>
+							<td><a class="btn btn-sm btn-danger del-agent" href="/agent/delete/{{ $agent->id }}" role="button"  data-toggle="tooltip" data-placement="top" title="Delete agent"><i class="fa fa-fw fa-trash"></i></a></td>
 						</tr>
 					@endforeach
 				</tbody>
 			</table>
 		</div>
 	</div>
-
 @stop
