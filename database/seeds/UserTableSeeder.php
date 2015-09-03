@@ -22,6 +22,7 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Administrator',
             'username' => 'ccb-admin',
             'role' => 0,
+            'is_verified' => 1,
             'group_number' => null,
             'remember_token' => str_random(60),
 
@@ -35,6 +36,7 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Supervisor',
             'username' => 'super1',
             'role' => 1,
+            'is_verified' => 1,
             'group_number' => 1,
             'remember_token' => str_random(60),
         ]);
@@ -47,6 +49,7 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Dela Cruz',
             'username' => 'agent1',
             'role' => 2,
+            'is_verified' => 1,
             'group_number' => 1,
             'remember_token' => str_random(60),
         ]);
@@ -58,6 +61,7 @@ class UserTableSeeder extends Seeder
             'last_name' => 'Dela Cruz',
             'username' => 'agent2',
             'role' => 2,
+            'is_verified' => 1,
             'group_number' => 1,
             'remember_token' => str_random(60),
         ]);
@@ -69,6 +73,7 @@ class UserTableSeeder extends Seeder
             'first_name' => 'Juan',
             'last_name' => 'Dela Cruz',
             'role'  => 3,
+            'is_verified' => 1,
             'contact_number' => '09152222222',
         ]);
     }
