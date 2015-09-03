@@ -10,7 +10,8 @@
         "lucadegasperi/oauth2-server-laravel": "5.0.*@dev",
         "guzzlehttp/guzzle": "~6.0",
         "laravelcollective/html": "~5.0",
-        "illuminate/html": "5.*"
+        "illuminate/html": "5.*",
+        "guzzlehttp/guzzle": "~5.3|~6.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

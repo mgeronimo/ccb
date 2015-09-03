@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+
+use App\Mailers\AppMailer;
+
+use Mail;
 use App\Group;
 use App\User;
 use App\Http\Requests;
@@ -28,7 +32,7 @@ class GroupController extends Controller
      * @return Response
      */
     
-    public function storegroup(Request $request)
+    public function storegroup(Request $request, AppMailer $mailer)
     {
         $group = new Group;
         $user = new User;
@@ -45,6 +49,17 @@ class GroupController extends Controller
         $user->role = 1;
         $groups = Group::where('group_name', $group->group_name)->firstOrFail();
         $groups->users()->save($user);
+        $mailer->sendEmailConfirmationTo($user);    
+        /*
+        Mail::send('emails.verification', ['user' => $user], function ($m) use ($user) {
+            $m->to($user->email, $user->first_name)->subject('Your Reminder!');
+        });*/
+
+
+
+        Mail::send('emails.verification', ['user' => $user], function ($m) use ($user) {
+            $m->to($user->email, $user->first_name)->subject('Your Reminder!');
+        });
 
         //Saves agent
         $agent = count($input['agentfname']);
@@ -57,6 +72,8 @@ class GroupController extends Controller
             $agentuser->role = 2;
             $groups = Group::where('group_name', $group->group_name)->firstOrFail();
             $groups->users()->save($agentuser);
+            $mailer->sendEmailConfirmationTo($agentuser);    
+
           
         }
       

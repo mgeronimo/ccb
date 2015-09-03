@@ -39,16 +39,32 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this -> belongsTo('App/Group');
     }
+
     public function supervisor()
     {
          $this->role = 1;
          $this->save();
     }
-     public function agent()
+    
+    public function agent()
     {
          $this->role = 2;
          $this->save();
     }
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function($user){
+            $user->token = str_random(10);
+        });
+    }
+
+    public function confirm(){
+        $this->is_verified = 1;
+        $this->save();
+    
+    }
 
 }

@@ -22,10 +22,23 @@ Route::get('/welcome', function() {
     return view('welcome');
 });
 
+Route::get('confirm', function () {
+    return view('confirm');
+});
+/*
+Registration Routes
+ */
+Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
+
 //Redirects to the dashboard with message when group creation was cancelled
 Route::get('cancel-add', function(){
 	return redirect('/')->with('message', 'Addition of group cancelled.');
 });
+
+/*
+Registration Routes
+ */
+Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 
 /*
 Group Routes
@@ -40,6 +53,9 @@ Agent Routes
  */
 Route::get('agent/delete/{id}', 'AgentController@delete');
 
+Route::get('email', function(){
+return view('emails.verification');
+});
 
 /*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',

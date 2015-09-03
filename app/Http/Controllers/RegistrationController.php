@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\User;
 use App\Mailers\AppMailer;
-use Validator;
+use App\User;
 
-class UserApiController extends Controller
+
+class RegistrationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,6 +21,7 @@ class UserApiController extends Controller
     {
         //
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,34 +39,9 @@ class UserApiController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request, AppMailer $mailer)
+    public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email'         => 'required|email|unique:users,email',
-            'password'      => 'required|min:6'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['msg' => 'The email has already been taken'], 200);
-        }
-
-        $user = User::create([
-            'first_name'     => $request->input('first_name'),
-            'last_name'      => $request->input('last_name'),
-            'email'          => $request->input('email'),
-            'password'       => bcrypt($request->input('password')),
-            'contact_number' => $request->input('contact_number'),
-            'role'           => '3',
-            'is_verified'    => '0',
-            'remember_token' => str_random(60)
-        ]);
-
-        /*
-         * Sends email to user to confirm
-         */
-        $mailer->sendEmailConfirmationTo($user);
-    
-        return response()->json(['msg' => 'Success! You have been registered!'], 200);
+        //
     }
 
     /**
@@ -112,4 +88,21 @@ class UserApiController extends Controller
     {
         //
     }
+
+    /**
+     * Process account confirmation through link clicked from the email
+     *
+     * @param  int  $token
+     * @return Response
+     */
+    public function confirmEmail($token)
+    {
+<<<<<<< HEAD
+        User::where('token', $token)->firstOrFail()->confirm();
+        return redirect('confirm');
+
+=======
+>>>>>>> 1b985947c3b81721434f4279a1a9d0775d918ffd
+        
+    }    
 }
