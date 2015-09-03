@@ -18,8 +18,13 @@ Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
-Route::get('/welcome', function () {
+Route::get('/welcome', function() {
     return view('welcome');
+});
+
+//Redirects to the dashboard with message when group creation was cancelled
+Route::get('cancel-add', function(){
+	return redirect('/')->with('message', 'Addition of group cancelled.');
 });
 
 /*

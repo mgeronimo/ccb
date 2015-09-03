@@ -71,7 +71,7 @@
         </li>-->
         <!-- User Account: style can be found in dropdown.less -->
         <li class="dropdown user user-menu">
-            <a href="/logout" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="/logout">
                 <!--<img src="assets/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
                 <span class="hidden-xs">Juan Dela Cruz</span>-->
                 <span class="hidden-xs">Logout</span>
