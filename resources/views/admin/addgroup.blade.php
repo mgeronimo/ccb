@@ -19,6 +19,8 @@
 @section('content')
 	<div class="row">
 		<form id="msform" method="POST" action="{{url('/addgroup')}}">
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+
 				<ul id="progressbar">
 					<li class="active">Group Name</li>
 					<li>Supervisor's Details</li>

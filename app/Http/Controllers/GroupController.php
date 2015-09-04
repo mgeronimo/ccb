@@ -50,16 +50,8 @@ class GroupController extends Controller
         $groups = Group::where('group_name', $group->group_name)->firstOrFail();
         $groups->users()->save($user);
         $mailer->sendEmailConfirmationTo($user);    
-        /*
-        Mail::send('emails.verification', ['user' => $user], function ($m) use ($user) {
-            $m->to($user->email, $user->first_name)->subject('Your Reminder!');
-        });*/
-
-
-
-        Mail::send('emails.verification', ['user' => $user], function ($m) use ($user) {
-            $m->to($user->email, $user->first_name)->subject('Your Reminder!');
-        });
+      
+       
 
         //Saves agent
         $agent = count($input['agentfname']);
