@@ -141,4 +141,18 @@ class GroupController extends Controller
     {
         //
     }
+
+    /**
+     * Add agent to group
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function addAgent($id)
+    {
+        $group = Group::find($id);
+        $user = Auth::user();
+
+        return view('admin.group.add-agent')->with('group', $group)->with('user', $user);
+    }
 }
