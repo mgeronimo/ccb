@@ -29,6 +29,7 @@ Route::get('confirm', function () {
 Registration Routes
  */
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
+Route::post('register/confirm/{token}', 'RegistrationController@confirmRegister');
 
 //Redirects to the dashboard with message when group creation was cancelled
 Route::get('cancel-add', function(){
@@ -43,8 +44,8 @@ Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 /*
 Group Routes
  */
-Route::get('/addgroup', 'GroupController@index');
-Route::post('/addgroup', 'GroupController@storegroup');
+Route::get('addgroup', 'GroupController@index');
+Route::post('addgroup', 'GroupController@storegroup');
 Route::get('group/{id}', 'GroupController@show');
 
 

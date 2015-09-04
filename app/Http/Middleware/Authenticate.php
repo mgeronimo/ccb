@@ -64,6 +64,11 @@ class Authenticate
             }
             else if($user->role==2)
                 return view('dashboard')->with('user', $user);
+            else if($user->role==1)
+                return view('supervisor.dashboardsupervisor')->with('user', $user);
+            else if($user->role>2)
+                Auth::logout();
+                return redirect('/login');
         }
 
         return $next($request);

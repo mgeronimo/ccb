@@ -20,6 +20,7 @@ class RegistrationController extends Controller
     public function index()
     {
         //
+
     }
 
 
@@ -97,10 +98,22 @@ class RegistrationController extends Controller
      */
     public function confirmEmail($token)
     {
+        $user = User::where('token', $token)->firstOrFail();
+        return view('registration.registerconfirm')->with('user', $user);     
+    }
+     public function confirmRegister($token, Request $request)
+    {
+        $input = $request->all();
+        $user = User::where('token', $token)->firstOrFail();
+        $user->username = $input['username'];
+        $user->password = bcrypt($input['password']);
+        $user->contact_number = $input['contact_number'];
+        $user->is_verified = 1;
+        $user->token = null;
+        $user->update();
+        return redirect('/login');     
+    }
 
-        User::where('token', $token)->firstOrFail()->confirm();
-        return redirect('confirm');
 
         
-    }    
 }
