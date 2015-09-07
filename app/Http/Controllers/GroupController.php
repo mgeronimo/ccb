@@ -177,14 +177,17 @@ class GroupController extends Controller
     public function validateSupervisor()
     {
         $validate = null;
+        /*
         $sfirstname = trim(Input::get('sfirstname'));
         $slastname = trim(Input::get('slastname'));
         $sEmail = trim(Input::get('sEmail'));
 
-        if($sfirstname=="") return 'spacefirst';
-        else if($slastname=="") return 'spacelast';
-        else if($sEmail=="") return 'spaceemail';
 
+        if($sfirstname=="")return 'spacefirst';
+        if($slastname=="") return 'spacelast';
+        if($sEmail=="") return 'spaceemail';
+    */
+        $sEmail = trim(Input::get('sEmail'));
         $validate = User::where('role', 1)->where('email', $sEmail)->get();
         
         if(count($validate)) return 'failed';

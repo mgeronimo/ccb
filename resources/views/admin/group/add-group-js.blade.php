@@ -1,3 +1,4 @@
+
 @section('scripts')
 	<script src="assets/js/jquery-1.11.1.min.js"></script>
 	<script src="assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
@@ -17,14 +18,11 @@
 			$(wrap).on("click", "#removeBtn", function(e){
 							 e.preventDefault();
 			
-
 					$(this).parent('p').remove();
 					i--;
 				
 				
 			});
-
-
 		});
 	</script>
 
@@ -35,6 +33,12 @@
 			var current_fs, next_fs, previous_fs; //fieldsets
 			var left, opacity, scale; //fieldset properties which we will animate
 			var animating; //flag to prevent quick multi-click glitches
+		$.validator.addMethod("nowhitespace", function(value, element) {
+					return this.optional(element)|| /^[a-zA-Z]+/i.test(value);
+				//console.log(hello);
+
+ 
+				}, "Please enter a value");
 			$('#msform fieldset').eq(0).keydown(function (e) {
 			    if (e.keyCode == 13) {
 			        e.preventDefault();
@@ -54,7 +58,6 @@
 			     	  $('#submit').click();
 			    }
 			});
-
 			$(".next").click(function(e){
 				e.preventDefault();
 				var form = $('#msform');
@@ -78,17 +81,22 @@
 						{
 							required: true,
 							maxlength: 45,
-
+							nowhitespace: true,
 						},
 						sfirstname: 
 						{
 							required: true,
 							maxlength: 45,
+							nowhitespace: true,
+
+
 						},
 						slastname: 
 						{
 							required: true,
 							maxlength: 45,
+							nowhitespace: true,
+
 						},
 						sEmail: 
 						{
@@ -143,7 +151,7 @@
 						},
 					},
 				});
-			 	if(form.valid()==true)
+			  	if(form.valid()==true)
 				{
 					a = $(this);
 					if(fcounter==0){
@@ -156,9 +164,7 @@
 							
 								//show the next fieldset
 								next_fs.show("slow"); 
-
 								current_fs.hide();
-
 								fcounter++;
 							}
 						 	else{
@@ -169,19 +175,19 @@
 								else if(data == 'whitespace')
 									var text = document.createTextNode("Please enter valid group name.");
 								span.appendChild(text);
-
 								var element = document.getElementById('this-group');
 								element.appendChild(span);
-
 						 	}
 						});
 					}
 					//console.log(a.parent());
 					//console.log(fcounter);
 					else if(fcounter==1){
+						/*
 						$.get( "/validateSupervisor?sfirstname="+document.getElementsByName('sfirstname')[0].value+
 							"&slastname="+document.getElementsByName('slastname')[0].value+
-							"&sEmail="+document.getElementsByName('sEmail')[0].value, function( data ) {
+							"&sEmail="+document.getElementsByName('sEmail')[0].value, function( data )*/
+						$.get( "/validateSupervisor?&sEmail="+document.getElementsByName('sEmail')[0].value, function( data ) {
 						 	if(data == 'passed'){
 						 		current_fs = a.parent();
 								next_fs = a.parent().next();
@@ -190,9 +196,7 @@
 							
 								//show the next fieldset
 								next_fs.show("slow"); 
-
 								current_fs.hide();
-
 								fcounter++;
 							}
 						 	else{
@@ -203,34 +207,32 @@
 									var text = document.createTextNode("Email already existing.");
 									var element = document.getElementById('this-semail');
 						 		}
-								else if(data == 'spacefirst'){
+						 		/*
+								 if(data == 'spacefirst'){
 									var text = document.createTextNode("Please enter valid first name.");
 									var element = document.getElementById('this-sfirstname');
 								}
-								else if(data == 'spacelast'){
+								 if(data == 'spacelast'){
 									var text = document.createTextNode("Please enter valid last name.");
 									var element = document.getElementById('this-slastname');
 								}
-								else if(data == 'spaceemail'){
+								 if(data == 'spaceemail'){
 									var text = document.createTextNode("Please enter valid email address.");
 									var element = document.getElementById('this-semail');
-								}
+								}*/
 								span.appendChild(text);
 									
 								element.appendChild(span);
-
 						 	}
 						});
 					}
 					
-
 					
 					//hide the current fieldset with style
 				
 					//this comes from the custom easing plugin
 				}
 			});
-
 			$(".previous").click(function(){	
 				current_fs = $(this).parent();
 				previous_fs = $(this).parent().prev();
@@ -240,10 +242,10 @@
 				
 				//show the previous fieldset
 				current_fs.hide(); 
-
 				previous_fs.show("slow");
-			});
+				fcounter--;
 
+			});
 			$("#submit").click(function(){
 				if(form.valid()==true)
 					return true;
