@@ -12,6 +12,8 @@ use App\Group;
 use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Input;
+use Validator;
 
 class GroupController extends Controller
 {
@@ -94,7 +96,7 @@ class GroupController extends Controller
     {
         $group = Group::find($id);
         $user = Auth::user();
-        $supervisor = User::where('role', 1)->where('group_number', $group->id)->firstOrFail();
+        //$supervisor = User::where('role', 1)->where('group_number', $group->id)->firstOrFail();
         $agents = User::where('role', 2)->where('group_number', $group->id)->get();
 
         return view('admin.group.show-group')->with('group', $group)->with('user', $user)->with('supervisor', $supervisor)->with('agents', $agents);
@@ -146,5 +148,46 @@ class GroupController extends Controller
         $user = Auth::user();
 
         return view('admin.group.add-agent')->with('group', $group)->with('user', $user);
+    }
+
+    /**
+     * Validates group name
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function validateGroup()
+    {
+        $validate = null;
+        $input = trim(Input::get('groupname'));
+
+        $validate = Group::where('group_name', $input)->get();
+        
+        if(count($validate)) return 'failed';
+        else if($input=="") return 'whitespace';
+        else return 'passed';
+    }
+
+    /**
+     * Validates supervisor details
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function validateSupervisor()
+    {
+        $validate = null;
+        $sfirstname = trim(Input::get('sfirstname'));
+        $slastname = trim(Input::get('slastname'));
+        $sEmail = trim(Input::get('sEmail'));
+
+        if($sfirstname=="") return 'spacefirst';
+        else if($slastname=="") return 'spacelast';
+        else if($sEmail=="") return 'spaceemail';
+
+        $validate = User::where('role', 1)->where('email', $sEmail)->get();
+        
+        if(count($validate)) return 'failed';
+        else return 'passed';
     }
 }
