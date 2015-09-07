@@ -26,15 +26,23 @@
 				</ul>
 				<fieldset>
 					<h2 class="fs-title">Enter group name</h2>
-					<input type="text" name="groupname" placeholder="Group Name" required />
+					<div id="this-group">
+						<input type="text" name="groupname" placeholder="Group Name" required />
+					</div>
 					<a href="/cancel-add" class="action-button btndesign" style="padding: 10px 25px">Cancel</a>
 					<input type="button" id="next" name="next" class="next action-button " value="Next" />
 				</fieldset>
 			<fieldset>
 				<h2 class="fs-title">Supervisor's details</h2>
-				<input type="text"	name="sfirstname" placeholder="Supervisor's firstname" required>
-				<input type="text" name="slastname" placeholder="Supervisor's lastname" required/>
-				<input type="email" name="sEmail" placeholder="Email" />
+				<div id="this-sfirstname">
+					<input type="text"	name="sfirstname" placeholder="Supervisor's firstname" required>
+				</div>
+				<div id="this-slastname">
+					<input type="text" name="slastname" placeholder="Supervisor's lastname" required/>
+				</div>
+				<div id="this-semail">
+					<input type="email" name="sEmail" placeholder="Email" />
+				</div>
 				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
 				<input type="button" id="next2" name="next" class="next action-button " value="Next" />
 			</fieldset>
