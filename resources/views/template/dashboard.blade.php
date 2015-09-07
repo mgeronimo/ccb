@@ -6,17 +6,17 @@
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.4 -->
-        <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href='{{ url("assets/bootstrap/css/bootstrap.min.css") }}'>
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
         <!-- Ionicons 2.0.0 -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
         <!-- Theme style -->
-        <link rel="stylesheet" href="../assets/dist/css/AdminLTE.min.css">
+        <link rel="stylesheet" href='{{ url("assets/dist/css/AdminLTE.min.css") }}'>
         <!-- AdminLTE Skins -->
-        <link rel="stylesheet" href="../assets/dist/css/skins/_all-skins.min.css">
+        <link rel="stylesheet" href='{{ url("assets/dist/css/skins/_all-skins.min.css") }}'>
         <!-- Custom Styles -->
-        <link rel="stylesheet" href="../assets/css/custom.css">
+        <link rel="stylesheet" href='{{ url("assets/css/custom.css") }}'>
         @yield('heads')
     </head>
     <body class="skin-blue sidebar-mini">
@@ -29,7 +29,7 @@
                 <!--<span class="logo-mini"><b>A</b>LT</span>-->
                 <!--<img src="assets/img/logo/logo-small.png" class="img-responsive  logi-mini">-->
                 <!-- logo for regular state and mobile devices -->
-                <img src="../assets/img/logo/logo-white-with-icon-small.png" class="img-responsive smlogo logi-lg">
+                <img src='{{ url("assets/img/logo/logo-white-with-icon-small.png") }}' class="img-responsive smlogo logi-lg">
             </a>
 
             <!-- Header Navbar: style can be found in header.less -->
@@ -72,7 +72,7 @@
         @include('template.footer')
 
         <!-- jQuery 2.1.4 -->
-        <script src="../assets/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+        <script src='{{ url("assets/plugins/jQuery/jQuery-2.1.4.min.js") }}'></script>
         <!-- jQuery UI 1.11.4 -->
         <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -81,19 +81,19 @@
           $.widget.bridge('uibutton', $.ui.button);
         </script>
         <!-- Bootstrap 3.3.4 -->
-        <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src='{{ url("assets/bootstrap/js/bootstrap.min.js") }}'></script>
         <!-- Sparkline -->
-        <script src="../assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+        <script src='{{ url("assets/plugins/sparkline/jquery.sparkline.min.js") }}'></script>
         <!-- AdminLTE App -->
-        <script src="../assets/dist/js/app.min.js"></script>
+        <script src='{{ url("assets/dist/js/app.min.js") }}'></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="../assets/dist/js/pages/dashboard.js"></script>
+        <script src='{{ url("assets/dist/js/pages/dashboard.js") }}'></script>
         <!-- AdminLTE for demo purposes -->
-        <script src="../assets/dist/js/demo.js"></script>
+        <script src='{{ url("assets/dist/js/demo.js") }}'></script>
         <!-- Bootbox -->
-        <script src="../assets/js/bootbox.min.js"></script>
+        <script src='{{ url("assets/js/bootbox.min.js") }}'></script>
         <!-- Custom JS -->
-        <script src="../assets/js/scripts.js"></script>
+        <script src='{{ url("assets/js/scripts.js") }}'></script>
         @yield('scripts')
     </body>
 </html>

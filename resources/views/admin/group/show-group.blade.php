@@ -39,7 +39,7 @@
 	<div class="box box-warning">
 		<div class="box-header with-border">
 			<h3 class="box-title">Agents</h3>
-			<a class="btn btn-xs btn-default pull-right" href="#" role="button"><i class="fa fa-fw fa-user-plus"></i> &nbsp;&nbsp;Add Agent(s)</a>
+			<a class="btn btn-xs btn-default pull-right" href='{{ url("group/{$group->id}/add-agent") }}' role="button"><i class="fa fa-fw fa-user-plus"></i> &nbsp;&nbsp;Add Agent(s)</a>
 		</div>
 		<div class="box-body no-padding">
 			<table class="table table-striped">

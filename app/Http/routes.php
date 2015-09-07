@@ -42,11 +42,12 @@ Registration Routes
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 
 /*
-Group Routes
+ * Group Routes
  */
 Route::get('addgroup', 'GroupController@index');
 Route::post('addgroup', 'GroupController@storegroup');
 Route::get('group/{id}', 'GroupController@show');
+Route::get('group/{id}/add-agent', 'GroupController@addAgent');
 
 
 /*
