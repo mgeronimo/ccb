@@ -1,8 +1,8 @@
 
 @section('scripts')
-	<script src="assets/js/jquery-1.11.1.min.js"></script>
-	<script src="assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
-	<script src="assets/js/jquery.easing-82496a9/jquery.easing.1.3.js"></script>
+	<script src='{{ url("assets/js/jquery-1.11.1.min.js") }}'></script>
+	<script src='{{ url("assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js") }}'></script>
+	<script src='{{ url("assets/js/jquery.easing-82496a9/jquery.easing.1.3.js") }}'></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			
@@ -12,7 +12,7 @@
 			$(addBtn).click( function(e){
 				e.preventDefault();
 				i++;
-				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><input type="email" name="agentemail[]" placeholder="Email" required/><a href="#" id="removeBtn">Remove</a></p></div>')
+				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><div id="this-aemail-'+i+'"><input type="email" name="agentemail[]" placeholder="Email" required/></div><a href="#" id="removeBtn">Remove</a></p></div>')
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
@@ -33,12 +33,10 @@
 			var current_fs, next_fs, previous_fs; //fieldsets
 			var left, opacity, scale; //fieldset properties which we will animate
 			var animating; //flag to prevent quick multi-click glitches
-		$.validator.addMethod("nowhitespace", function(value, element) {
-					return this.optional(element)|| /^[a-zA-Z]+/i.test(value);
-				//console.log(hello);
-
- 
-				}, "Please enter a value");
+			$.validator.addMethod("nowhitespace", function(value, element) {
+				//console.log('annyeong');
+				return this.optional(element)|| /^[a-zA-Z]+/i.test(value);
+			}, "Please enter a value.");
 			$('#msform fieldset').eq(0).keydown(function (e) {
 			    if (e.keyCode == 13) {
 			        e.preventDefault();
@@ -107,11 +105,13 @@
 						{
 							required: true,
 							maxlength: 45,
+							nowhitespace: true,
 						},
 						"agentlname[]": 
 						{
 							required: true,
 							maxlength: 45,
+							nowhitespace: true,
 						},
 						"agentemail[]": 
 						{
@@ -187,7 +187,7 @@
 						$.get( "/validateSupervisor?sfirstname="+document.getElementsByName('sfirstname')[0].value+
 							"&slastname="+document.getElementsByName('slastname')[0].value+
 							"&sEmail="+document.getElementsByName('sEmail')[0].value, function( data )*/
-						$.get( "/validateSupervisor?&sEmail="+document.getElementsByName('sEmail')[0].value, function( data ) {
+						$.get( "/validateSupervisorAgent/"+fcounter+"?&sEmail="+document.getElementsByName('sEmail')[0].value, function( data ) {
 						 	if(data == 'passed'){
 						 		current_fs = a.parent();
 								next_fs = a.parent().next();
@@ -202,7 +202,6 @@
 						 	else{
 						 		var span = document.createElement("span");
 						 		span.className = "error-block";
-						 		console.log(data);
 						 		if(data == 'failed'){
 									var text = document.createTextNode("Email already existing.");
 									var element = document.getElementById('this-semail');
@@ -246,10 +245,41 @@
 				fcounter--;
 
 			});
-			$("#submit").click(function(){
+			$("#submit").click(function(e){
+				
+				var emailerrors = 0;
+				var inputs = document.querySelectorAll("#msform input[name='agentemail[]']");
+				var span = document.createElement("span");
+				span.className = "error-block";
+				for(i=0; i < inputs.length; i++){
+					console.log('i: '+ (i+1) + ' ' + inputs.length);
+					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+inputs[i].value, function( data ) {
+						if(data == 'failed'){
+							e.preventDefault();
+							emailerrors++;
+							added = i+1;
+							var text = document.createTextNode("Agent email already existing.");
+							var element = document.getElementById('this-aemail-'+ (i+1));
+							
+							span.appendChild(text);
+							element.appendChild(span);
+						}
+					});
+				}
+				if(emailerrors==0){
+					return true;
+				}
+				/*if(form.valid()==true)
+					return true;*/
+			});
+			$("#submit-additional-agent").click(function(e){
+				$.validator.addMethod("nowhitespace", function(value, element) {
+					//console.log('annyeong');
+					return this.optional(element)|| /^[a-zA-Z]+/i.test(value);
+				}, "Please enter a value.");
 				if(form.valid()==true)
 					return true;
-			})
+			});
 		});
 	</script>
 @stop

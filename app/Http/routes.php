@@ -46,8 +46,9 @@ Route::get('addgroup', 'GroupController@index');
 Route::post('addgroup', 'GroupController@storegroup');
 Route::get('group/{id}', 'GroupController@show');
 Route::get('group/{id}/add-agent', 'GroupController@addAgent');
+Route::post('group/{id}/add-agent', 'GroupController@saveAddedAgent');
 Route::get('validateGroup', 'GroupController@validateGroup');
-Route::get('validateSupervisor', 'GroupController@validateSupervisor');
+Route::get('validateSupervisorAgent/{counter}', 'GroupController@validateSupervisorAgent');
 
 
 /*
