@@ -43,7 +43,7 @@
 					<input type="text" name="slastname" placeholder="Supervisor's lastname" required/>
 				</div>
 				<div id="this-semail">
-					<input type="email" name="sEmail" placeholder="Email" />
+					<input type="email" name="sEmail" placeholder="Email" id="sEmail"/>
 				</div>
 				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
 				<input type="button" id="next2" name="next" class="next action-button " value="Next" />
@@ -55,7 +55,7 @@
 							<input type="text" class="agentfname" name="agentfname[]" placeholder="First Name" required />
 							<input type="text" name="agentlname[]" placeholder="Last Name" required />
 							<div id="this-aemail-1">
-								<input type="email" name="agentemail[]" placeholder="Email" required/>
+								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email" id="aEmail" required/>
 							</div>
 						</p>
 					</div>

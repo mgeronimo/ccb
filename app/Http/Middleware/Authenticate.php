@@ -54,21 +54,27 @@ class Authenticate
                  */
                 $groups = Group::orderBy('group_name')->get();
                 foreach ($groups as $key => $group) {
-                    $supervisor = User::where('group_number', $group->id)
+                   $supervisor = User::where('group_number', $group->id)
                                 ->where('role', 1)->first();
-                    $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+                   $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
                     //dd($supervisor);
                 }
 
                 return view('admin.index')->with('user', $user)->with('groups', $groups);
             }
             else if($user->role==2)
+            {
                 return view('dashboard')->with('user', $user);
+            }
             else if($user->role==1)
+            {
                 return view('supervisor.dashboardsupervisor')->with('user', $user);
+            }
             else if($user->role>2)
+            {
                 Auth::logout();
                 return redirect('/login');
+            }
         }
 
         return $next($request);

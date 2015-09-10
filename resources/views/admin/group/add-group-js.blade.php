@@ -1,7 +1,7 @@
 
 @section('scripts')
 	<script src='{{ url("assets/js/jquery-1.11.1.min.js") }}'></script>
-	<script src='{{ url("assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js") }}'></script>
+	<script src='{{ url("assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.js") }}'></script>
 	<script src='{{ url("assets/js/jquery.easing-82496a9/jquery.easing.1.3.js") }}'></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
@@ -12,13 +12,13 @@
 			$(addBtn).click( function(e){
 				e.preventDefault();
 				i++;
-				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><div id="this-aemail-'+i+'"><input type="email" name="agentemail[]" placeholder="Email" required/></div><a href="#" id="removeBtn">Remove</a></p></div>')
+				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><div id="this-aemail-'+i+'"><input type="email" name="agentemail[]" placeholder="Email" id="aEmail'+i+'" class="agentEmail" required/></div><a href="#" id="removeBtn">Remove</a></p>')
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
-							 e.preventDefault();
-			
+					 e.preventDefault();			
 					$(this).parent('p').remove();
+
 					i--;
 				
 				
@@ -37,6 +37,27 @@
 				//console.log('annyeong');
 				return this.optional(element)|| /^[a-zA-Z]+/i.test(value);
 			}, "Please enter a value.");
+				$.validator.addMethod("notEqualSupervisor", function(value, element, param) {
+				return this.optional(element)|| value !=$(param).val();
+			}, "This email address is already taken.");
+
+
+				$.validator.addMethod("notEqualAgent", function(value, element) {
+  					var $element = $(element);	
+  					var $emails = $('.agentEmail').not($element);
+  					var emailsArray = $.map($emails, function(email) {
+        				return $(email).val();
+    					});		
+  					  if ($.inArray($element.val(), emailsArray) >= 0) {
+  					  	return false;
+  					  }
+  					  else{
+  					  	return true;
+  					  }
+    			
+				}, "This email address is already taken by another agent");
+
+	
 			$('#msform fieldset').eq(0).keydown(function (e) {
 			    if (e.keyCode == 13) {
 			        e.preventDefault();
@@ -117,6 +138,8 @@
 						{
 							required: true,
 							maxlength: 45,
+							notEqualSupervisor: "#sEmail",
+							notEqualAgent: true,
 						}
 					},
 					messages: 
@@ -147,7 +170,7 @@
 						},
 						"agentemail[]":
 						{
-							required: "Agent's name is required."
+							required: "Agent's email is required."
 						},
 					},
 				});
