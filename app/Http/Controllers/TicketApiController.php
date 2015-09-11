@@ -51,23 +51,13 @@ class TicketApiController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-        /*$user = User::create([
-            'first_name'     => $request->input('first_name'),
-            'last_name'      => $request->input('last_name'),
-            'email'          => $request->input('email'),
-            'password'       => bcrypt($request->input('password')),
-            'contact_number' => $request->input('contact_number'),
-            'role'           => '3',
-            'is_verified'    => '0',
-            'remember_token' => str_random(60)
-        ]);*/
         $ticket = Ticket::create([
             //'created_at'     => $request->input('date_time'),
-            //'updated_at'     => $request->input('date_time'),
+            'incident_date_time'     => $request->input('date_time'),
             'subject'        => $request->input('subject'),
             'dept_id'        => $request->input('agency'),
             'message'        => $request->input('incident_details'),
-            'status'         => 'New',
+            'status'         => 0,
             'created_by'     => $request->input('user_id')
         ]);
 

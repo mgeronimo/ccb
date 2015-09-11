@@ -19,6 +19,7 @@ class CreateTicketsTable extends Migration
             $table->string('complainee', 100);
             $table->string('subject', 160);
             $table->string('attachments', 255);
+            $table->datetime('incident_date_time', 25);
             $table->timestamps();
         });
     }
