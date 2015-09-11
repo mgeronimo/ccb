@@ -83,4 +83,5 @@ Route::post('oauth/access_token', function() {
 
 Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('register', 'UserApiController@store');
+	Route::post('new-ticket', 'TicketApiController@store');
 });
