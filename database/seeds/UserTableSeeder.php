@@ -12,7 +12,7 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         //
-            DB::table('users')->delete();
+        DB::table('users')->delete();
 
         //Administrator
         DB::table('users')->insert([
@@ -73,6 +73,27 @@ class UserTableSeeder extends Seeder
             'first_name' => 'Juan',
             'last_name' => 'Dela Cruz',
             'role'  => 3,
+            'is_verified' => 1,
+            'contact_number' => '09152222222',
+        ]);
+
+        //Department Representative
+        DB::table('users')->insert([
+            'email' => 'deptrep@gmail.com',
+            'password' => bcrypt('deptrep'),
+            'first_name' => 'Pedro',
+            'last_name' => 'Cruz',
+            'role'  => 4,
+            'is_verified' => 1,
+            'contact_number' => '09152222222',
+        ]);
+
+        DB::table('users')->insert([
+            'email' => 'deptrep2@gmail.com',
+            'password' => bcrypt('deptrep2'),
+            'first_name' => 'Jose',
+            'last_name' => 'Santos',
+            'role'  => 4,
             'is_verified' => 1,
             'contact_number' => '09152222222',
         ]);

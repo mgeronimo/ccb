@@ -28,15 +28,23 @@
 				</ul>
 				<fieldset>
 					<h2 class="fs-title">Enter group name</h2>
-					<input type="text" name="groupname" placeholder="Group Name" required />
+					<div id="this-group">
+						<input type="text" name="groupname" placeholder="Group Name" required />
+					</div>
 					<a href="/cancel-add" class="action-button btndesign" style="padding: 10px 25px">Cancel</a>
 					<input type="button" id="next" name="next" class="next action-button " value="Next" />
 				</fieldset>
 			<fieldset>
 				<h2 class="fs-title">Supervisor's details</h2>
-				<input type="text"	name="sfirstname" placeholder="Supervisor's firstname" required>
-				<input type="text" name="slastname" placeholder="Supervisor's lastname" required/>
-				<input type="email" name="sEmail" placeholder="Email" />
+				<div id="this-sfirstname">
+					<input type="text"	name="sfirstname" placeholder="Supervisor's firstname" required>
+				</div>
+				<div id="this-slastname">
+					<input type="text" name="slastname" placeholder="Supervisor's lastname" required/>
+				</div>
+				<div id="this-semail">
+					<input type="email" name="sEmail" placeholder="Email" id="sEmail"/>
+				</div>
 				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
 				<input type="button" id="next2" name="next" class="next action-button " value="Next" />
 			</fieldset>
@@ -46,7 +54,9 @@
 						<p>
 							<input type="text" class="agentfname" name="agentfname[]" placeholder="First Name" required />
 							<input type="text" name="agentlname[]" placeholder="Last Name" required />
-							<input type="email" name="agentemail[]" placeholder="Email" required/>
+							<div id="this-aemail-1">
+								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email" id="aEmail" required/>
+							</div>
 						</p>
 					</div>
 				<h3><a href="#" id="addBtn" class="addButton"><i class="fa fa-plus-circle"></i> Add agent </a></h3>

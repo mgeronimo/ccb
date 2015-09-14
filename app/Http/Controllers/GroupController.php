@@ -12,6 +12,8 @@ use App\Group;
 use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Input;
+use Validator;
 
 class GroupController extends Controller
 {
@@ -132,5 +134,117 @@ class GroupController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Add agent to group
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function addAgent($id)
+    {
+        $group = Group::find($id);
+        $user = Auth::user();
+
+        return view('admin.group.add-agent')->with('group', $group)->with('user', $user);
+    }
+
+    /**
+     * Save additional agent to group
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function saveAddedAgent(Request $request, $id)
+    {
+        $group = Group::find($id);
+        $user = Auth::user();
+
+        $agents = Input::all();
+        /*$validator = Validator::make($request->all(), [
+            'email'         => 'required|email|unique:users,email',
+        ]);
+        //dd($agents);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }*/
+
+        $validator = Validator::make($request->all(), [
+            'email'         => 'required|email|unique:users,email',
+        ]);
+        //dd($agents);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+
+        $agent = new User;
+        $agent->first_name = $agents['first_name'];
+        $agent->last_name = $agents['last_name'];
+        $agent->email = $agents['email'];
+        $agent->group_number = $id;
+        $agent->role = 2;
+        $agent->save();
+
+        /*for($i=0; $i<count(Input::get('first_name')); $i++){
+            $duplicate = User::where('email', $agents['email'][$i])->get();
+
+            if(count($duplicate)) return back()->withInput()->with('message', 'Email not unique');
+
+            $agent = new User;
+            $agent->first_name = $agents['first_name'][$i];
+            $agent->last_name = $agents['last_name'][$i];
+            $agent->email = $agents['email'][$i];
+            $agent->group_number = $id;
+            $agent->role = 2;
+            $agent->save();
+        }*/
+        return redirect('/group/'.$id)->with('message', 'Agent successfully added!');
+        //return view('admin.group.add-agent')->with('group', $group)->with('user', $user);
+    }
+
+    /**
+     * Validates group name
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function validateGroup()
+    {
+        $validate = null;
+        $input = trim(Input::get('groupname'));
+
+        $validate = Group::where('group_name', $input)->get();
+        
+        if(count($validate)) return 'failed';
+        else if($input=="") return 'whitespace';
+        else return 'passed';
+    }
+
+    /**
+     * Validates supervisor details
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function validateSupervisorAgent($counter)
+    {
+        $validate = null;
+        /*
+            $sfirstname = trim(Input::get('sfirstname'));
+            $slastname = trim(Input::get('slastname'));
+            $sEmail = trim(Input::get('sEmail'));
+
+
+            if($sfirstname=="")return 'spacefirst';
+            if($slastname=="") return 'spacelast';
+            if($sEmail=="") return 'spaceemail';
+        */
+        if($counter==1) $email = trim(Input::get('sEmail'));
+        else $email = trim(Input::get('agentemail'));
+        $validate = User::where('email', $email)->get();
+        
+        if(count($validate)) return 'failed';
+        else return 'passed';
     }
 }
