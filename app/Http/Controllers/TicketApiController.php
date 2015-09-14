@@ -62,12 +62,19 @@ class TicketApiController extends Controller
             'complainee'     => $request->input('complainee')
         ]);
 
+        $prev_ticket = Ticket::orderBy('id', 'DESC')->first();
+
+        $prev_ticket->ticket_id = 'M'.date('Y').date('m').'-'.str_pad($prev_ticket->id, 5, 0, STR_PAD_LEFT);
+        $prev_ticket->save();
+
+        return $prev_ticket;
+
         /*
          * Sends email to user to confirm
          */
         //$mailer->sendEmailConfirmationTo($user);
     
-        return response()->json(['msg' => 'Ticket was successfully created!'], 200);
+        //return response()->json(['msg' => 'Ticket was successfully created!'], 200);
     }
 
     /**
