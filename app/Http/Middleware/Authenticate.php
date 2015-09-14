@@ -7,6 +7,8 @@ use Illuminate\Contracts\Auth\Guard;
 use Auth;
 use App\Group;
 use App\User;
+use App\Department;
+use App\Ticket;
 
 class Authenticate
 {
@@ -53,14 +55,21 @@ class Authenticate
                 This will be termorarily placed here. Still to be optimized
                  */
                 $groups = Group::orderBy('group_name')->get();
+                $tickets = Ticket::orderBy('created_at', 'DESC')->get();
+                $depts = Department::all();
+
                 foreach ($groups as $key => $group) {
                    $supervisor = User::where('group_number', $group->id)
                                 ->where('role', 1)->first();
                    $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
-                    //dd($supervisor);
                 }
 
-                return view('admin.index')->with('user', $user)->with('groups', $groups);
+                foreach ($tickets as $key => $ticket) {
+                    $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
+                    $ticket->dept_name = $deptname;
+                }
+
+                return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets);
             }
             else if($user->role==2)
             {

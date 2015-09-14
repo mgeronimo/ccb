@@ -26,9 +26,12 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $groups = Group::all();
+        $tickets = Ticket::all();
         
         if($user->role==0)
-            return view('admin.index')->with('user', $user)->with('groups', $groups);
+            return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets);
+        else if($user->role==1)
+            return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets);
         else if($user->role==2)
             return view('dashboard')->with('user', $user);
     }
