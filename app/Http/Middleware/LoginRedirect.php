@@ -18,7 +18,7 @@ class LoginRedirect
         $user = Auth::user();
         if($user->role == 0)
         {
-            return redirect('dashboard');
+            return view('admin.index');
         }
         else if ($user->role == 1 || $user->role == 2)
         {

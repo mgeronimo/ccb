@@ -31,7 +31,13 @@ class DashboardAdminController extends Controller
         dd(count($users));*/
 
         $user = Auth::user();
-        return view('admin.dashboard-admin')->with('user', $user);
+         $groups = Group::orderBy('group_name')->get();
+                foreach ($groups as $key => $group) {
+                   $supervisor = User::where('group_number', $group->id)
+                                ->where('role', 1)->first();
+                   $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+                   
+        return view('admin.dashboard-admin')->with('user', $user)->with('groups', $groups);
     }
 
     /**

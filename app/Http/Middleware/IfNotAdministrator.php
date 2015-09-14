@@ -17,13 +17,11 @@ class IfNotAdministrator
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        if(!Auth::check())
-        {
-            return redirect('/login');
-        }
-       else if($user->role != 0)
+        if($user->role != 0)
         {
             return redirect('/');
         }
+    return $next($request);
+
     }
 }
