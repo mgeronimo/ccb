@@ -7,6 +7,7 @@ use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Group;
 
 class DashboardController extends Controller
 {
@@ -14,6 +15,7 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
      /*   $this->middleware('login');*/
         //$this->middleware('sup.agent');
     }
@@ -25,13 +27,24 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $groups = Group::all();
+
         $tickets = Ticket::all();
         
         if($user->role==0)
             return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets);
         else if($user->role==1)
             return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets);
+
+        $groups = Group::orderBy('group_name')->get();
+                foreach ($groups as $key => $group) {
+                   $supervisor = User::where('group_number', $group->id)
+                                ->where('role', 1)->first();
+                   $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+                   }
+        if($user->role==0)
+        
+            return view('admin.index')->with('user', $user)->with('groups', $groups);
+
         else if($user->role==2)
             return view('dashboard')->with('user', $user);
     }
