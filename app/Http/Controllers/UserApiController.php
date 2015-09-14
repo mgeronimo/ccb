@@ -8,7 +8,11 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Mailers\AppMailer;
+use App\OauthAccessToken;
+use App\OauthSession;
+use Auth;
 use Validator;
+use Input;
 
 class UserApiController extends Controller
 {
@@ -74,9 +78,17 @@ class UserApiController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show()
     {
-        //
+        //$userId = Authorizer::getResourceOwnerId();
+        $token = Input::get('token');
+        $AccessToken = OauthAccessToken::find($token);
+        if ( !$AccessToken) return 'none';
+
+        $OauthSession = OauthSession::find($AccessToken->session_id);
+
+        return response()->json(['id' => $OauthSession->owner_id], 200);
+        //return $OauthSession->owner_id;
     }
 
     /**
