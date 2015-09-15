@@ -82,6 +82,23 @@ Route::post('oauth/access_token', function() {
 });
 
 Route::group(['prefix' => 'api/v1'], function(){
+	Route::get('userinfo', 'UserApiController@show');
+	/*Route::get('userinfo', function(){
+		//$userId = Authorizer::getResourceOwnerId();
+		$token = Input::get('token');
+		$AccessToken = OauthAccessToken::find($token);
+		$OauthSession = OauthSession::find($AccessToken->session_id);
+
+		$user =  User::find($OauthSession->owner_id)->first();
+
+        //$user = User::find($userId);
+
+        if ( !$user) {
+            return 'none';
+        }
+
+        return 'yes';
+	});*/
 	Route::post('register', 'UserApiController@store');
 	Route::post('new-ticket', 'TicketApiController@store');
 });
