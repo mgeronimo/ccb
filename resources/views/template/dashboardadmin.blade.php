@@ -81,7 +81,6 @@
         <script src="assets/bower_components/jquery.steps/build/jquery.steps.min.js"></script>
         <script src="assets/js/jquery.easing-82496a9/jquery.easing.1.3.js"></script>
          <script src="assets/jquery-validation-1.14.0/dist/jquery.validate.js"></script>
-       <script src="assets/js/jquery.validate.min.js"></script>
 
         <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
         <!-- AdminLTE App -->

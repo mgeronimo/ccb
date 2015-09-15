@@ -18,44 +18,45 @@ Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@getLogout');
-Route::get('/welcome', function() {
-    return view('welcome');
-});
-
 Route::get('confirm', function () {
     return view('confirm');
 });
 /*
-Registration Routes
+ * ---------- Registration Routes
  */
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 Route::post('register/confirm/{token}', 'RegistrationController@confirmRegister');
 
-//Redirects to the dashboard with message when group creation was cancelled
+/*
+ * ---------- Redirects to the dashboard with message when group creation was cancelled
+ */
 Route::get('cancel-add', function(){
 	return redirect('/')->with('message', 'Addition of group cancelled.');
 });
 
 /*
-Registration Routes
+ * ----------Registration Routes
  */
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 
 /*
-Group Routes
+ * ---------- Group Routes
  */
 Route::get('addgroup', 'GroupController@index');
 Route::post('addgroup', 'GroupController@storegroup');
 Route::get('group/{id}', 'GroupController@show');
+Route::get('group/{id}/add-agent', 'GroupController@addAgent');
+Route::post('group/{id}/add-agent', 'GroupController@saveAddedAgent');
+Route::get('validateGroup', 'GroupController@validateGroup');
+Route::get('validateSupervisorAgent/{counter}', 'GroupController@validateSupervisorAgent');
 
 
 /*
-Agent Routes
+ * ---------- Agent Routes
  */
 Route::get('agent/delete/{id}', 'AgentController@delete');
-
 Route::get('email', function(){
-return view('emails.verification');
+	return view('emails.verification');
 });
 
 /*Route::controllers([
@@ -82,4 +83,5 @@ Route::post('oauth/access_token', function() {
 
 Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('register', 'UserApiController@store');
+	Route::post('new-ticket', 'TicketApiController@store');
 });
