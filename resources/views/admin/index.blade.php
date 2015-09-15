@@ -93,23 +93,30 @@
                     <h3 class="box-title">Most Recent Tickets</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <ul class="todo-list">
-                        @foreach($tickets as $ticket)
-                            <li>
-                                <i class="fa fa-circle-o"></i>
-                                <!-- todo text -->
-                                <span class="text"><a href="#">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
-                                <!-- Emphasis label -->
-                                <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
-                                <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
-                                <!-- General tools such as edit or delete-->
-                                <div class="tools">
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-trash-o"></i>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
+                    @if(count($tickets)==0)
+                        <em><center>No tickets added yet.</center></em>
+                    @else
+                        <ul class="todo-list">
+                            @foreach($tickets as $ticket)
+                                <li>
+                                    <i class="fa fa-circle-o"></i>
+                                    <!-- todo text -->
+                                    <span class="text"><a href="#">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
+                                    <!-- Emphasis label -->
+                                    <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
+                                    <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
+                                    <!-- General tools such as edit or delete-->
+                                    <div class="tools">
+                                        <a href="/tickets/{{ $ticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+                <div class="box-footer clearfix no-border">
+                    <a class="btn btn-sm btn-default pull-right" href="/" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                        See All</a>
                 </div>
             </div>
         </section>
@@ -122,35 +129,69 @@
                     Add Group</a>-->
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th style="width: 10px">#</th>
-                            <th>Group Name</th>
-                        </tr>
-                        @foreach($groups as $group)
+                    @if(count($groups)==0)
+                        <em><center>No group added yet.</center></em>
+                    @else
+                        <table class="table table-bordered">
                             <tr>
-                                <td>{{ $group->id }}</td>
-                                <td><a href="/group/{{$group->id}}">{{ $group->group_name }}</a><br>
-                                <sub> Supervisor: {{ $group->supervisor }}</sub></td>
+                                <th style="width: 10px">#</th>
+                                <th>Group Name</th>
                             </tr>
-                        @endforeach
-                    </table>
+                            @foreach($groups as $group)
+                                <tr>
+                                    <td>{{ $group->id }}</td>
+                                    <td><a href="/group/{{$group->id}}">{{ $group->group_name }}</a><br>
+                                    <sub> Supervisor: {{ $group->supervisor }}</sub></td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    @endif
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
-                    <a class="btn btn-sm btn-default pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                    Add Group</a>
+                    @if(count($depts)==0)
+                        <a class="btn btn-sm btn-primary pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                        Add Group</a>
+                    @else
+                        <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                        See All</a>
+                    @endif
                 </div>
-                <!-- Pagination -->
-                <!--<div class="box-footer clearfix">
-                    <ul class="pagination pagination-sm no-margin pull-right">
-                        <li><a href="#">&laquo;</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
-                </div>-->
 
+            </div><!-- /.box -->
+            <div class="box box-primary">
+                <div class="box-header">
+                    <i class="fa fa-building-o"></i>
+                    <h3 class="box-title">Departments</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                    @if(count($depts)==0)
+                        <em><center>No department added yet.</center></em>
+                    @else
+                        <table class="table table-bordered">
+
+                            <tr>
+                                <th style="width: 30%;">Department</th>
+                                <th>Description</th>
+                            </tr>
+                            @foreach($depts as $dept)
+                                <tr>
+                                    <td><a href="#">{{ $dept->dept_name }}</a></td>
+                                    <td>{{ $dept->description }}<br>
+                                    <sub> Representative: {{ $dept->dept_rep }}</sub></td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    @endif
+                </div><!-- /.box-body -->
+                <div class="box-footer clearfix no-border">
+                    @if(count($depts)==0)
+                        <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                        Add Department</a>
+                    @else
+                        <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                        See All</a>
+                    @endif
+                </div>
             </div><!-- /.box -->
         </section>
     </div>
