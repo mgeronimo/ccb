@@ -30,3 +30,32 @@ Custom CSS
 .todo-list>li .label.sub-time{
 	margin-left: 20px;
 }
+
+.todo-list>li{
+	margin-bottom: 10px;
+}
+
+.incident-header{
+	padding-top: 20px;
+
+}
+
+.incident-body{
+	padding: 5px 20px;
+}
+
+.incident-details{
+	color: #3C8DBC;
+}
+
+.incident-data{
+	font-size: 16px;
+}
+
+.incident-data a{
+	color: #164E6F;
+}
+
+.space{
+	height: 1px;
+}

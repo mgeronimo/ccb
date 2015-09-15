@@ -59,6 +59,14 @@ Route::get('email', function(){
 	return view('emails.verification');
 });
 
+
+/*
+ * ---------- Ticket Routes
+ */
+Route::get('tickets', 'TicketController@index');
+Route::get('tickets/{id}', 'TicketController@show');
+
+
 /*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',
 	'password'	=> 'Auth\PasswordController'
