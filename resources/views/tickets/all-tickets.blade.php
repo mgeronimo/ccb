@@ -22,7 +22,7 @@
 
 @section('content')
 	<div class="row">
-        <section class="col-lg-8">
+        <section class="col-lg-6">
             <div class="box box-success">
                 <div class="box-header">
                     <i class="fa fa-hourglass-start"></i>
@@ -43,8 +43,7 @@
                                     <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $uticket->dept_name }}</span>
                                     <!-- General tools such as edit or delete-->
                                     <div class="tools">
-                                        <i class="fa fa-user-plus" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="Assign agent"></i>
-                                        <i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i>
+                                        <a href="/tickets/{{ $uticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
                                     </div>
                                 </li>
                             @endforeach
@@ -56,7 +55,7 @@
 	            </div>
             </div>
         </section>
-        <section class="col-lg-4">
+        <section class="col-lg-6">
         	<div class="box box-danger">
                 <div class="box-header">
                 	<i class="fa fa-hourglass-end"></i>

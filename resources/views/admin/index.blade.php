@@ -101,7 +101,7 @@
                                 <li>
                                     <i class="fa fa-circle-o"></i>
                                     <!-- todo text -->
-                                    <span class="text"><a href="#">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
+                                    <span class="text"><a href="/tickets/{{ $ticket->id }}">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
                                     <!-- Emphasis label -->
                                     <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
                                     <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
@@ -115,7 +115,7 @@
                     @endif
                 </div>
                 <div class="box-footer clearfix no-border">
-                    <a class="btn btn-sm btn-default pull-right" href="/" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                    <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                         See All</a>
                 </div>
             </div>

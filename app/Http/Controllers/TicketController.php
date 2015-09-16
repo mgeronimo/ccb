@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Department;
 use App\Ticket;
 use App\User;
+use App\Group;
 use Auth;
 
 class TicketController extends Controller
@@ -70,9 +71,41 @@ class TicketController extends Controller
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
         $dept = Department::find($ticket->dept_id)->first();
-        
-        return view('tickets.show-ticket')->with('user', $user)->with('ticket', $ticket)->with('dept', $dept);
+        if($ticket->assignee==NULL){
+            $agents = User::where('is_verified', 1)->where('role', 2)->get();
+            return view('tickets.show-ticket')
+                ->with('user', $user)
+                ->with('ticket', $ticket)
+                ->with('dept', $dept)
+                ->with('agents', $agents);
+        }
+        else{
+            $agent = User::where('id', $ticket->assignee)->firstOrFail();
+            $group = Group::where('id', $agent->group_number)->firstOrFail();
+            return view('tickets.show-ticket')
+                ->with('user', $user)
+                ->with('ticket', $ticket)
+                ->with('dept', $dept)
+                ->with('agent', $agent)
+                ->with('group', $group);
+        }
     }
+
+    /**
+     * Assigns an agent to ticket
+     *
+     * @param  int  $id, int  $agentid
+     * @return Response
+     */
+    public function assign($id, $agentid)
+    {
+        $user = Auth::user();
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->assignee = $agentid;
+        $ticket->save();
+        
+        return redirect()->back()->with('message', 'Successfully assigned agent to ticket!');
+    }    
 
     /**
      * Show the form for editing the specified resource.
