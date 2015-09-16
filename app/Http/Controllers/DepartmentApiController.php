@@ -98,6 +98,7 @@ class DepartmentApiController extends Controller
     {
         return array_map(function($depts){
             return [
+                'id'            => $depts['id'],
                 'name'          => $depts['dept_name'],
                 'description'   => $depts['description'],
                 'is_member'     => $depts['is_member']
