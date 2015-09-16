@@ -19,7 +19,7 @@
         <link rel="stylesheet" href='{{ url("assets/css/custom.css") }}'>
         @yield('heads')
     </head>
-    <body class="skin-blue sidebar-mini">
+    <body class="skin-blue fixed sidebar-mini">
         <div class="wrapper">
 
         <header class="main-header">
