@@ -30,3 +30,71 @@ Custom CSS
 .todo-list>li .label.sub-time{
 	margin-left: 20px;
 }
+
+.todo-list>li{
+	margin-bottom: 10px;
+}
+
+.incident-header{
+	padding-top: 20px;
+
+}
+
+.incident-body{
+	padding: 5px 20px;
+}
+
+.incident-details{
+	color: #3C8DBC;
+}
+
+.incident-data{
+	font-size: 16px;
+}
+
+.incident-data a{
+	color: #164E6F;
+}
+
+.space{
+	height: 1px;
+}
+
+.item .online {
+    border: 2px solid #00a65a;
+}
+
+.item img {
+    width: 40px;
+    height: 40px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+}
+
+.item .message .name {
+    display: block;
+    font-weight: 600;
+}
+
+.item .message {
+    margin-left: 55px;
+    margin-top: -40px;
+}
+
+.item .assigned img {
+    width: 60px;
+    height: 60px;
+}
+
+.item .assigned .message {
+    margin-left: 75px;
+    margin-top: -55px;
+}
+
+.item .assigned .message .name {
+    font-size: 18px;
+}
+
+.item .assigned .message small {
+    font-size: 100%;
+}

@@ -19,7 +19,7 @@
         <link rel="stylesheet" href='{{ url("assets/css/custom.css") }}'>
         @yield('heads')
     </head>
-    <body class="skin-blue sidebar-mini">
+    <body class="skin-blue fixed sidebar-mini">
         <div class="wrapper">
 
         <header class="main-header">
@@ -57,7 +57,7 @@
                     <small>@yield('page-desc')</small>
                 </h1>
                 <ol class="breadcrumb">
-                    <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a href="/"><i class="fa fa-dashboard"></i> Home</a></li>
                     @yield('breadcrumb')
                 </ol>
             </section>

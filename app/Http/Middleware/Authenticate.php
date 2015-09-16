@@ -56,7 +56,7 @@ class Authenticate
                  */
                 $groups = Group::orderBy('group_name')->get();
                 $tickets = Ticket::orderBy('created_at', 'DESC')->get();
-                $depts = Department::all();
+                $depts = Department::orderby('dept_name')->get();
 
                 foreach ($groups as $key => $group) {
                    $supervisor = User::where('group_number', $group->id)
@@ -69,7 +69,7 @@ class Authenticate
                     $ticket->dept_name = $deptname;
                 }
 
-                return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets);
+                return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets)->with('depts', $depts);
             }
             else if($user->role==2)
             {
