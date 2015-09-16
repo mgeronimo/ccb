@@ -54,9 +54,9 @@ class Authenticate
                 /*
                 This will be termorarily placed here. Still to be optimized
                  */
-                $groups = Group::orderBy('group_name')->get();
-                $tickets = Ticket::orderBy('created_at', 'DESC')->get();
-                $depts = Department::orderby('dept_name')->get();
+                $groups = Group::orderBy('group_name')->take(5)->get();
+                $tickets = Ticket::orderBy('created_at', 'DESC')->take(10)->get();
+                $depts = Department::orderby('dept_name')->take(5)->get();
 
                 foreach ($groups as $key => $group) {
                    $supervisor = User::where('group_number', $group->id)

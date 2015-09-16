@@ -94,4 +94,5 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::get('userinfo', 'UserApiController@show');
 	Route::post('register', 'UserApiController@store');
 	Route::post('new-ticket', 'TicketApiController@store');
+	Route::get('agencies', 'DepartmentApiController@index');
 });
