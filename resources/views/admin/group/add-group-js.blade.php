@@ -58,32 +58,37 @@
   					  }
     			
 				}, "This email address is already taken by another agent");
-								
-			$.validator.addMethod("agentExisiting", function(element){
-				var check;
-					var deferred = $.Deferred();
-						//jQuery.ajaxSetup({async:false});
 
-					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+element, function(data){
-							if(data == 'failed'){
+					    var d = $.Deferred();
+
+				function agentCheck(element)
+				{
+
+						$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+element, function( data ) {
+								console.log('imcondition' + data);						
+								if(data == 'failed'){
+
 									console.log('error' + data);
+									 d.promise();
+
 									return false;
 								}
 								else
 								{
 									console.log('is?' + data);
+									 d.promise();
+
 									return true;
-								}		
-
+								}
 						});
-					
-					deferred.done(function(n){
-						jQuery.validator.format('Please enter a valid email address');
-					});
+				}
+				
 
-			
-					console.log('hello');
-			},'Wrong email address');
+							
+			$.validator.addMethod("agentExisiting",agentCheck,d.always(function(params){
+						return 'Please enter a valid email address'
+					}));
+
 
 	
 			$('#msform fieldset').eq(0).keydown(function (e) {
