@@ -6,16 +6,16 @@
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.4 -->
-        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href='{{url("assets/bootstrap/css/bootstrap.min.css")}}'>
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href='{{url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css")}}'>
         <!-- Ionicons 2.0.0 -->
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <link rel="stylesheet" href='{{url("https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css")}}'>
         <!-- Theme style -->
-        <link rel="stylesheet" href="assets/dist/css/AdminLTE.min.css">
-         <link rel="stylesheet" href="assets/css/styleadmin.css">
+        <link rel="stylesheet" href='{{url("assets/dist/css/AdminLTE.min.css")}}'>
+         <link rel="stylesheet" href='{{url("assets/css/styleadmin.css")}}'>
         <!-- AdminLTE Skins -->
-        <link rel="stylesheet" href="assets/dist/css/skins/_all-skins.min.css">
+        <link rel="stylesheet" href='{{url("assets/dist/css/skins/_all-skins.min.css")}}'>
         @yield('heads')
     </head>
     <body class="skin-blue sidebar-mini">
@@ -61,9 +61,9 @@
        <!-- <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
         
-            <script src="assets/js/jquery-1.11.1.min.js"></script>
+            <script src='{{url("assets/js/jquery-1.11.1.min.js")}}'></script>
        <!--  <script src="assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>-->
-        <script src="assets/jquery/dist/jquery.min.js"></script>
+        <script src='{{url("assets/jquery/dist/jquery.min.js")}}'></script>
 
       
 
@@ -72,21 +72,22 @@
           $.widget.bridge('uibutton', $.ui.button);
         </script>
         <!-- Bootstrap 3.3.4 -->
-        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src='{{url("assets/bootstrap/js/bootstrap.min.js")}}'></script>
         <!-- Sparkline -->
-        
-        <!-- AdminLTE for demo purposes -->
-        <script src="assets/dist/js/demo.js"></script>
-        <script src="assets/bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="assets/bower_components/jquery.steps/build/jquery.steps.min.js"></script>
-        <script src="assets/js/jquery.easing-82496a9/jquery.easing.1.3.js"></script>
-         <script src="assets/jquery-validation-1.14.0/dist/jquery.validate.js"></script>
+        <script src='{{ url("assets/js/jquery.easing-82496a9/jquery.easing.1.3.js") }}'></script>
 
-        <script src="assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+        <!-- AdminLTE for demo purposes -->
+        <script src='{{url("assets/dist/js/demo.js")}}'></script>
+        <script src='{{url("assets/bower_components/jquery/dist/jquery.min.js")}}'></script>
+        <script src='{{url("assets/bower_components/jquery.steps/build/jquery.steps.min.js")}}'></script>
+        <script src='{{url("assets/js/jquery.easing-82496a9/jquery.easing.1.3.js")}}'></script>
+         <script src='{{url("assets/jquery-validation-1.14.0/dist/jquery.validate.js")}}'></script>
+
+        <script src='{{url("assets/plugins/sparkline/jquery.sparkline.min.js")}}'></script>
         <!-- AdminLTE App -->
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="assets/dist/js/pages/dashboard.js"></script>
-           <script src="assets/dist/js/app.min.js"></script>
+        <script src='{{url("assets/dist/js/pages/dashboard.js")}}'></script>
+           <script src='{{url("assets/dist/js/app.min.js")}}'></script>
         <!--    <script src="assets/js/formadd.js"></script>       --> 
         @yield('scripts')
 

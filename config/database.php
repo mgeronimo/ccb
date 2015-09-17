@@ -65,6 +65,7 @@ return [
             'unix_socket'   => '/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock',
 
 
+
         ],
 
         'pgsql' => [
