@@ -12,7 +12,7 @@
 			$(addBtn).click( function(e){
 				e.preventDefault();
 				i++;
-				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><div id="this-aemail-'+i+'"><input type="email" name="agentemail[]" placeholder="Email" id="aEmail'+i+'" class="agentEmail" required/></div><a href="#" id="removeBtn">Remove</a></p>')
+				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><input type="email" name="agentemail[]" placeholder="Email" class="agentEmail" required/><a href="#" id="removeBtn">Remove</a></p>')
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
@@ -58,40 +58,32 @@
   					  }
     			
 				}, "This email address is already taken by another agent");
-
-				$.validator.addMethod("agentExisiting", function(element, value, options) {
-  					var emailerrors = 0;
-					var a = 0;
-					var check = false;
-								//span.id = "hello";
-
-					var inputs = document.querySelectorAll("#msform input[name='agentemail[]']");
-					    
-					for(i=0; i < inputs.length; i++){
-					//console.log('i: '+ (i+1) + ' ' + inputs.length);
-							$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+inputs[i].value, function( data ) {
-							console.log('imcondition' + data);							
-							if(data == 'failed'){
-								a++;
-								emailerrors++;
-								console.log('error' + emailerrors);
-								return false;
-							}
-							else if (i => inputs.length && data =='passed' && emailerrors==0)
-							{
-								console.log('is?' + data);
-								return true;
 								
-							}
-	
-					});
-					 
-					
-				 }
+			$.validator.addMethod("agentExisiting", function(element){
+				var check;
+					var deferred = $.Deferred();
+						//jQuery.ajaxSetup({async:false});
 
-				 
-    			
-			}, "This email address is already taken ");
+					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+element, function(data){
+							if(data == 'failed'){
+									console.log('error' + data);
+									return false;
+								}
+								else
+								{
+									console.log('is?' + data);
+									return true;
+								}		
+
+						});
+					
+					deferred.done(function(n){
+						jQuery.validator.format('Please enter a valid email address');
+					});
+
+			
+					console.log('hello');
+			},'Wrong email address');
 
 	
 			$('#msform fieldset').eq(0).keydown(function (e) {
@@ -114,6 +106,7 @@
 			    }
 			});
 			$(".next").click(function(e){
+				async: false;
 				e.preventDefault();
 				var form = $('#msform');
 			 	form.validate({
@@ -176,7 +169,7 @@
 							maxlength: 45,
 							notEqualSupervisor: "#sEmail",
 							notEqualAgent:true,
-							agentExisiting: true
+							agentExisiting: true,
 						}
 					},
 					messages: 
@@ -210,6 +203,9 @@
 							required: "Agent's email is required."
 						},
 					},
+				  submitHandler: function(form) {
+            form.submit();
+        }
 				});
 			  	if(form.valid()==true)
 				{
@@ -293,7 +289,6 @@
 
 			$("#submit").click(function(e){			  
 					return true;
-				
 			});					//endsss submit
 				
 					//this comes from the custom easing plugin

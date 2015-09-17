@@ -54,9 +54,9 @@
 						<p>
 							<input type="text" class="agentfname" name="agentfname[]" placeholder="First Name" required />
 							<input type="text" name="agentlname[]" placeholder="Last Name" required />
-							<div id="this-aemail-1">
-								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email" id="aEmail1" required/>
-							</div>
+						
+								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email"  required/>
+							
 						</p>
 					</div>
 				<h3><a href="#" id="addBtn" class="addButton"><i class="fa fa-plus-circle"></i> Add agent </a></h3>

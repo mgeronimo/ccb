@@ -29,6 +29,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         $groups = Group::all();
         $groups = Group::orderBy('group_name')->get();
+        //return $groups;
                 foreach ($groups as $key => $group) {
                    $supervisor = User::where('group_number', $group->id)
                                 ->where('role', 1)->first();

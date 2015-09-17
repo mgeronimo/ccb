@@ -37,7 +37,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function group()
     {
-        return $this -> belongsTo('App/Group');
+        return $this -> belongsTo('App\Group');
     }
 
     public function supervisor()
@@ -65,6 +65,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $this->is_verified = 1;
         $this->save();
     
+    }
+      public function departments()
+    {
+        return $this->hasOne('App\Departments', 'dept_rep', 'id');
     }
 
 }

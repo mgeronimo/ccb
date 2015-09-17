@@ -85,6 +85,61 @@ html {
 #msform .action-button:hover, #msform .action-button:focus {
 	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
 }
+#fdesign {
+	width: 900px;
+	margin: 50px auto;
+	text-align: center;
+	position: relative;
+	bottom:40px;
+}
+#fdesign fieldset {
+	background: white;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	
+	box-sizing: border-box;
+	width: 80%;
+	margin: 90px 10%;
+	
+	/*stacking fieldsets above each other*/
+	position: absolute;
+}
+/*Hide all except first fieldset*/
+#fdesign fieldset:not(:first-of-type) {
+	display: none;
+}
+/*inputs*/
+#fdesign input, #fdesign textarea {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family:'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif !important;
+	color: #2C3E50;
+	font-size: 13px;
+}
+/*buttons*/
+#fdesign .action-button {
+	font-family:'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif !important;
+	width: 100px;
+	background: #3C8DBC;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 5px;
+
+}
+#fdesign .action-button:hover, #fdesign .action-button:focus {
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+}
+
 /*headings*/
 .fs-title {
 	font-size: 15px;
@@ -159,8 +214,5 @@ html {
 	color: white !important;
 	background-color: #79818C !important
 }
-
-
-
 
 

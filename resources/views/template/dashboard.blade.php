@@ -74,7 +74,7 @@
         <!-- jQuery 2.1.4 -->
         <script src='{{ url("assets/plugins/jQuery/jQuery-2.1.4.min.js") }}'></script>
         <!-- jQuery UI 1.11.4 -->
-        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+        <script src='{{url("assets/jquery/dist/jquery.min.js")}}'></script>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
@@ -91,6 +91,8 @@
         <!-- AdminLTE for demo purposes -->
         <script src='{{ url("assets/dist/js/demo.js") }}'></script>
         <!-- Bootbox -->
+                <script src='{{url("assets/js/jquery.easing-82496a9/jquery.easing.1.3.js")}}'></script>
+
         <script src='{{ url("assets/js/bootbox.min.js") }}'></script>
         <!-- Custom JS -->
         <script src='{{ url("assets/js/scripts.js") }}'></script>
