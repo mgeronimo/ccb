@@ -76,6 +76,8 @@
         <!-- jQuery UI 1.11.4 -->
         <script src='{{url("assets/jquery/dist/jquery.min.js")}}'></script>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
+            <script src='{{ url("assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.js") }}'></script>
+
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
           $.widget.bridge('uibutton', $.ui.button);

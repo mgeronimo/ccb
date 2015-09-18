@@ -1,7 +1,7 @@
 
 @section('scripts')
 	<script src='{{ url("assets/js/jquery-1.11.1.min.js") }}'></script>
-	<script src='{{ url("assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.js") }}'></script>
+	<script src='{{ url("assets/bower_components/jquery-validation-1.14.0/dist/jquery.validate.min.js") }}'></script>
 	<script src='{{ url("assets/js/jquery.easing-82496a9/jquery.easing.1.3.js") }}'></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
@@ -12,13 +12,13 @@
 			$(addBtn).click( function(e){
 				e.preventDefault();
 				i++;
-				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><input type="email" name="agentemail[]" placeholder="Email" class="agentEmail" required/><a href="#" id="removeBtn">Remove</a></p>')
+				$(wrap).append('<p><input type="text" name="agentfname[]" placeholder="First Name" required/><input type="text" name="agentlname[]" placeholder="Last Name" required/><div id="this-aemail-'+i+'"><input type="email" name="agentemail[]" placeholder="Email" required/></div><a href="#" id="removeBtn">Remove</a></p></div>')
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
-					 e.preventDefault();			
+							 e.preventDefault();
+			
 					$(this).parent('p').remove();
-
 					i--;
 				
 				
@@ -30,7 +30,6 @@
 		jQuery(document).ready(function() {
 			//jQuery time
 			var fcounter = 0;
-			var d1 = $.Deferred();
 			var current_fs, next_fs, previous_fs; //fieldsets
 			var left, opacity, scale; //fieldset properties which we will animate
 			var animating; //flag to prevent quick multi-click glitches
@@ -38,59 +37,6 @@
 				//console.log('annyeong');
 				return this.optional(element)|| /^[a-zA-Z]+/i.test(value);
 			}, "Please enter a value.");
-
-				$.validator.addMethod("notEqualSupervisor", function(value, element, param) {
-				return this.optional(element)|| value !=$(param).val();
-			}, "This email address is already taken.");
-
-
-			$.validator.addMethod("notEqualAgent", function(value, element) {
-  					var $element = $(element);	
-  					var $emails = $('.agentEmail').not($element);
-  					var emailsArray = $.map($emails, function(email) {
-        				return $(email).val();
-    					});		
-  					  if ($.inArray($element.val(), emailsArray) >= 0) {
-  					  	return false;
-  					  }
-  					  else{
-  					  	return  true;
-  					  }
-    			
-				}, "This email address is already taken by another agent");
-
-					    var d = $.Deferred();
-
-				function agentCheck(element)
-				{
-
-						$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+element, function( data ) {
-								console.log('imcondition' + data);						
-								if(data == 'failed'){
-
-									console.log('error' + data);
-									 d.promise();
-
-									return false;
-								}
-								else
-								{
-									console.log('is?' + data);
-									 d.promise();
-
-									return true;
-								}
-						});
-				}
-				
-
-							
-			$.validator.addMethod("agentExisiting",agentCheck,d.always(function(params){
-						return 'Please enter a valid email address'
-					}));
-
-
-	
 			$('#msform fieldset').eq(0).keydown(function (e) {
 			    if (e.keyCode == 13) {
 			        e.preventDefault();
@@ -111,7 +57,6 @@
 			    }
 			});
 			$(".next").click(function(e){
-				async: false;
 				e.preventDefault();
 				var form = $('#msform');
 			 	form.validate({
@@ -172,9 +117,6 @@
 						{
 							required: true,
 							maxlength: 45,
-							notEqualSupervisor: "#sEmail",
-							notEqualAgent:true,
-							agentExisiting: true,
 						}
 					},
 					messages: 
@@ -205,17 +147,13 @@
 						},
 						"agentemail[]":
 						{
-							required: "Agent's email is required."
+							required: "Agent's name is required."
 						},
 					},
-				  submitHandler: function(form) {
-            form.submit();
-        }
 				});
 			  	if(form.valid()==true)
 				{
 					a = $(this);
-					emailCheck = false;
 					if(fcounter==0){
 						$.get( "/validateGroup?groupname="+document.getElementsByName('groupname')[0].value, function( data ) {
 						 	if(data == 'passed'){
@@ -253,15 +191,12 @@
 						 	if(data == 'passed'){
 						 		current_fs = a.parent();
 								next_fs = a.parent().next();
-
-
 								//activate next step on progressbar using the index of next_fs
 								$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 							
 								//show the next fieldset
 								next_fs.show("slow"); 
 								current_fs.hide();
-
 								fcounter++;
 							}
 						 	else{
@@ -290,16 +225,13 @@
 						 	}
 						});
 					}
-			
-
-			$("#submit").click(function(e){			  
-					return true;
-			});					//endsss submit
+					
+					
+					//hide the current fieldset with style
 				
 					//this comes from the custom easing plugin
-	}
+				}
 			});
-
 			$(".previous").click(function(){	
 				current_fs = $(this).parent();
 				previous_fs = $(this).parent().prev();
@@ -313,7 +245,33 @@
 				fcounter--;
 
 			});
-		
+			$("#submit").click(function(e){
+				
+				var emailerrors = 0;
+				var inputs = document.querySelectorAll("#msform input[name='agentemail[]']");
+				var span = document.createElement("span");
+				span.className = "error-block";
+				for(i=0; i < inputs.length; i++){
+					console.log('i: '+ (i+1) + ' ' + inputs.length);
+					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+inputs[i].value, function( data ) {
+						if(data == 'failed'){
+							e.preventDefault();
+							emailerrors++;
+							added = i;
+							var text = document.createTextNode("Agent email already existing.");
+							var element = document.getElementById('this-aemail-'+ (i));
+							
+							span.appendChild(text);
+							element.appendChild(span);
+						}
+					});
+				}
+				if(emailerrors==0){
+					return true;
+				}
+				/*if(form.valid()==true)
+					return true;*/
+			});
 			$("#submit-additional-agent").click(function(e){
 				$.validator.addMethod("nowhitespace", function(value, element) {
 					//console.log('annyeong');
