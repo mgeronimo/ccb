@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Mailers\AppMailer;
 use Mail;
-
+use Input;
 use App\Group;
 use App\User;
 use App\Departments;
@@ -126,6 +126,7 @@ class DashboardAdminController extends Controller
         $dep_id = User::where('email', $user->email)->firstorFail();
         $dep_id->departments()->save($department);
         $mailer->sendEmailConfirmationTo($user);
+          
         return redirect('/')->with('message', 'Department Successfully added.');
     }
 
@@ -135,23 +136,31 @@ class DashboardAdminController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function validateDepartment()
     {
+        $validate = null;
+        $input = trim(Input::get('dept_name'));
+
+        $validate = Departments::where('dept_name', $input)->get();
+        
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function validateDeptRep()
     {
+        $validate = null;
+        $input = trim(Input::get('email'));
+
+        $validate = User::where('email', $input)->get();
+        
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *
