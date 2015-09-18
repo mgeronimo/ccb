@@ -90,6 +90,8 @@
 	        @include('supervisor.index')
 	    @elseif($user->role==2)
 		    @include('agent.index')
+        @elseif($user->role==4)
+            @include('deptrep.index')
 	    @endif
     </div>
 @stop

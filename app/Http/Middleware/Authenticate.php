@@ -56,8 +56,10 @@ class Authenticate
                 This will be termorarily placed here. Still to be optimized
                  */
                 $groups = Group::orderBy('group_name')->take(5)->get();
-                $tickets = Ticket::orderBy('created_at', 'DESC')->take(10)->get();
+                $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
                 $depts = Department::orderby('dept_name')->take(5)->get();
+                $unassigned_tickets = Ticket::where('assignee', NULL)->get();
+                $all_depts = Department::orderby('dept_name')->get();
 
                 foreach ($groups as $key => $group) {
                    $supervisor = User::where('group_number', $group->id)
@@ -70,7 +72,12 @@ class Authenticate
                     $ticket->dept_name = $deptname;
                 }
 
-                return view('admin.index')->with('user', $user)->with('groups', $groups)->with('tickets', $tickets)->with('depts', $depts);
+                return view('admin.index')->with('user', $user)
+                    ->with('groups', $groups)
+                    ->with('tickets', $tickets)
+                    ->with('unassigned_tickets', count($unassigned_tickets))
+                    ->with('depts', $depts)
+                    ->with('all_depts', count($all_depts));
             }
             else if($user->role==1)
             {
@@ -139,10 +146,27 @@ class Authenticate
                     ->with('all_assigned', count($all_assigned))
                     ->with('all_unassigned', count($all_unassigned));
             }
-            else if($user->role>2)
+            else if($user->role==3)
             {
                 Auth::logout();
                 return redirect('/login');
+            }
+            else if($user->role==4)
+            {
+                $dept = Department::where('dept_rep', $user->id)->first();
+                $new_tickets = Ticket::where('status', 0)->where('dept_id', $dept->id)->orderBy('created_at', 'DESC')->take(5)->get();
+                $count_new_tickets = Ticket::where('status', 0)->where('dept_id', $dept->id)->get();
+                $ongoing_tickets = Ticket::where('status', 1)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
+                $count_ongoing_tickets = Ticket::where('status', 1)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
+                $closed_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
+                $count_closed_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
+                return view('dashboard')->with('user', $user)
+                    ->with('new_tickets', $new_tickets)
+                    ->with('count_new_tickets', count($count_new_tickets))
+                    ->with('ongoing_tickets', $ongoing_tickets)
+                    ->with('count_ongoing_tickets', count($count_ongoing_tickets))
+                    ->with('closed_tickets', $closed_tickets)
+                    ->with('count_closed_tickets', count($count_closed_tickets));
             }
         }
 
