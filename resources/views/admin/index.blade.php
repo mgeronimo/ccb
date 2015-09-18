@@ -125,8 +125,8 @@
                 <div class="box-header">
                     <i class="fa fa-group"></i>
                     <h3 class="box-title">Groups</h3>
-                    <!--<a class="btn btn-sm btn-primary btn-flat pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                    Add Group</a>-->
+                    <a class="btn btn-sm btn-primary pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    Add Group</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($groups)==0)
@@ -162,6 +162,8 @@
                 <div class="box-header">
                     <i class="fa fa-building-o"></i>
                     <h3 class="box-title">Departments</h3>
+                    <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    Add Department</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($depts)==0)
