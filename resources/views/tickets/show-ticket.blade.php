@@ -68,6 +68,7 @@
 				                      	<span class="name">
 				                        	{{ $agent->first_name." ".$agent->last_name }}
 				                      	</span>
+				                      	<small>Assigned tickets: {{ $agent->assigned_tix }}</small>
 			                    	</p>
 			                   	</div>
 								<div class="col-lg-4">

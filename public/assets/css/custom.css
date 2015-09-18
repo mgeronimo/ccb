@@ -78,7 +78,7 @@ Custom CSS
 
 .item .message {
     margin-left: 55px;
-    margin-top: -40px;
+    margin-top: -43px;
 }
 
 .item .assigned img {
@@ -97,4 +97,18 @@ Custom CSS
 
 .item .assigned .message small {
     font-size: 100%;
+}
+
+.members{
+	width: 40px;
+	display: block;
+	margin: auto;
+}
+
+a.assigned-tix{
+	color: #009651;
+}
+
+a.to-members{
+	color: purple;
 }
