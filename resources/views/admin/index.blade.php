@@ -90,7 +90,7 @@
             <div class="box box-success">
                 <div class="box-header">
                     <i class="fa fa-ticket"></i>
-                    <h3 class="box-title">Most Recent Tickets</h3>
+                    <h3 class="box-title">Unassigned Tickets</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($tickets)==0)
@@ -115,8 +115,10 @@
                     @endif
                 </div>
                 <div class="box-footer clearfix no-border">
-                    <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
-                        See All</a>
+                    @if($unassigned_tickets>10)
+                        <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                            See All</a>
+                    @endif
                 </div>
             </div>
         </section>
@@ -151,7 +153,7 @@
                     @if(count($depts)==0)
                         <a class="btn btn-sm btn-primary pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
                         Add Group</a>
-                    @else
+                    @elseif($unassigned_tickets>10)
                         <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                         See All</a>
                     @endif
@@ -189,7 +191,7 @@
                     @if(count($depts)==0)
                         <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
                         Add Department</a>
-                    @else
+                    @elseif($all_depts>5)
                         <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                         See All</a>
                     @endif
