@@ -73,6 +73,10 @@ class TicketController extends Controller
         $dept = Department::find($ticket->dept_id)->first();
         if($ticket->assignee==NULL){
             $agents = User::where('is_verified', 1)->where('role', 2)->get();
+            foreach($agents as $agent){
+                $assigned_tix = Ticket::where('assignee', $agent->id)->get();
+                $agent->assigned_tix = count($assigned_tix);
+            }
             return view('tickets.show-ticket')
                 ->with('user', $user)
                 ->with('ticket', $ticket)
@@ -101,6 +105,7 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
+        $ticket->status = 1;
         $ticket->assignee = $agentid;
         $ticket->save();
         
