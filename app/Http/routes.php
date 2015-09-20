@@ -60,6 +60,7 @@ Route::get('group/{id}/add-agent', 'GroupController@addAgent');
 Route::post('group/{id}/add-agent', 'GroupController@saveAddedAgent');
 Route::get('validateGroup', 'GroupController@validateGroup');
 Route::get('validateSupervisorAgent/{counter}', 'GroupController@validateSupervisorAgent');
+Route::get('group/delete/{id}', 'GroupController@destroy');
 
 
 /*

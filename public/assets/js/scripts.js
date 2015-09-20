@@ -8,6 +8,9 @@ jQuery(document).ready(function() {
     
 });
 
+/*
+ * Delete Agent
+ */
 jQuery(document).on("click",".del-agent", function (event) {
     event.preventDefault();
     var href = $(this).attr("href");
@@ -35,6 +38,9 @@ jQuery(document).on("click",".del-agent", function (event) {
     });
 });
 
+/*
+ * Assign Agent
+ */
 jQuery(document).on("click",".assign-agent", function (event) {
     event.preventDefault();
     var href = $(this).attr("href");
@@ -55,6 +61,36 @@ jQuery(document).on("click",".assign-agent", function (event) {
                 className: "btn-success",
                 callback: function () {
                     console.log("Assigned agent ");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Delete Group
+ */
+jQuery(document).on("click",".del-group", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to delete this group? You cannot undo this action.",
+        title: "Delete Group",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Delete",
+                className: "btn-danger",
+                callback: function () {
+                    console.log("Deleted group ");
                     location.href = href;
                 }
             }
