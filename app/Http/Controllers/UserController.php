@@ -114,16 +114,13 @@ class UserController extends Controller
         if($user==NULL)
             return redirect()->back()->with('error', 'User not existing!');
 
-        $all_tickets = Ticket::all();
-
         $tickets = Ticket::where('assignee', $user->id)->get();
 
         if(count($tickets)>0)
-            return redirect()->back()->with('error', 'User cannot be deleted. There are still tickets assigned to this user.');
+            return redirect()->back()->with('error', 'User cannot be deleted. There are tickets still assigned to this user.');
         else{
             $user->delete();
             return redirect()->back()->with('message', 'User successfully deleted.');
         }
-        
     }
 }

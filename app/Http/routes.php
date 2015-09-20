@@ -49,6 +49,7 @@ Route::get('users/delete/{id}', 'UserController@destroy');
  * ----------Department Routes
  */
 Route::get('departments', 'DepartmentController@index');
+Route::get('departments/delete/{id}', 'DepartmentController@destroy');
 
 /*
  * ---------- Group Routes

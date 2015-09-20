@@ -9,6 +9,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Department;
+use App\Ticket;
 
 class DepartmentController extends Controller
 {
@@ -93,6 +94,20 @@ class DepartmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $dept = Department::where('id', $id)->first();
+
+        if($dept==NULL)
+            return redirect()->back()->with('error', 'Department not existing!');
+
+        $tickets = Ticket::where('dept_id', $dept->id)->get();
+
+        if(count($tickets)>0)
+            return redirect()->back()->with('error', 'Department cannot be deleted. There are tickets still assigned to this user.');
+        else{
+            $user = User::where('id', $dept->dept_rep)->first();
+            $dept->delete();
+            $user->delete();
+            return redirect()->back()->with('message', 'Department successfully deleted.');
+        }
     }
 }

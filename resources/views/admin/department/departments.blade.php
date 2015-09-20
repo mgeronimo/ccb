@@ -22,6 +22,20 @@
 @stop
 
 @section('content')
+	@if(Session::has('message'))
+        <div class="no-print">
+            <div class="callout callout-info" style="margin-bottom: 0!important;">
+                <i class="fa fa-fw fa-info-circle"></i> &nbsp;{{ Session::get('message') }}
+            </div>
+        </div><br/>
+    @endif
+    @if(Session::has('error'))
+        <div class="no-print">
+            <div class="callout callout-danger" style="margin-bottom: 0!important;">
+                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get('error') }}
+            </div>
+        </div><br/>
+    @endif
 	<div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -54,7 +68,7 @@
 				                			<a class="btn btn-info btn-sm">
 	                    						<i class="fa fa-search"></i> Edit
 	                  						</a>
-	                  						<a class="btn btn-danger btn-sm">
+	                  						<a class="btn btn-danger btn-sm del-dept" href="/departments/delete/{{ $department->id }}">
 	                    						<i class="fa fa-trash"></i> Delete
 	                  						</a>
 	                  					</div>

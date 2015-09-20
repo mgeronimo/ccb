@@ -143,7 +143,7 @@
 							                			<a class="btn btn-info btn-sm">
 				                    						<i class="fa fa-search"></i> Edit
 				                  						</a>
-				                  						<a class="btn btn-danger btn-sm del-user" href="/users/delete/{{ $deptrep->id }}">
+				                  						<a class="btn btn-danger btn-sm del-deptrep" href="/users/delete/{{ $deptrep->id }}">
 				                    						<i class="fa fa-trash"></i> Delete
 				                  						</a>
 				                  					</div>

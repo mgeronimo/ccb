@@ -155,6 +155,9 @@ class GroupController extends Controller
         $group = Group::where('id', $id)->first();
         $members = User::where('group_number', $group->id)->get();
 
+        if($group==NULL)
+            return redirect()->back()->with('error', 'Group not existing!');
+
         foreach($members as $member){
             $assigned = Ticket::where('assignee', $member->id)->get();
             if(count($assigned)>0){
