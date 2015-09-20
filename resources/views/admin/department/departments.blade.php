@@ -1,7 +1,7 @@
 @extends('template.dashboard')
 
 @section('title')
-	All Groups List
+	All Departments List
 @stop
 
 @section('heads')
@@ -9,16 +9,16 @@
 @stop
 
 @section('page-title')
-    Groups
+    Departments
 @stop
 
 @section('page-desc')
-    List of all CCB Groups and their respective supervisor
+    List of all government departments, and their respective department representatives
 @stop
 
 @section('breadcrumb')
     <li>Dashboard</li>
-    <li class="active">Groups</li>
+    <li class="active">Departments</li>
 @stop
 
 @section('content')
@@ -26,30 +26,33 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                  	<h3 class="box-title">Group List</h3>
+                  	<h3 class="box-title">Department List</h3>
                   	<a class="btn btn-sm btn-primary pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                    Add Group</a>
+                    Add Department</a>
                 </div><!-- /.box-header -->
              	<div class="box-body">
              		<table id="example2" class="table table-bordered table-hover">
              			<thead>
 		                  	<tr>
-			                    <th width="15%">Group ID</th>
-			                    <th width="35%">Name</th>
-			                    <th width="35%">Supervisor</th>
+			                    <th width="15%">Department ID</th>
+			                    <th width="35%">Department Name</th>
+			                    <th width="35%">Department Representative</th>
 			                    <th width="15%">Action</th>
 		                  	</tr>
 		                </thead>
 		                <tbody>
-		                	@foreach($groups as $group)
+		                	@foreach($departments as $department)
 			                	<tr>
-			                		<td>{{ $group->id }}</td>
-			                		<td>{{ $group->group_name }}</td>
-			                		<td>{{ $group->supervisor }}</td>
+			                		<td>{{ $department->id }}</td>
+			                		<td>
+			                			{{ $department->dept_name }}<br/>
+			                			<small>{{ $department->description }}</small>
+			                		</td>
+			                		<td>{{ $department->deptrep_name }}</td>
 			                		<td style="text-align: center">
 				                		<div class="btn-group">
-				                			<a class="btn btn-info btn-sm" href="group/{{ $group->id }}">
-	                    						<i class="fa fa-search"></i> View
+				                			<a class="btn btn-info btn-sm">
+	                    						<i class="fa fa-search"></i> Edit
 	                  						</a>
 	                  						<a class="btn btn-danger btn-sm">
 	                    						<i class="fa fa-trash"></i> Delete

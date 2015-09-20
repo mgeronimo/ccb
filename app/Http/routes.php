@@ -45,6 +45,11 @@ Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 Route::get('users', 'UserController@index');
 
 /*
+ * ----------Department Routes
+ */
+Route::get('departments', 'DepartmentController@index');
+
+/*
  * ---------- Group Routes
  */
 Route::get('groups', 'GroupController@index');

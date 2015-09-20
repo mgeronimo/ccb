@@ -49,7 +49,7 @@
 					                		<td>{{ $supervisor->id }}</td>
 					                		<td>{{ $supervisor->first_name." ".$supervisor->last_name }}</td>
 					                		<td>{{ $supervisor->group_name }}</td>
-					                		<td>
+					                		<td style="text-align: center">
 						                		<div class="btn-group">
 						                			<a class="btn btn-info btn-sm">
 			                    						<i class="fa fa-search"></i> Edit
@@ -82,7 +82,7 @@
 					                		<td>{{ $agent->id }}</td>
 					                		<td>{{ $agent->first_name." ".$agent->last_name }}</td>
 					                		<td>{{ $agent->group_name }}</td>
-					                		<td>
+					                		<td style="text-align: center">
 						                		<div class="btn-group">
 						                			<a class="btn btn-info btn-sm">
 			                    						<i class="fa fa-search"></i> Edit
@@ -115,7 +115,7 @@
 					                		<td>{{ $deptrep->id }}</td>
 					                		<td>{{ $deptrep->first_name." ".$deptrep->last_name }}</td>
 					                		<td>{{ $deptrep->dept_name }}</td>
-					                		<td>
+					                		<td style="text-align: center">
 						                		<div class="btn-group">
 						                			<a class="btn btn-info btn-sm">
 			                    						<i class="fa fa-search"></i> Edit
