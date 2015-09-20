@@ -25,6 +25,23 @@ class GroupController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $groups = Group::all();
+        foreach ($groups as $key => $group) {
+            $supervisor = User::where('role', 1)->where('is_verified', 1)->where('group_number', $group->id)->first();
+            $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+        }
+        return view('admin.group.groups')->with('user', $user)
+            ->with('groups', $groups);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function addGroup()
+    {
+        $user = Auth::user();
         return view('admin.addgroup')->with('user', $user);
     }
 
@@ -34,7 +51,7 @@ class GroupController extends Controller
      * @return Response
      */
     
-    public function storegroup(Request $request, AppMailer $mailer)
+    public function storeGroup(Request $request, AppMailer $mailer)
     {
         $group = new Group;
         $user = new User;
