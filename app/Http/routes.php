@@ -43,6 +43,7 @@ Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
  * ----------User Routes
  */
 Route::get('users', 'UserController@index');
+Route::get('users/delete/{id}', 'UserController@destroy');
 
 /*
  * ----------Department Routes

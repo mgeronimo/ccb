@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Group;
 use App\Department;
+use App\Ticket;
 
 class UserController extends Controller
 {
@@ -108,6 +109,21 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::where('id', $id)->first();
+
+        if($user==NULL)
+            return redirect()->back()->with('error', 'User not existing!');
+
+        $all_tickets = Ticket::all();
+
+        $tickets = Ticket::where('assignee', $user->id)->get();
+
+        if(count($tickets)>0)
+            return redirect()->back()->with('error', 'User cannot be deleted. There are still tickets assigned to this user.');
+        else{
+            $user->delete();
+            return redirect()->back()->with('message', 'User successfully deleted.');
+        }
+        
     }
 }
