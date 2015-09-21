@@ -10,6 +10,7 @@ use App\Mailers\AppMailer;
 use Mail;
 use App\Group;
 use App\User;
+use App\Ticket;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
@@ -25,6 +26,23 @@ class GroupController extends Controller
     public function index()
     {
         $user = Auth::user();
+        $groups = Group::all();
+        foreach ($groups as $key => $group) {
+            $supervisor = User::where('role', 1)->where('is_verified', 1)->where('group_number', $group->id)->first();
+            $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+        }
+        return view('admin.group.groups')->with('user', $user)
+            ->with('groups', $groups);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function addGroup()
+    {
+        $user = Auth::user();
         return view('admin.addgroup')->with('user', $user);
     }
 
@@ -34,7 +52,7 @@ class GroupController extends Controller
      * @return Response
      */
     
-    public function storegroup(Request $request, AppMailer $mailer)
+    public function storeGroup(Request $request, AppMailer $mailer)
     {
         $group = new Group;
         $user = new User;
@@ -133,7 +151,27 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $to_delete = 0;
+        $group = Group::where('id', $id)->first();
+        $members = User::where('group_number', $group->id)->get();
+
+        if($group==NULL)
+            return redirect()->back()->with('error', 'Group not existing!');
+
+        foreach($members as $member){
+            $assigned = Ticket::where('assignee', $member->id)->get();
+            if(count($assigned)>0){
+                $to_delete = 1;
+                break;
+            }
+        }
+
+        if($to_delete==0){
+            $group->delete();
+            return redirect()->back()->with('message', 'Group successfully deleted.');
+        }
+        else return redirect()->back()->with('error', 'Group cannot be deleted. There are tickets associated with this group.');
+
     }
 
     /**

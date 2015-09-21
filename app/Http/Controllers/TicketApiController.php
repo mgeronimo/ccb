@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Department;
 use App\Ticket;
+use App\User;
 use App\Mailers\AppMailer;
+use Input;
 use Validator;
 
 class TicketApiController extends Controller
@@ -19,7 +22,16 @@ class TicketApiController extends Controller
      */
     public function index()
     {
-        //
+        $id = Input::get('id');
+        $tickets = Ticket::where('created_by', $id)->orderBy('created_at', 'DESC')->get();
+
+        foreach ($tickets as $key => $ticket) {
+            $ticket->agency = Department::where('id', $ticket->dept_id)->pluck('dept_name');
+            $assignee = User::where('id', $ticket->assignee)->first();
+            $ticket->assignee = $assignee['first_name']." ".$assignee['last_name'];
+        }
+        
+        return response()->json(['data' => $this->transform($tickets)], 200);        
     }
 
     /**
@@ -57,7 +69,7 @@ class TicketApiController extends Controller
             'subject'        => $request->input('subject'),
             'dept_id'        => $request->input('agency'),
             'message'        => $request->input('incident_details'),
-            'status'         => 0,
+            'status'         => 1,
             'created_by'     => $request->input('user_id'),
             'complainee'     => $request->input('complainee')
         ]);
@@ -116,4 +128,26 @@ class TicketApiController extends Controller
     {
         //
     }
+
+    /**
+     * Transforms department list
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    private function transform($tickets)
+    {
+        return array_map(function($tickets){
+            return [
+                'incident_date_time'    => $tickets['incident_date_time'],
+                'agency'                => $tickets['agency'],
+                'complainee'            => $tickets['complainee'],
+                'subject'               => $tickets['subject'],
+                'incident_details'      => $tickets['message'],
+                'status'                => $tickets['status'],
+                'date'                  => $tickets['created_at'],
+                'assignee'              => $tickets['assignee']
+            ];
+        }, $tickets->toArray());
+    }    
 }
