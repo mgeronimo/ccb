@@ -38,9 +38,11 @@
                     <h2 class="box-title"><strong>{{ $ticket->subject }}</strong></h2>
                     <!--<a class="btn btn-sm btn-default pull-right" href="/addgroup" role="button">
                     Change Status</a>-->
-                    <button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#changeStat">
-						<i class="fa fa-check-square"></i> &nbsp;&nbsp;Change Status
-					</button>
+                    @if($ticket->assignee == $user->id)
+	                    <button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#changeStat">
+							<i class="fa fa-check-square"></i> &nbsp;&nbsp;Change Status
+						</button>
+					@endif
                 </div><!-- /.box-header -->
                 <div class="box-body incident-body">
                 	<h4 class="incident-details">Incident details:</h4>

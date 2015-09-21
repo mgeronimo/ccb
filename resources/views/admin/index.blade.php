@@ -36,7 +36,7 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{ $unassigned_tickets }}</h3>
                     <p>New Tickets</p>
                 </div>
                 <div class="icon">
@@ -49,7 +49,7 @@
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                    <h3>{{ $closed_tickets }}</h3>
                     <p>Resolved Tickets</p>
                 </div>
                 <div class="icon">
@@ -62,7 +62,7 @@
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>{{ $ongoing_tickets }}</h3>
                     <p>Ongoing Tickets</p>
                 </div>
                 <div class="icon">
@@ -75,8 +75,8 @@
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>65</h3>
-                    <p>Rejected Tickets</p>
+                    <h3>{{ $cancelled_tickets }}</h3>
+                    <p>Cancelled Tickets</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-close-round"></i>

@@ -59,6 +59,9 @@ class Authenticate
                 $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
                 $depts = Department::orderby('dept_name')->take(5)->get();
                 $unassigned_tickets = Ticket::where('assignee', NULL)->get();
+                $closed_tickets = Ticket::where('status', 5)->get();
+                $ongoing_tickets = Ticket::where('status', 2)->get();
+                $cancelled_tickets = Ticket::where('status', 4)->get();
                 $all_depts = Department::orderby('dept_name')->get();
 
                 foreach ($groups as $key => $group) {
@@ -76,6 +79,9 @@ class Authenticate
                     ->with('groups', $groups)
                     ->with('tickets', $tickets)
                     ->with('unassigned_tickets', count($unassigned_tickets))
+                    ->with('closed_tickets', count($closed_tickets))
+                    ->with('ongoing_tickets', count($ongoing_tickets))
+                    ->with('cancelled_tickets', count($cancelled_tickets))
                     ->with('depts', $depts)
                     ->with('all_depts', count($all_depts));
             }
