@@ -36,7 +36,7 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>{{ $unassigned_tickets }}</h3>
                     <p>New Tickets</p>
                 </div>
                 <div class="icon">
@@ -49,7 +49,7 @@
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
+                    <h3>{{ $closed_tickets }}</h3>
                     <p>Resolved Tickets</p>
                 </div>
                 <div class="icon">
@@ -62,7 +62,7 @@
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>{{ $ongoing_tickets }}</h3>
                     <p>Ongoing Tickets</p>
                 </div>
                 <div class="icon">
@@ -75,8 +75,8 @@
             <!-- small box -->
             <div class="small-box bg-red">
                 <div class="inner">
-                    <h3>65</h3>
-                    <p>Rejected Tickets</p>
+                    <h3>{{ $cancelled_tickets }}</h3>
+                    <p>Cancelled Tickets</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-close-round"></i>
@@ -90,7 +90,7 @@
             <div class="box box-success">
                 <div class="box-header">
                     <i class="fa fa-ticket"></i>
-                    <h3 class="box-title">Most Recent Tickets</h3>
+                    <h3 class="box-title">Unassigned Tickets</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($tickets)==0)
@@ -115,8 +115,10 @@
                     @endif
                 </div>
                 <div class="box-footer clearfix no-border">
-                    <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
-                        See All</a>
+                    @if($unassigned_tickets>10)
+                        <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                            See All</a>
+                    @endif
                 </div>
             </div>
         </section>
@@ -125,8 +127,8 @@
                 <div class="box-header">
                     <i class="fa fa-group"></i>
                     <h3 class="box-title">Groups</h3>
-                    <!--<a class="btn btn-sm btn-primary btn-flat pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                    Add Group</a>-->
+                    <a class="btn btn-sm btn-primary pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    Add Group</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($groups)==0)
@@ -151,7 +153,7 @@
                     @if(count($depts)==0)
                         <a class="btn btn-sm btn-primary pull-right" href="/addgroup" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
                         Add Group</a>
-                    @else
+                    @elseif($unassigned_tickets>10)
                         <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                         See All</a>
                     @endif
@@ -162,6 +164,8 @@
                 <div class="box-header">
                     <i class="fa fa-building-o"></i>
                     <h3 class="box-title">Departments</h3>
+                    <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    Add Department</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($depts)==0)
@@ -187,7 +191,7 @@
                     @if(count($depts)==0)
                         <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
                         Add Department</a>
-                    @else
+                    @elseif($all_depts>5)
                         <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                         See All</a>
                     @endif
