@@ -69,7 +69,7 @@ class TicketApiController extends Controller
             'subject'        => $request->input('subject'),
             'dept_id'        => $request->input('agency'),
             'message'        => $request->input('incident_details'),
-            'status'         => 0,
+            'status'         => 1,
             'created_by'     => $request->input('user_id'),
             'complainee'     => $request->input('complainee')
         ]);

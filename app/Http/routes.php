@@ -80,6 +80,7 @@ Route::get('email', function(){
 Route::get('tickets', 'TicketController@index');
 Route::get('tickets/{id}', 'TicketController@show');
 Route::get('tickets/{id}/assign/{agentid}', 'TicketController@assign');
+Route::get('tickets/{id}/status/{statid}', 'TicketController@changeStatus');
 
 
 /*Route::controllers([
