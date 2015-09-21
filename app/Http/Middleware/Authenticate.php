@@ -59,6 +59,7 @@ class Authenticate
                 $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
                 $depts = Department::orderby('dept_name')->take(5)->get();
                 $unassigned_tickets = Ticket::where('assignee', NULL)->get();
+
                 $closed_tickets = Ticket::where('status', 5)->get();
                 $ongoing_tickets = Ticket::where('status', 2)->get();
                 $cancelled_tickets = Ticket::where('status', 4)->get();
