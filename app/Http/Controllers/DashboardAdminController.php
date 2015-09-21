@@ -16,9 +16,9 @@ class DashboardAdminController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
      /*   $this->middleware('login');*/
-        $this->middleware('admin');
+       // $this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
@@ -121,13 +121,15 @@ class DashboardAdminController extends Controller
         $user->role = 4;
         $user->save();
         $department->dept_name = $input['dept_name'];
-        $department->is_national = $input['is_national'];
+        $department->is_member = $input['is_member'];
         $department->description = $input['description'];
         $dep_id = User::where('email', $user->email)->firstorFail();
         $dep_id->departments()->save($department);
         $mailer->sendEmailConfirmationTo($user);
           
-        return redirect('/')->with('message', 'Department Successfully added.');
+       // return redirect('/')->with('message', 'Department Successfully added.');
+       // return true;
+        return 'done';
     }
 
     /**

@@ -46,13 +46,14 @@ class Authenticate
                 return redirect()->guest('/login');
             }
         }
+        else{
+            $user = Auth::user();
 
-/*
             if($user->role==0){
 
                 /*
                 This will be termorarily placed here. Still to be optimized
-               
+                 */
                 $groups = Group::orderBy('group_name')->take(5)->get();
                 $tickets = Ticket::orderBy('created_at', 'DESC')->take(10)->get();
                 $depts = Department::orderby('dept_name')->take(5)->get();
@@ -84,10 +85,7 @@ class Authenticate
                 return redirect('/login');
             }
         }
-=======
->>>>>>> [TASK] Dashboard and validation
 
-        return $next($request);  
-    }*/
+        return $next($request);
     }
 }

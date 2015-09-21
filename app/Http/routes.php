@@ -110,3 +110,8 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('new-ticket', 'TicketApiController@store');
 	Route::get('agencies', 'DepartmentApiController@index');
 });
+
+/*
+ * --------angular routes
+ */ 
+

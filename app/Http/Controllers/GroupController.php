@@ -19,8 +19,8 @@ class GroupController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('admin');
+        //$this->middleware('auth');
+        //$this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
@@ -41,6 +41,8 @@ class GroupController extends Controller
     
     public function storegroup(Request $request, AppMailer $mailer)
     {
+        return $request->all();
+
         $group = new Group;
         $user = new User;
 

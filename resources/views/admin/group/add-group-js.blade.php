@@ -16,12 +16,9 @@
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
-							 e.preventDefault();
-			
+							 e.preventDefault();			
 					$(this).parent('p').remove();
-					i--;
-				
-				
+					i--;		
 			});
 		});
 	</script>
@@ -246,7 +243,7 @@
 
 			});
 			$("#submit").click(function(e){
-				
+			e.preventDefault();
 				var emailerrors = 0;
 				var inputs = document.querySelectorAll("#msform input[name='agentemail[]']");
 				var span = document.createElement("span");
@@ -254,22 +251,40 @@
 				for(i=0; i < inputs.length; i++){
 					console.log('i: '+ (i+1) + ' ' + inputs.length);
 					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+inputs[i].value, function( data ) {
+						console.log('data'+ data + 'error'+ emailerrors + 'i' + i );
 						if(data == 'failed'){
 							e.preventDefault();
 							emailerrors++;
 							added = i;
 							var text = document.createTextNode("Agent email already existing.");
 							var element = document.getElementById('this-aemail-'+ (i));
-							
 							span.appendChild(text);
 							element.appendChild(span);
 						}
+						else if(data=='passed' && emailerrors==0 && i == inputs.length)
+						{
+							console.log('hello');
+							$("#submit").attr("disabled", true);
+						 var formData = {
+            						'groupname'              : $('input[name=groupname]').val(),
+            				'first_name'             : $('input[name=sfirstname]').val(),
+           					'last_name'             : $('input[name=slastname]').val(),
+           					'email'             : $('input[name=semail]').val(),
+           					'agentfname[]'             : $('input[name=agentfname[]]').val(),
+           					'agentlname[]'             : $('input[name=agentlname[]]').val(),
+           					'agentemail[]'             : $('input[name=agentemail[]]').val(),
+
+
+        				};
+					  		$.post('addgroup',formData, function(data){
+ 								 location.href = "/"
+ 							});
+ 							
+						}
+
 					});
 				}
-				if(emailerrors==0){
-					return true;
-				}
-				/*if(form.valid()==true)
+								/*if(form.valid()==true)
 					return true;*/
 			});
 			$("#submit-additional-agent").click(function(e){

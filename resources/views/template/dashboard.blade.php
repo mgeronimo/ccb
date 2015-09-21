@@ -17,6 +17,7 @@
         <link rel="stylesheet" href='{{ url("assets/dist/css/skins/_all-skins.min.css") }}'>
         <!-- Custom Styles -->
         <link rel="stylesheet" href='{{ url("assets/css/custom.css") }}'>
+
         @yield('heads')
     </head>
     <body class="skin-blue fixed sidebar-mini">
@@ -98,6 +99,11 @@
         <script src='{{ url("assets/js/bootbox.min.js") }}'></script>
         <!-- Custom JS -->
         <script src='{{ url("assets/js/scripts.js") }}'></script>
+        <script src='{{ url("assets/bower_components/angular/angular.js") }}'></script>
+        <script src='{{ url("assets/bower_components/angular-animate/angular-animate.js") }}'></script>
+        <script src='{{ url("assets/bower_components/angular-messages/angular-messages.js") }}'></script>
+
+
         @yield('scripts')
     </body>
 </html>
