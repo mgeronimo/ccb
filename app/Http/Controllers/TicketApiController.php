@@ -67,10 +67,7 @@ class TicketApiController extends Controller
         $prev_ticket->ticket_id = 'M'.date('Y').date('m').'-'.str_pad($prev_ticket->id, 5, 0, STR_PAD_LEFT);
         $prev_ticket->save();
 
-        /*
-         * Sends email to user to confirm
-         */
-        //$mailer->sendEmailConfirmationTo($user);
+        //Must send email to public user an email as notification regarding the ticket submitted
     
         return response()->json(['msg' => 'Ticket was successfully created!'], 200);
     }
