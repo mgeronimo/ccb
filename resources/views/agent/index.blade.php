@@ -31,7 +31,7 @@
         </div><!-- /.box-body -->
         <div class="box-footer clearfix no-border">
             @if(count($assigned_tickets)==0)
-                <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All Unassigned Tickets</a>
             @elseif($all_assigned>10)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;

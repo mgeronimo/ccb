@@ -25,6 +25,7 @@ class TicketController extends Controller
         $user = Auth::user();
         $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
         $inprocess_tickets = Ticket::where('status', 2)->paginate(10);
+        $pending_tickets = Ticket::where('status', 3)->paginate(10);
 
         foreach ($unassigned_tickets as $key => $uticket) {
             $deptname = Department::find($uticket->dept_id)->pluck('dept_name');
@@ -36,8 +37,16 @@ class TicketController extends Controller
             $iticket->dept_name = $deptname;
         }
 
+        foreach ($pending_tickets as $key => $pticket) {
+            $deptname = Department::find($pticket->dept_id)->pluck('dept_name');
+            $pticket->dept_name = $deptname;
+        }
 
-        return view('tickets.all-tickets')->with('unassigned_tickets', $unassigned_tickets)->with('inprocess_tickets', $inprocess_tickets)->with('user', $user);
+
+        return view('tickets.all-tickets')->with('unassigned_tickets', $unassigned_tickets)
+            ->with('inprocess_tickets', $inprocess_tickets)
+            ->with('pending_tickets', $pending_tickets)
+            ->with('user', $user);
     }
 
     /**
@@ -117,7 +126,7 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
-        $ticket->status = 1;
+        $ticket->status = 2;
         $ticket->assignee = $agentid;
         $ticket->save();
         
@@ -134,10 +143,15 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
-        $ticket->status = $statid;
-        $ticket->save();
+
+        if($user->id==$ticket->assignee){
+            $ticket->status = $statid;
+            $ticket->save();
+
+            return redirect()->back()->with('message', 'Successfully changed ticket status!');
+        }
         
-        return redirect()->back()->with('message', 'Successfully changed ticket status!');
+        return redirect()->back()->with('error', "You cannot change the status of a ticket you don't own!");
     }    
 
     /**
