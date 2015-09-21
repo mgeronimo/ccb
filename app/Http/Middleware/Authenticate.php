@@ -45,9 +45,8 @@ class Authenticate
             } else {
                 return redirect()->guest('/login');
             }
-        }
-        else{
-            $user = Auth::user();
+        
+
 
             if($user->role==0){
 

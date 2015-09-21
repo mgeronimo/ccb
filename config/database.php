@@ -64,7 +64,6 @@ return [
             'strict'    => false,
 
 
-
         ],
 
         'pgsql' => [

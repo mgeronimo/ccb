@@ -74,6 +74,7 @@ Route::post('admin/flash', function (){
 });
 
 
+
 /*
  * ---------- Ticket Routes
  */

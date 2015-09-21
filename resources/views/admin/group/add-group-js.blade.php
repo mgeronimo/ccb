@@ -16,9 +16,18 @@
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
+<<<<<<< HEAD
 							 e.preventDefault();			
 					$(this).parent('p').remove();
 					i--;		
+=======
+							 e.preventDefault();
+			
+					$(this).parent('p').remove();
+					i--;
+				
+				
+>>>>>>> 3b54227745792d14b25a631e350f9f00edb50e13
 			});
 		});
 	</script>
@@ -258,6 +267,10 @@
 							added = i;
 							var text = document.createTextNode("Agent email already existing.");
 							var element = document.getElementById('this-aemail-'+ (i));
+<<<<<<< HEAD
+=======
+							
+>>>>>>> 3b54227745792d14b25a631e350f9f00edb50e13
 							span.appendChild(text);
 							element.appendChild(span);
 						}

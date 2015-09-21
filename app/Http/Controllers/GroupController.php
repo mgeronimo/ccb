@@ -19,8 +19,13 @@ class GroupController extends Controller
 {
     public function __construct()
     {
+<<<<<<< HEAD
         //$this->middleware('auth');
         //$this->middleware('admin');
+=======
+        $this->middleware('auth');
+        $this->middleware('admin');
+>>>>>>> 3b54227745792d14b25a631e350f9f00edb50e13
     }
     /**
      * Display a listing of the resource.

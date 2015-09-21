@@ -62,6 +62,7 @@
 				<h3><a href="#" id="addBtn" class="addButton"><i class="fa fa-plus-circle"></i> Add agent </a></h3>
 				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
 				<input type="button" id="submit" name="submit" class="submit action-button" value="Submit" />
+
 			</fieldset>
 		</form>
 	</div>
