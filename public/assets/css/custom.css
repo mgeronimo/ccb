@@ -112,3 +112,9 @@ a.assigned-tix{
 a.to-members{
 	color: purple;
 }
+
+.assign-self{
+	display: block;
+    margin: auto;
+    margin-top: 15px;
+}

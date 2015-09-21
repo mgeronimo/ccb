@@ -40,15 +40,29 @@ Route::get('cancel-add', function(){
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 
 /*
+ * ----------User Routes
+ */
+Route::get('users', 'UserController@index');
+Route::get('users/delete/{id}', 'UserController@destroy');
+
+/*
+ * ----------Department Routes
+ */
+Route::get('departments', 'DepartmentController@index');
+Route::get('departments/delete/{id}', 'DepartmentController@destroy');
+
+/*
  * ---------- Group Routes
  */
-Route::get('addgroup', 'GroupController@index');
-Route::post('addgroup', 'GroupController@storegroup');
+Route::get('groups', 'GroupController@index');
+Route::get('addgroup', 'GroupController@addGroup');
+Route::post('addgroup', 'GroupController@storeroup');
 Route::get('group/{id}', 'GroupController@show');
 Route::get('group/{id}/add-agent', 'GroupController@addAgent');
 Route::post('group/{id}/add-agent', 'GroupController@saveAddedAgent');
 Route::get('validateGroup', 'GroupController@validateGroup');
 Route::get('validateSupervisorAgent/{counter}', 'GroupController@validateSupervisorAgent');
+Route::get('group/delete/{id}', 'GroupController@destroy');
 
 
 /*
@@ -66,6 +80,7 @@ Route::get('email', function(){
 Route::get('tickets', 'TicketController@index');
 Route::get('tickets/{id}', 'TicketController@show');
 Route::get('tickets/{id}/assign/{agentid}', 'TicketController@assign');
+Route::get('tickets/{id}/status/{statid}', 'TicketController@changeStatus');
 
 
 /*Route::controllers([
