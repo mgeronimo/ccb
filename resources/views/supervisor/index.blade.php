@@ -17,6 +17,7 @@
                             <!-- Emphasis label -->
                             <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
                             <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
+                            <span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span>
                             <!-- General tools such as edit or delete-->
                             <div class="tools">
                                 <a href="/tickets/{{ $ticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
@@ -88,7 +89,6 @@
                             <!-- Emphasis label -->
                             <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $assigned->created_at }}</span>
                             <span class="label bg-navy" style="font-size: 11px"><i class="fa fa-user"></i> {{ $assigned->first_name." ".$assigned->last_name }}</span>
-                            <span class="label {{ $assigned->class }}" style="font-size: 11px">{{ $assigned->status_name }}</span>
                             <!-- General tools such as edit or delete-->
                             <div class="tools">
                                 <a href="/tickets/{{ $assigned->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
