@@ -12,7 +12,7 @@
 */
 
 Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
-//Route::get('dashboard', 'DashboardController@index');
+Route::get('dashboard', 'DashboardController@index');
 //Route::get('/admin', 'DashboardAdminController@index');
 
 Route::get('/login', 'Auth\AuthController@getLogin');
