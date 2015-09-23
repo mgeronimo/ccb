@@ -16,18 +16,9 @@
 				
 			});
 			$(wrap).on("click", "#removeBtn", function(e){
-<<<<<<< HEAD
 							 e.preventDefault();			
 					$(this).parent('p').remove();
 					i--;		
-=======
-							 e.preventDefault();
-			
-					$(this).parent('p').remove();
-					i--;
-				
-				
->>>>>>> 3b54227745792d14b25a631e350f9f00edb50e13
 			});
 		});
 	</script>
@@ -178,8 +169,7 @@
 						 		span.className = "error-block";
 						 		if(data == 'failed')
 									var text = document.createTextNode("Group name already existing.");
-								else if(data == 'whitespace')
-									var text = document.createTextNode("Please enter valid group name.");
+			
 								span.appendChild(text);
 								var element = document.getElementById('this-group');
 								element.appendChild(span);
@@ -251,52 +241,36 @@
 				fcounter--;
 
 			});
-			$("#submit").click(function(e){
+			$("#submit1").click( function(e){
 			e.preventDefault();
 				var emailerrors = 0;
 				var inputs = document.querySelectorAll("#msform input[name='agentemail[]']");
 				var span = document.createElement("span");
 				span.className = "error-block";
+
 				for(i=0; i < inputs.length; i++){
-					console.log('i: '+ (i+1) + ' ' + inputs.length);
-					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+inputs[i].value, function( data ) {
+					console.log('i: '+ (i) + ' ' + inputs.length);
+					$.get( "/validateSupervisorAgent/"+fcounter+"?&agentemail="+inputs[i].value).done(function( data ) {
 						console.log('data'+ data + 'error'+ emailerrors + 'i' + i );
 						if(data == 'failed'){
-							e.preventDefault();
 							emailerrors++;
 							added = i;
 							var text = document.createTextNode("Agent email already existing.");
 							var element = document.getElementById('this-aemail-'+ (i));
-<<<<<<< HEAD
-=======
-							
->>>>>>> 3b54227745792d14b25a631e350f9f00edb50e13
 							span.appendChild(text);
 							element.appendChild(span);
+							return false;
 						}
 						else if(data=='passed' && emailerrors==0 && i == inputs.length)
 						{
-							console.log('hello');
-							$("#submit").attr("disabled", true);
-						 var formData = {
-            						'groupname'              : $('input[name=groupname]').val(),
-            				'first_name'             : $('input[name=sfirstname]').val(),
-           					'last_name'             : $('input[name=slastname]').val(),
-           					'email'             : $('input[name=semail]').val(),
-           					'agentfname[]'             : $('input[name=agentfname[]]').val(),
-           					'agentlname[]'             : $('input[name=agentlname[]]').val(),
-           					'agentemail[]'             : $('input[name=agentemail[]]').val(),
-
-
-        				};
-					  		$.post('addgroup',formData, function(data){
- 								 location.href = "/"
- 							});
- 							
+							$('#msform').submit();
+							i++;
+							return true;
 						}
-
+						
 					});
 				}
+			
 								/*if(form.valid()==true)
 					return true;*/
 			});

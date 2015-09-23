@@ -199,28 +199,16 @@ $.ajaxSetup({
 		});
 	});
 
-$("#submit").click(function(event){
-	//e.preventDefault();
+$("#submit1").click(function(event){
+	event.preventDefault();
 	if(form.valid()==true)
 	{	
 			if(fcounter==1){
 				$.get( "/validateDeptRep?email="+document.getElementsByName('email')[0].value, function( data ) { 
  				      //console.log('data' +data);
- 				      $("#fdesign").submit();
+ 				      
  					if(data == 'passed'){
- 						$("#submit").attr("disabled", true);
-						 var formData = {
-            				'dept_name'              : $('input[name=dept_name]').val(),
-            				'description'             : $('input[name=description]').val(),
-            				'is_member':         $('input[name=is_member]:checked').val(),
-           					'firstname'             : $('input[name=firstname]').val(),
-           					'lastname'             : $('input[name=lastname]').val(),
-           					'email'             : $('input[name=email]').val(),
-
-        				};
- 						$.post('adddept',formData, function(data){
- 							 location.href = "/"
- 						});
+ 						$("#fdesign").submit();
 					}
 					else if(data=='failed')
 					{	
