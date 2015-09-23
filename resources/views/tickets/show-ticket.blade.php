@@ -46,9 +46,9 @@
                     <!--<a class="btn btn-sm btn-default pull-right" href="/addgroup" role="button">
                     Change Status</a>-->
                     @if($ticket->assignee == $user->id)
-	                    <button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#changeStat">
+	                    <!--<button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#changeStat">
 							<i class="fa fa-check-square"></i> &nbsp;&nbsp;Change Status
-						</button>
+						</button>-->
 					@endif
                 </div><!-- /.box-header -->
                 <div class="box-body incident-body">
@@ -61,10 +61,12 @@
                 	<div class="space"></div>
                 	<h4 class="incident-details">Complainee:</h4>
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
+            		<div class="space"></div>
             		<h4 class="incident-details">Ticket Status:</h4>
             		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span>
+            		<br/><br/>
                 </div>
-                <div class="box-footer clearfix no-border">
+                <div class="box-footer clearfix">
                 </div>
             </div>
 		</section>
@@ -125,7 +127,17 @@
 				                      	<span class="name">
 				                        	{{ $agent->first_name." ".$agent->last_name }}
 				                      	</span>
-				                      	<small>{{ $group->group_name }}</small>
+				                      	@if($user->role < 3 && $user->role > 0) 
+				                      		<small>{{ $group->group_name }}</small>
+				                      	@elseif($user->role == 4) 
+				                      		<small>{{ $dept->dept_name }} Representative</small>
+				                      	@elseif($user->role == 0) 
+				                      		@if(count($group)==0)
+				                      			<small>{{ $dept->dept_name }}</small>
+				                      		@else
+				                      			<small>{{ $group->group_name }}</small>
+				                      		@endif
+				                      	@endif
 			                    	</p>
 			                   	</div>
 			                </div>
@@ -133,6 +145,39 @@
 	                <div class="box-footer clearfix no-border">
 	                </div>
 	            </div>
+	            <div class="box box-solid">
+		            <div class="box-header with-header incident-header">
+		            	<i class="fa fa-cog"></i>
+		                <h2 class="box-title">Actions</h2>
+		            </div><!-- /.box-header -->
+		            <div class="box-body incident-body">
+	        			<div class="col-lg-12">
+	        				@if($ticket->status == 5 && $user->role > 1)
+	        					<em><center>No action available. <br/>Ticket is already closed.</center></em>
+	        				@endif
+	        				@if($ticket->status == 3 && $ticket->assignee == $user->id)
+	        					<em><center>No action available. Ticket is currently waiting for department representative's acceptance.</center></em>
+	        				@endif
+	        				@if($ticket->status == 3 && $user->role == 4 && $user->group_number == NULL)
+	        					<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>
+	        				@endif
+		                    @if($ticket->status == 2)
+		                    	@if($user->role < 4 && $user->role > 0)
+		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/3" role="button">Escalate to Dept. Representative</a>
+		                		@endif
+		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
+		                	@endif
+		                	@if($user->role == 0 && $ticket->status != 5)
+	                			<a class="btn btn-danger btn-block cancel-ticket" href="/tickets/{{ $ticket->id }}/status/4" role="button">Cancel Ticket</a>
+	                		@endif
+	                		@if($user->role < 2 && $ticket->status == 5)
+	                			<a class="btn btn-info btn-block reopen-ticket" href="/tickets/{{ $ticket->id }}/status/2" role="button">Reopen Ticket</a>
+	                		@endif
+		                </div>
+		            </div>
+		            <div class="box-footer clearfix no-border">
+		            </div>
+		        </div>
 	        @endif
 		</section>
 	</div>
