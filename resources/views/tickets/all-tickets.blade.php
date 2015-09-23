@@ -21,9 +21,24 @@
 @stop
 
 @section('content')
+    @if(Session::has('message'))
+        <div class="no-print">
+            <div class="callout callout-info" style="margin-bottom: 0!important;">
+                <i class="fa fa-fw fa-info-circle"></i> &nbsp;{{ Session::get('message') }}
+            </div>
+        </div>
+    @endif
+    @if(Session::has('error'))
+        <div class="no-print">
+            <div class="callout callout-danger" style="margin-bottom: 0!important;">
+                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get('error') }}
+            </div>
+        </div>
+    @endif
+    <br/>
 	<div class="row">
         <section class="col-lg-6">
-            <div class="box box-success" style="min-height: 360px">
+            <div class="box box-success" style="min-height: 460px">
                 <div class="box-header">
                     <i class="fa fa-hourglass-start"></i>
                     <h3 class="box-title">New Tickets</h3>
@@ -103,7 +118,7 @@
                 </div>
                 <div class="box-body">
                     @if(count($pending_tickets)==0)
-                        <em><center>No pending tickets yet.</center></em>
+                        <em><center>No pending tickets yet.</center></em><br/>
                     @else
                         <ul class="todo-list">
                             @foreach($pending_tickets as $pticket)
@@ -117,6 +132,34 @@
                                     <!-- General tools such as edit or delete-->
                                     <div class="tools">
                                         <a href="/tickets/{{ $pticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            </div>
+            <div class="box box-default">
+                <div class="box-header">
+                    <i class="fa fa-hourglass-o"></i>
+                    <h3 class="box-title">Closed</h3>
+                </div>
+                <div class="box-body">
+                    @if(count($closed_tickets)==0)
+                        <em><center>No closed tickets yet.</center></em><br/>
+                    @else
+                        <ul class="todo-list">
+                            @foreach($closed_tickets as $cticket)
+                                <li>
+                                    <i class="fa fa-circle-o"></i>
+                                    <!-- todo text -->
+                                    <span class="text"><a href="/tickets/{{ $cticket->id }}">{{ $cticket->ticket_id }}</a> - {{ $cticket->subject }}</span><br/>
+                                    <!-- Emphasis label -->
+                                    <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $cticket->created_at }}</span>
+                                    <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $cticket->dept_name }}</span>
+                                    <!-- General tools such as edit or delete-->
+                                    <div class="tools">
+                                        <a href="/tickets/{{ $cticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
                                     </div>
                                 </li>
                             @endforeach
