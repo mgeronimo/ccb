@@ -15,13 +15,6 @@ use App\Status;
 
 class DashboardController extends Controller
 {
-
-    public function __construct()
-    {
-        //$this->middleware('auth');
-     /*   $this->middleware('login');*/
-        //$this->middleware('sup.agent');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -68,12 +61,12 @@ class DashboardController extends Controller
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $all_unassigned = Ticket::where('assignee', NULL)->get();
             $all_members = User::where('role', 2)->where('group_number', $user->group_number)->get();
-            $all_assigned = DB::table('tickets as a')->join('users as b', 'a.assignee', '=', 'b.id')
-                            ->where('b.role', 2)->where('b.group_number', 1)
-                            ->groupBy('a.ticket_id')->take(5)->get();
-            $count_assigned = DB::table('tickets as a')->join('users as b', 'a.assignee', '=', 'b.id')
-                            ->where('b.role', 2)->where('b.group_number', 1)
-                            ->groupBy('a.ticket_id')->get();
+            $all_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
+                            ->where('a.role', 2)->where('a.group_number', $user->group_number)
+                            ->groupBy('b.ticket_id')->take(5)->get();
+            $count_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
+                            ->where('a.role', 2)->where('a.group_number', $user->group_number)
+                            ->groupBy('b.ticket_id')->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -129,12 +122,12 @@ class DashboardController extends Controller
         }
         else if($user->role==4){
             $dept = Department::where('dept_rep', $user->id)->first();
-            $new_tickets = Ticket::where('status', 0)->where('dept_id', $dept->id)->orderBy('created_at', 'DESC')->take(5)->get();
-            $count_new_tickets = Ticket::where('status', 0)->where('dept_id', $dept->id)->get();
-            $ongoing_tickets = Ticket::where('status', 1)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
-            $count_ongoing_tickets = Ticket::where('status', 1)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
-            $closed_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
-            $count_closed_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
+            $new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->orderBy('created_at', 'DESC')->take(5)->get();
+            $count_new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->get();
+            $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
+            $count_ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
+            $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
+            $count_closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
             return view('dashboard')->with('user', $user)
                 ->with('new_tickets', $new_tickets)
                 ->with('count_new_tickets', count($count_new_tickets))
@@ -145,69 +138,4 @@ class DashboardController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

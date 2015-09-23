@@ -12,6 +12,8 @@
                 Supervisor
             @elseif (($user->role) ==2 )
                 Agent
+            @elseif (($user->role) ==4 )
+                Department Representative
             @endif</p>
         </div>
              
