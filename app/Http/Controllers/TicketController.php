@@ -32,15 +32,18 @@ class TicketController extends Controller
             if($user->role == 0){
                 $inprocess_tickets = Ticket::where('status', 2)->paginate(10);
                 $pending_tickets = Ticket::where('status', 3)->paginate(10);    
+                $closed_tickets = Ticket::where('status', 5)->paginate(10);
             }
             else if($user->role == 1){
                 $subs = User::where('role', 2)->where('group_number', $user->group_number)->lists('id');
                 $inprocess_tickets = Ticket::where('status', 2)->whereIn('assignee', $subs)->paginate(10);
                 $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $subs)->paginate(10);
+                $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $subs)->paginate(10);
             }
             else if($user->role == 2){
                 $inprocess_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->paginate(10);
                 $pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->paginate(10);
+                $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->paginate(10);
             }
 
             foreach ($unassigned_tickets as $key => $uticket) {
@@ -61,6 +64,7 @@ class TicketController extends Controller
             return view('tickets.all-tickets')->with('unassigned_tickets', $unassigned_tickets)
                 ->with('inprocess_tickets', $inprocess_tickets)
                 ->with('pending_tickets', $pending_tickets)
+                ->with('closed_tickets', $closed_tickets)
                 ->with('user', $user);
         }
     }
@@ -200,7 +204,7 @@ class TicketController extends Controller
          * Close
          */
         else if($statid==5){
-            if($user->id == $ticket->assignee){
+            if($user->id == $ticket->assignee || $user->role < 2){
                 $ticket->status = $statid;
                 $ticket->save();
 
