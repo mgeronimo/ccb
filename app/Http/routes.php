@@ -59,7 +59,7 @@ Route::get('departments/delete/{id}', 'DepartmentController@destroy');
  */
 Route::get('groups', 'GroupController@index');
 Route::get('addgroup', 'GroupController@addGroup');
-Route::post('addgroup', 'GroupController@storeroup');
+Route::post('addgroup', 'GroupController@storeGroup');
 Route::get('group/{id}', 'GroupController@show');
 Route::get('group/{id}/add-agent', 'GroupController@addAgent');
 Route::post('group/{id}/add-agent', 'GroupController@saveAddedAgent');
