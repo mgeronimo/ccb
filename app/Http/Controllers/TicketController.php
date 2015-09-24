@@ -23,51 +23,50 @@ class TicketController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
-        $inprocess_tickets = Ticket::where('status', 2)->paginate(10);
-        $pending_tickets = Ticket::where('status', 3)->paginate(10);
 
-        foreach ($unassigned_tickets as $key => $uticket) {
-            $deptname = Department::find($uticket->dept_id)->pluck('dept_name');
-            $uticket->dept_name = $deptname;
+        if($user->role > 3)
+            return redirect('/');
+        else{
+            $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
+            
+            if($user->role == 0){
+                $inprocess_tickets = Ticket::where('status', 2)->paginate(10);
+                $pending_tickets = Ticket::where('status', 3)->paginate(10);    
+                $closed_tickets = Ticket::where('status', 5)->paginate(10);
+            }
+            else if($user->role == 1){
+                $subs = User::where('role', 2)->where('group_number', $user->group_number)->lists('id');
+                $inprocess_tickets = Ticket::where('status', 2)->whereIn('assignee', $subs)->paginate(10);
+                $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $subs)->paginate(10);
+                $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $subs)->paginate(10);
+            }
+            else if($user->role == 2){
+                $inprocess_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->paginate(10);
+                $pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->paginate(10);
+                $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->paginate(10);
+            }
+
+            foreach ($unassigned_tickets as $key => $uticket) {
+                $deptname = Department::find($uticket->dept_id)->pluck('dept_name');
+                $uticket->dept_name = $deptname;
+            }
+
+            foreach ($inprocess_tickets as $key => $iticket) {
+                $deptname = Department::find($iticket->dept_id)->pluck('dept_name');
+                $iticket->dept_name = $deptname;
+            }
+
+            foreach ($pending_tickets as $key => $pticket) {
+                $deptname = Department::find($pticket->dept_id)->pluck('dept_name');
+                $pticket->dept_name = $deptname;
+            }
+
+            return view('tickets.all-tickets')->with('unassigned_tickets', $unassigned_tickets)
+                ->with('inprocess_tickets', $inprocess_tickets)
+                ->with('pending_tickets', $pending_tickets)
+                ->with('closed_tickets', $closed_tickets)
+                ->with('user', $user);
         }
-
-        foreach ($inprocess_tickets as $key => $iticket) {
-            $deptname = Department::find($iticket->dept_id)->pluck('dept_name');
-            $iticket->dept_name = $deptname;
-        }
-
-        foreach ($pending_tickets as $key => $pticket) {
-            $deptname = Department::find($pticket->dept_id)->pluck('dept_name');
-            $pticket->dept_name = $deptname;
-        }
-
-
-        return view('tickets.all-tickets')->with('unassigned_tickets', $unassigned_tickets)
-            ->with('inprocess_tickets', $inprocess_tickets)
-            ->with('pending_tickets', $pending_tickets)
-            ->with('user', $user);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -83,10 +82,6 @@ class TicketController extends Controller
         $dept = Department::find($ticket->dept_id)->first();
         $ticket->status_name = Status::where('id', $ticket->status)->pluck('status');
         $ticket->class = Status::where('id', $ticket->status)->pluck('class');
-        /*if($ticket->status==1){ $ticket->class="label-success"; }
-        else if($ticket->status==2){ $ticket->class="bg-teal"; }
-        else if($ticket->status==3){ $ticket->class="bg-gray"; }
-        else if($ticket->status==4){ $ticket->class="label-danger"; }*/
 
         $statuses = Status::where('id', '!=', $ticket->status)->get();
 
@@ -104,8 +99,10 @@ class TicketController extends Controller
                 ->with('statuses', $statuses);
         }
         else{
-            $agent = User::where('id', $ticket->assignee)->firstOrFail();
-            $group = Group::where('id', $agent->group_number)->firstOrFail();
+            if($user->role == 2 && $ticket->assignee != $user->id)
+                return redirect('tickets');
+            $agent = User::where('id', $ticket->assignee)->first();
+            $group = Group::where('id', $agent->group_number)->first();
             return view('tickets.show-ticket')
                 ->with('user', $user)
                 ->with('ticket', $ticket)
@@ -143,39 +140,80 @@ class TicketController extends Controller
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
+        $assignee = User::where('id', $ticket->assignee)->first();
 
-        if($user->id==$ticket->assignee){
-            $ticket->status = $statid;
-            $ticket->save();
+        $supervisor = User::where('role', 1)->where('group_number', $assignee->group_number)->first();
 
-            return redirect()->back()->with('message', 'Successfully changed ticket status!');
+        /*
+         * In Process
+         */
+        if($statid == 2){
+            if($ticket->status == 5 && ($user->role == 0 || $user->id == $supervisor->id)){
+                $ticket->status = $statid;
+                $ticket->save();
+
+                return redirect('tickets')->with('message', 'Successfully reopened ticket!');
+            }
+            else if($ticket->status != 5 && ($user->role == 0 || $user->id == $supervisor->id)){
+                return redirect()->back()->with('error', 'The ticket you are reopening is not closed in the first place!');
+            }
+            else if($ticket->status == 3 && $user->role == 4){
+                $ticket->status = $statid;
+
+                $dept = Department::where('id', $ticket->dept_id)->first();
+                $deptrep = User::where('id', $dept->dept_rep)->first();
+                $ticket->assignee = $deptrep->id;
+
+                $ticket->save();
+
+                return redirect()->back()->with('message', 'Ticket now in process.');                
+            }
+            else return redirect()->back()->with('error', "You don't have the permission to reopen a ticket!");
         }
-        
-        return redirect()->back()->with('error', "You cannot change the status of a ticket you don't own!");
+
+        /*
+         * Pending (Escalated)
+         */
+        else if($statid == 3){
+            if($user->id == $ticket->assignee || $user->id == $supervisor->id){
+                if($ticket->status == 2){
+                    $ticket->status = $statid;
+                    $ticket->save();
+
+                    return redirect('tickets')->with('message', 'Successfully escalated ticket to department representative!');
+                }
+                return redirect('tickets')->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
+            }
+            else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
+        }
+
+        /*
+         * Cancel
+         */
+        else if($statid==4){
+            if($user->role == 0){
+                $ticket->status = $statid;
+                $ticket->save();
+
+                return redirect('tickets')->with('message', 'Successfully cancelled ticket!');
+            }
+            else return redirect('tickets')->with('error', "You have no permission to cancel this ticket!");
+        }
+
+        /*
+         * Close
+         */
+        else if($statid==5){
+            if($user->id == $ticket->assignee || $user->role < 2){
+                $ticket->status = $statid;
+                $ticket->save();
+
+                return redirect('tickets')->with('message', 'Successfully closed ticket!');
+            }
+            else return redirect('tickets')->with('error', 'You have no permission to close this ticket!');
+        }
+
     }    
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
