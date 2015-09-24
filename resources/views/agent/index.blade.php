@@ -19,7 +19,7 @@
                         <!-- Emphasis label -->
                         <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $assigned_ticket->created_at }}</span>
                         <span class="label label-warning" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $assigned_ticket->dept_name }}</span>
-                        <span class="label {{ $assigned_ticket->class }}" style="font-size: 11px">{{ $assigned_ticket->status_name }}</span>
+                        <span class="label label-{{ $assigned_ticket->class }}" style="font-size: 11px">{{ $assigned_ticket->status_name }}</span>
                         <!-- General tools such as edit or delete-->
                         <div class="tools">
                             <a href="/tickets/{{ $assigned_ticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
