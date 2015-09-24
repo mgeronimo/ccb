@@ -38,7 +38,7 @@
     <br/>
 	<div class="row">
         <section class="col-lg-6">
-            <div class="box box-success" style="min-height: 460px">
+            <div class="box box-success" style="min-height: 360px">
                 <div class="box-header">
                     <i class="fa fa-hourglass-start"></i>
                     <h3 class="box-title">New Tickets</h3>
@@ -71,7 +71,8 @@
             </div>
         </section>
         <section class="col-lg-6">
-        	<div class="box box-danger">
+            <!-- Overdue Section - Waiting -->
+        	<!-- <div class="box box-danger">
                 <div class="box-header">
                 	<i class="fa fa-hourglass-end"></i>
                     <h3 class="box-title">Overdue</h3>
@@ -79,7 +80,7 @@
                 <div class="box-body">
 	                <em><center>No overdue tickets yet.</center></em><br/>
                 </div>
-            </div>
+            </div> -->
         	<div class="box box-info">
                 <div class="box-header">
                 	<i class="fa fa-hourglass-half"></i>
