@@ -51,15 +51,15 @@
 			<fieldset class="formgroup">
 				<h2 class="fs-title">Agent Details</h2>
 					<div id="addagent" class="addagent">
-						<p>
-							<input type="text" class="agentfname" name="agentfname[]" placeholder="First Name" required />
-							<input type="text" name="agentlname[]" placeholder="Last Name" required />
+						<div id='fields1'>
+							<input type="text" id="fname1" class="agentfname" name="agentfname[]" placeholder="First Name" required />
+							<input type="text" id="lname1" name="agentlname[]" placeholder="Last Name" required />
 							<div id="this-aemail-1">
-								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email"  required/>
+								<input type="email" name="agentemail[]" class="agentEmail" id ="email1"placeholder="Email"  required/>
 							</div>
-						</p>
+						</div>
 					</div>
-				<h3><a href="#" id="addBtn" class="addButton"><i class="fa fa-plus-circle"></i> Add agent </a></h3>
+				<h3><a href="#" id="addBtn" class="addButton add-more"><i class="fa fa-plus-circle"></i> Add agent </a></h3>
 				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
 				<input type="button" id="submit1" name="submit1" class="submit action-button" value="Submit" />
 
