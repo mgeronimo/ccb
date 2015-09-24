@@ -425,7 +425,6 @@ this.check( elements[i] );
 }
 return this.valid();
 },
-
 		// http://jqueryvalidation.org/Validator.element/
 		element: function( element ) {
 			var cleanElement = this.clean( element ),
