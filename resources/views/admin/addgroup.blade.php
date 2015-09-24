@@ -55,13 +55,14 @@
 							<input type="text" class="agentfname" name="agentfname[]" placeholder="First Name" required />
 							<input type="text" name="agentlname[]" placeholder="Last Name" required />
 							<div id="this-aemail-1">
-								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email" id="aEmail" required/>
+								<input type="email" name="agentemail[]" class="agentEmail" placeholder="Email"  required/>
 							</div>
 						</p>
 					</div>
 				<h3><a href="#" id="addBtn" class="addButton"><i class="fa fa-plus-circle"></i> Add agent </a></h3>
 				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
-				<input type="submit" id="submit" id="submit" name="submit" class="submit action-button" value="Submit" />
+				<input type="button" id="submit1" name="submit1" class="submit action-button" value="Submit" />
+
 			</fieldset>
 		</form>
 	</div>

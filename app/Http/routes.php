@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', ['middleware' => 'auth', 'DashboardController@index']);
+Route::get('/', 'DashboardController@index');
 //Route::get('dashboard', 'DashboardController@index');
 //Route::get('/admin', 'DashboardAdminController@index');
 
@@ -21,6 +21,7 @@ Route::get('/logout', 'Auth\AuthController@getLogout');
 Route::get('confirm', function () {
     return view('confirm');
 });
+/*
 /*
  * ---------- Registration Routes
  */
@@ -33,7 +34,9 @@ Route::post('register/confirm/{token}', 'RegistrationController@confirmRegister'
 Route::get('cancel-add', function(){
 	return redirect('/')->with('message', 'Addition of group cancelled.');
 });
-
+Route::get('cancel-adddept', function(){
+	return redirect('/')->with('message', 'Addition of department cancelled.');
+});
 /*
  * ----------Registration Routes
  */
@@ -72,6 +75,18 @@ Route::get('agent/delete/{id}', 'AgentController@delete');
 Route::get('email', function(){
 	return view('emails.verification');
 });
+/*
+ * ---------- Department Routes
+ */
+Route::get('adddept', 'DashboardAdminController@show');
+Route::post('adddept', 'DashboardAdminController@addDept');
+Route::get('validateDepartment', 'DashboardAdminController@validateDepartment');
+Route::get('validateDeptRep', 'DashboardAdminController@validateDeptRep');
+Route::post('admin/flash', function (){
+    Session::flash('message.' . Input::get('status'), Input::get('message') );
+    return ['status' => Input::get('status'), 'message'=> Input::get('message')];
+});
+
 
 
 /*
