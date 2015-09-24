@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Mailers\AppMailer;
+use Mail;
+use Input;
 use App\Group;
 use App\User;
+use App\Departments;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 class DashboardAdminController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth');
+       // $this->middleware('auth');
      /*   $this->middleware('login');*/
-        $this->middleware('admin');
+       // $this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
@@ -31,7 +34,14 @@ class DashboardAdminController extends Controller
         dd(count($users));*/
 
         $user = Auth::user();
-        return view('admin.dashboard-admin')->with('user', $user);
+        $groups = Group::orderBy('group_name')->get();
+        //return $groups;
+                foreach ($groups as $key => $group) {
+                   $supervisor = User::where('group_number', $group->id)
+                                ->where('role', 1)->first();
+                   $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+                   }
+        return view('admin.dashboard-admin')->with('user', $user)->with('groups', $groups);
     }
 
     /**
@@ -84,9 +94,11 @@ class DashboardAdminController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function show()
     {
         //
+        $user = Auth::user();
+        return view('admin.adddept')->with('user', $user);
     }
 
     /**
@@ -95,9 +107,32 @@ class DashboardAdminController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function addDept(Request $request,  AppMailer $mailer)
+
     {
         //
+        $user = new User;
+        $department = new Departments;
+
+        $input = $request->all();
+        $user->first_name = $input['firstname'];
+        $user->last_name = $input['lastname'];
+        $user->email = $input['email'];
+        $user->role = 4;
+        $user->save();
+        $department->dept_name = $input['dept_name'];
+
+        $department->is_member = $input['is_member'];
+        $department->description = $input['description'];
+        $dep_id = User::where('email', $user->email)->firstorFail();
+        $dep_id->departments()->save($department);
+        $mailer->sendEmailConfirmationTo($user);
+          
+
+        return redirect('/')->with('message', 'Department Successfully added.');
+       // return true;
+        //return 'done';
+
     }
 
     /**
@@ -106,23 +141,31 @@ class DashboardAdminController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function edit($id)
+    public function validateDepartment()
     {
+        $validate = null;
+        $input = trim(Input::get('dept_name'));
+
+        $validate = Departments::where('dept_name', $input)->get();
+        
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  Request  $request
-     * @param  int  $id
-     * @return Response
-     */
-    public function update(Request $request, $id)
+    public function validateDeptRep()
     {
+        $validate = null;
+        $input = trim(Input::get('email'));
+
+        $validate = User::where('email', $input)->get();
+        
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *

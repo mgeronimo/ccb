@@ -37,6 +37,6 @@ class Kernel extends HttpKernel
         'public' => \App\Http\Middleware\CheckIfPublicUser::class,
         'login' =>\App\Http\Middleware\LoginRedirect::class,
         'admin' =>\App\Http\Middleware\IfNotAdministrator::class,
-        //'sup.agent' => \App\Http\Middleware\IfNotAgentOrSupervisor::class,
+        'sup_agent' => \App\Http\Middleware\IfNotAgentOrSupervisor::class,
     ];
 }
