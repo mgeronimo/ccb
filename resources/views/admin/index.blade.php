@@ -164,7 +164,7 @@
                 <div class="box-header">
                     <i class="fa fa-building-o"></i>
                     <h3 class="box-title">Departments</h3>
-                    <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    <a class="btn btn-sm btn-primary pull-right" href="adddept" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
                     Add Department</a>
                 </div><!-- /.box-header -->
                 <div class="box-body">
