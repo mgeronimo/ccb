@@ -25,6 +25,7 @@ class DashboardController extends Controller
         $user = Auth::user();
         if($user->role==0){
             $groups = Group::orderBy('group_name')->take(5)->get();
+            $all_groups = Group::orderBy('group_name')->get();
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $depts = Department::orderby('dept_name')->take(5)->get();
             $unassigned_tickets = Ticket::where('assignee', NULL)->get();
@@ -45,10 +46,11 @@ class DashboardController extends Controller
                 $ticket->dept_name = $deptname;
             }
 
-            return view('admin.index')->with('user', $user)
+            return view('dashboard')->with('user', $user)
+                ->with('all_groups', count($all_groups))
                 ->with('groups', $groups)
                 ->with('tickets', $tickets)
-                ->with('unassigned_tickets', count($unassigned_tickets))
+                ->with('all_unassigned', count($unassigned_tickets))
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
                 ->with('cancelled_tickets', count($cancelled_tickets))
@@ -67,6 +69,12 @@ class DashboardController extends Controller
             $count_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
                             ->where('a.role', 2)->where('a.group_number', $user->group_number)
                             ->groupBy('b.ticket_id')->get();
+
+            $all_members = User::where('role', 2)->where('group_number', $user->group_number)->lists('id');
+
+            $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
+            $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
+            $cancelled_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 4)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -92,7 +100,10 @@ class DashboardController extends Controller
                 ->with('all_assigned', $all_assigned)
                 ->with('all_unassigned', count($all_unassigned))
                 ->with('tickets', $tickets)
-                ->with('count_assigned', count($count_assigned));
+                ->with('count_assigned', count($count_assigned))
+                ->with('closed_tickets', count($closed_tickets))
+                ->with('ongoing_tickets', count($ongoing_tickets))
+                ->with('cancelled_tickets', count($cancelled_tickets));
         }
         else if($user->role==2)
         {
@@ -100,6 +111,10 @@ class DashboardController extends Controller
             $assigned_tickets = Ticket::where('assignee', $user->id)->orderBy('created_at', 'ASC')->take(10)->get();
             $all_unassigned = Ticket::where('assignee', NULL)->get();
             $all_assigned = Ticket::where('assignee', $user->id)->get();
+
+            $ongoing_tickets = Ticket::where('assignee', $user->id)->where('status', 2)->get();
+            $closed_tickets = Ticket::where('assignee', $user->id)->where('status', 5)->get();
+            $cancelled_tickets = Ticket::where('assignee', $user->id)->where('status', 4)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -118,7 +133,10 @@ class DashboardController extends Controller
                 ->with('tickets', $tickets)
                 ->with('assigned_tickets', $assigned_tickets)
                 ->with('all_assigned', count($all_assigned))
-                ->with('all_unassigned', count($all_unassigned));
+                ->with('all_unassigned', count($all_unassigned))
+                ->with('closed_tickets', count($closed_tickets))
+                ->with('ongoing_tickets', count($ongoing_tickets))
+                ->with('cancelled_tickets', count($cancelled_tickets));
         }
         else if($user->role==4){
             $dept = Department::where('dept_rep', $user->id)->first();
@@ -128,13 +146,15 @@ class DashboardController extends Controller
             $count_ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
             $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
             $count_closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
+            $count_cancelled_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
             return view('dashboard')->with('user', $user)
                 ->with('new_tickets', $new_tickets)
-                ->with('count_new_tickets', count($count_new_tickets))
-                ->with('ongoing_tickets', $ongoing_tickets)
-                ->with('count_ongoing_tickets', count($count_ongoing_tickets))
-                ->with('closed_tickets', $closed_tickets)
-                ->with('count_closed_tickets', count($count_closed_tickets));
+                ->with('all_unassigned', count($count_new_tickets))
+                ->with('show_ongoing_tickets', $ongoing_tickets)
+                ->with('ongoing_tickets', count($count_ongoing_tickets))
+                ->with('show_closed_tickets', $closed_tickets)
+                ->with('closed_tickets', count($count_closed_tickets))
+                ->with('cancelled_tickets', count($count_cancelled_tickets));
         }
     }
 
