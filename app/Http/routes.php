@@ -128,6 +128,7 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('new-ticket', 'TicketApiController@store');
 	Route::get('agencies', 'DepartmentApiController@index');
 	Route::get('ticket-list', 'TicketApiController@index');
+	Route::get('comments/{id}', 'CommentController@index');
 	Route::post('add-comment/{id}', 'CommentController@storeFromApp');
 	Route::get('cancel-ticket/{id}', 'TicketApiController@cancelTicket');
 	Route::get('announcements', 'AnnouncementApiController@index');
