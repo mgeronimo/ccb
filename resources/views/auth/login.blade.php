@@ -23,7 +23,7 @@
                         </div>
                        
                         <div class="form-bottom">
-		                    <form role="form"  method="POST" class="login-form" action="{{ url('/auth/login') }}">
+		                    <form role="form"  method="POST" class="login-form" action="{{ url('/login') }}">
 		                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                 <div class="form-group">
