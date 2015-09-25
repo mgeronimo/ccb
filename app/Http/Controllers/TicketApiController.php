@@ -139,6 +139,8 @@ class TicketApiController extends Controller
     {
         return array_map(function($tickets){
             return [
+                'id'                    => $tickets['id'],
+                'ticket_id'             => $tickets['ticket_id'],
                 'incident_date_time'    => $tickets['incident_date_time'],
                 'agency'                => $tickets['agency'],
                 'complainee'            => $tickets['complainee'],
