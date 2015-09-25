@@ -48,14 +48,8 @@ class Authenticate
             }
         
 
+           
 
-            if($user->role==3){
-                Auth::logout();
-                return redirect('/login');
-            }
-            else{
-                return redirect('/dashboard');
-            }
         }
 
         return $next($request);

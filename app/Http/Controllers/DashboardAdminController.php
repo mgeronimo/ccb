@@ -20,9 +20,9 @@ class DashboardAdminController extends Controller
 {
      public function __construct()
     {
-       // $this->middleware('auth');
+        $this->middleware('auth');
      /*   $this->middleware('login');*/
-       // $this->middleware('admin');
+        $this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
@@ -178,7 +178,7 @@ class DashboardAdminController extends Controller
      */
     public function announcement()
     {
-        //\
+        //
          $user = Auth::user();
         return view('admin.announcement')->with('user', $user);
     }

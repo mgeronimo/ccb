@@ -131,3 +131,12 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('add-comment/{id}', 'CommentController@storeFromApp');
 	Route::get('cancel-ticket/{id}', 'TicketApiController@cancelTicket');
 });
+
+ Route::get('announcement', 'DashboardAdminController@announcement'); 
+ Route::post('announcement', [ 		
+ 	'as' => 'annoucement', 'uses' => 'DashboardAdminController@saveAnnouncement']); 
+ Route::get('cancel-announcement', function(){
+	return redirect('/')->with('message', 'Announcement cancelled.');
+});
+ Route::post('draftAnnouncement', 'DashboardAdminController@draftAnnouncement');
+
