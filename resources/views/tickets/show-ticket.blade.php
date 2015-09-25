@@ -180,25 +180,77 @@
 		        </div>
 	        @endif
 		</section>
-	</div>
+		<section class="col-lg-12">
+			<div class="row">
+				<div class="col-md-12">
+					<ul class="timeline">
+				        <!-- timeline time label -->
+				        <li class="time-label">
+				          	<span class="bg-gray">
+				            	10 Feb. 2014
+				          	</span>
+				        </li>
+				        <!-- /.timeline-label -->
+				        <!-- timeline item -->
+				        <li>
+				          	<i class="fa fa-comment bg-purple"></i>
+				          	<div class="timeline-item">
+				            	<span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+				            	<h3 class="timeline-header"><a href="#">Support Team</a></h3>
+				            	<div class="timeline-body">
+						            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+						            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+						            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+						            quora plaxo ideeli hulu weebly balihoo...
+						        </div>
+					            <div class="timeline-footer">
+					              	<a class="btn btn-primary btn-xs">Read more</a>
+					              	<a class="btn btn-danger btn-xs">Delete</a>
+					            </div>
+					        </div>
+				        </li>
+				        <li>
+		                  	<i class="fa fa-clock-o bg-gray"></i>
+		                </li>
+				    </ul>
+				</div>
+			</div>
+		    <!-- END timeline item -->
+		    <div class="row" style="margin-top: 10px;">
+		        <div class="col-md-12">
+		            <div class="box box-info">
+		                <div class="box-header">
+		                  	<h3 class="box-title"><i class="fa fa-commenting"></i> Comment</h3>
+		                </div>
+		                <div class="box-body">
+		                	<input type="textarea" class="form-control" placeholder="Enter your comment">
+		                </div>
+		                <div class="box-footer clearfix no-border">
+		                	<button type="submit" class="btn btn-info pull-right">Send</button>
+				        </div>
+				    </div>
+				</div>
+			</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  	<div class="modal-dialog" role="document">
-	    	<div class="modal-content">
-	      		<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
-	      		</div>
-		      	<div class="modal-body">
-		      		@foreach($statuses as $status)
-		        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
-		        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
-		        	@endforeach
-		        	<!--<button type="button" class="btn btn-warning">Pending</button>
-		        	<button type="button" class="btn btn-danger">Cancelled</button>-->
-		    	</div>
-	    	</div>
-	  	</div>
+		    <!-- Modal -->
+			<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  	<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
+			      		</div>
+				      	<div class="modal-body">
+				      		@foreach($statuses as $status)
+				        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
+				        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
+				        	@endforeach
+				        	<!--<button type="button" class="btn btn-warning">Pending</button>
+				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+				    	</div>
+			    	</div>
+			  	</div>
+			</div>
+		</section>
 	</div>
 @stop
