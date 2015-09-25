@@ -15,6 +15,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
 use Validator;
+use App\Http\Requests\CreateUserRequest;
+
 
 class GroupController extends Controller
 {
@@ -202,21 +204,13 @@ class GroupController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function saveAddedAgent(Request $request, $id)
+    public function saveAddedAgent(Request $request, $id, AppMailer $mailer)
     {
         $group = Group::find($id);
         $user = Auth::user();
 
-        $agents = Input::all();
+        $input = $request->all();
         /*$validator = Validator::make($request->all(), [
-            'email'         => 'required|email|unique:users,email',
-        ]);
-        //dd($agents);
-        if ($validator->fails()) {
-            return $validator->errors()->all();
-        }*/
-
-        $validator = Validator::make($request->all(), [
             'email'         => 'required|email|unique:users,email',
         ]);
         //dd($agents);
@@ -224,6 +218,14 @@ class GroupController extends Controller
             return $validator->errors()->all();
         }
 
+        $validator = Validator::make($request->all(), [
+            'email'         => 'required|email|unique:users,email',
+        ]);
+        //dd($agents);*
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }*/
+/*
         $agent = new User;
         $agent->first_name = $agents['first_name'];
         $agent->last_name = $agents['last_name'];
@@ -231,21 +233,26 @@ class GroupController extends Controller
         $agent->group_number = $id;
         $agent->role = 2;
         $agent->save();
+*/
+            $agentlimit = count($input['first_name']);
+            for($i=0; $i<$agentlimit; $i++){
+           /* $duplicate = User::where('email', $input['email'][$i])->get();
 
-        /*for($i=0; $i<count(Input::get('first_name')); $i++){
-            $duplicate = User::where('email', $agents['email'][$i])->get();
-
-            if(count($duplicate)) return back()->withInput()->with('message', 'Email not unique');
+            if(count($duplicate)) return back()->withInput()->with('message', 'Email not unique');*/
 
             $agent = new User;
-            $agent->first_name = $agents['first_name'][$i];
-            $agent->last_name = $agents['last_name'][$i];
-            $agent->email = $agents['email'][$i];
+            $agent->first_name = $input['first_name'][$i];
+            $agent->last_name = $input['last_name'][$i];
+            $agent->email = $input['email'][$i];
             $agent->group_number = $id;
             $agent->role = 2;
             $agent->save();
-        }*/
+            $mailer->sendEmailConfirmationTo($agent);    
+
+        }
+      
         return redirect('/group/'.$id)->with('message', 'Agent successfully added!');
+
         //return view('admin.group.add-agent')->with('group', $group)->with('user', $user);
     }
 
