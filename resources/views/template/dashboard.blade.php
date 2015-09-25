@@ -102,7 +102,8 @@
         <script src='{{ url("assets/bower_components/angular/angular.js") }}'></script>
         <script src='{{ url("assets/bower_components/angular-animate/angular-animate.js") }}'></script>
         <script src='{{ url("assets/bower_components/angular-messages/angular-messages.js") }}'></script>
-
+        <script src='{{ url("assets/bower_components/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js") }}'></script>
+        <script src='{{ url("assets/bower_components/iCheck/icheck.js") }}'></script>
 
         @yield('scripts')
     </body>

@@ -10,21 +10,28 @@ $(document).ready(function(){
     $(".add-more").click(function(e){
         e.preventDefault();
         var addto = "#fields" + next;
-        var addRemove = "#fields" + next ;
         next = next + 1;
-        var newIn = '<div id="fields'+next+'"><input type="text" name="agentfname[]" placeholder="First Name" id="fname'+next+'" required/><input type="text" name="agentlname[]" placeholder="Last Name" id="lname'+next+'" required/><div id="this-aemail-'+next+'"><input type="email" name="agentemail[]" id="email'+next+'"placeholder="Email" required/></div>';
+        var addRemove = "#fields" + next ;
+
+        var newIn = '<div id="fields'+next+'"><input type="text" name="agentfname[]" placeholder="First Name" id="fname'+next+'" required/><input type="text" name="agentlname[]" placeholder="Last Name" id="lname'+next+'" required/><div id="this-aemail-'+next+'"><input type="email" name="agentemail[]" id="email'+next+'"placeholder="Email" required/><a href="#" id="remove' + (next) + '" class="btn btn-danger remove-me" >x</button></a></div>';
         var newInput = $(newIn);
         var removeBtn = '<a href="#" id="remove' + (next ) + '" class="btn btn-danger remove-me" >x</button></a>';
         var removeButton = $(removeBtn);
         $(addto).after(newInput);
-        $(addRemove).after(removeButton);
+ 
         $("#fields" + next).attr('data-source',$(addto).attr('data-source'));
         $("#count").val(next);  
             $('.remove-me').click(function(e){
+              
                 e.preventDefault();
                 var fieldNum = this.id.charAt(this.id.length-1);
                 var fieldID = "#fields" + fieldNum;
                 next--;
+                console.log('iremo'+ next+'fieldNum'+fieldID);
+                if(next<=0){
+                	next=1;
+                }
+
                 $(this).remove();
                 $(fieldID).remove();
             });
@@ -272,12 +279,14 @@ $(document).ready(function(){
 							if(data == 'failed'){
 
 									emailerrors++;
-									console.log('i' +i)
 									var text = document.createTextNode("Agent email already existing.");
+									console.log('i'+i)
 									var element = document.getElementById('this-aemail-'+(i+1));
-								span.appendChild(text);
-								element.appendChild(span);
-							
+									console.log('i'+i)
+									
+									span.appendChild(text);
+									element.appendChild(span);
+
 							}
 							else if(data=='passed' && emailerrors==0 && i+1 >= inputs.length)
 							{
@@ -286,10 +295,11 @@ $(document).ready(function(){
 								$('#msform').submit();
 								return false;
 							}
+
 					});
 				
 				}
-				for (var i = 0; i <inputs.length; i++) 
+				for (var i = 0; i <=inputs.length; i++) 
    				{	 
    					doCheck(i);
    				}

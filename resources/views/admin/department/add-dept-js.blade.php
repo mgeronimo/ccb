@@ -44,8 +44,9 @@ $.ajaxSetup({
 						dept_name: 
 						{
 							required: true,
-							maxlength: 45,
 							nowhitespace: true,
+
+							maxlength: 45,
 						},
 						description: 
 						{
@@ -54,22 +55,28 @@ $.ajaxSetup({
 							nowhitespace: true,
 
 
+
 						},
 						is_national: 
 						{
 							required: true,
-							maxlength: 45,
+							nowhitespace: true,
+
 
 						},
 						firstname: 
 						{
 							required: true,
 							maxlength: 45,
+							nowhitespace: true,
+
 						},
 						lastname: 
 						{
 							required: true,
 							maxlength: 45,
+							nowhitespace: true,
+
 						},
 						email: 
 						{
