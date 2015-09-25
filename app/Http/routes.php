@@ -97,6 +97,11 @@ Route::get('tickets/{id}', 'TicketController@show');
 Route::get('tickets/{id}/assign/{agentid}', 'TicketController@assign');
 Route::get('tickets/{id}/status/{statid}', 'TicketController@changeStatus');
 
+/*
+ * ---------- Comment Routes
+ */
+Route::post('add-comment/{id}', 'CommentController@store');
+
 
 /*Route::controllers([
 	'auth' 		=> 'Auth\AuthController',
@@ -126,4 +131,5 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::post('new-ticket', 'TicketApiController@store');
 	Route::get('agencies', 'DepartmentApiController@index');
 	Route::get('ticket-list', 'TicketApiController@index');
+	Route::post('add-comment/{id}', 'CommentController@storeFromApp');
 });

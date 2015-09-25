@@ -11,6 +11,7 @@ use App\Ticket;
 use App\User;
 use App\Group;
 use App\Status;
+use App\Comment;
 use Auth;
 
 class TicketController extends Controller
@@ -103,13 +104,21 @@ class TicketController extends Controller
                 return redirect('tickets');
             $agent = User::where('id', $ticket->assignee)->first();
             $group = Group::where('id', $agent->group_number)->first();
+            $comments = Comment::where('ticket_id', $ticket->id)->get();
+
+            foreach ($comments as $key => $comment) {
+                $commenter = User::where('id', $comment->user_id)->first();
+                $comment->commenter = $commenter->first_name." ".$commenter->last_name;
+            }
+
             return view('tickets.show-ticket')
                 ->with('user', $user)
                 ->with('ticket', $ticket)
                 ->with('dept', $dept)
                 ->with('agent', $agent)
                 ->with('group', $group)
-                ->with('statuses', $statuses);
+                ->with('statuses', $statuses)
+                ->with('comments', $comments);
         }
     }
 

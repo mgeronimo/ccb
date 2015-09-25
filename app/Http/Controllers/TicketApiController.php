@@ -139,6 +139,8 @@ class TicketApiController extends Controller
     {
         return array_map(function($tickets){
             return [
+                'id'                    => $tickets['id'],
+                'ticket_id'             => $tickets['ticket_id'],
                 'incident_date_time'    => $tickets['incident_date_time'],
                 'agency'                => $tickets['agency'],
                 'complainee'            => $tickets['complainee'],
@@ -146,7 +148,8 @@ class TicketApiController extends Controller
                 'incident_details'      => $tickets['message'],
                 'status'                => $tickets['status'],
                 'date'                  => $tickets['created_at'],
-                'assignee'              => $tickets['assignee']
+                'assignee'              => $tickets['assignee'],
+                'updated_at'            => $tickets['updated_at']
             ];
         }, $tickets->toArray());
     }    

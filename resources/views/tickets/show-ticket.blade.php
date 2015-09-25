@@ -180,25 +180,78 @@
 		        </div>
 	        @endif
 		</section>
-	</div>
+		<section class="col-lg-12">
+			@if($ticket->assignee!=NULL)
+				@if(count($comments)>0)
+					<div class="row">
+						<div class="col-md-12">
+							<ul class="timeline">
+						        <!-- timeline time label -->
+						        @foreach($comments as $comment)
+							        <li class="time-label">
+							          	<span class="bg-gray">
+							            	{{ $comment->created_at->toDateString() }}
+							          	</span>
+							        </li>
+							        <!-- /.timeline-label -->
+							        <!-- timeline item -->
+							        <li>
+							          	<i class="fa fa-comment {{ $comment->commenter_role }} @if($comment->commenter_role < 3) bg-blue @elseif($comment->commenter_role==3) bg-red @elseif($comment->commenter_role == 4) bg-yellow @endif"></i>
+							          	<div class="timeline-item">
+							            	<span class="time"><i class="fa fa-clock-o"></i> {{ $comment->created_at->toTimeString() }}</span>
+							            	<h3 class="timeline-header"><a href="#">{{ $comment->commenter }}</a></h3>
+							            	<div class="timeline-body">
+									            {{ $comment->comment }}
+									        </div>
+								        </div>
+							        </li>
+							    @endforeach
+						        <li>
+				                  	<i class="fa fa-clock-o bg-gray"></i>
+				                </li>
+						    </ul>
+						</div>
+					</div>
+				@endif
+			    <!-- END timeline item -->
+			    <div class="row" style="margin-top: 10px;">
+			        <div class="col-md-12">
+			            <div class="box box-info">
+			                <div class="box-header">
+			                  	<h3 class="box-title"><i class="fa fa-commenting"></i> Comment</h3>
+			                </div>
+			                <form method="POST" action="{{url('/add-comment/'.$ticket->id) }}">
+			                <div class="box-body">
+			                	<input type="textarea" name="ticket_comment" class="form-control" placeholder="Enter your comment">
+			                </div>
+			                <div class="box-footer clearfix no-border">
+			                	<button type="submit" class="btn btn-info pull-right">Send</button>
+					        </div>
+					        </form>
+					    </div>
+					</div>
+				</div>
+			@endif
 
-	<!-- Modal -->
-	<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  	<div class="modal-dialog" role="document">
-	    	<div class="modal-content">
-	      		<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
-	      		</div>
-		      	<div class="modal-body">
-		      		@foreach($statuses as $status)
-		        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
-		        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
-		        	@endforeach
-		        	<!--<button type="button" class="btn btn-warning">Pending</button>
-		        	<button type="button" class="btn btn-danger">Cancelled</button>-->
-		    	</div>
-	    	</div>
-	  	</div>
+		    <!-- Modal -->
+			<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  	<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
+			      		</div>
+				      	<div class="modal-body">
+				      		@foreach($statuses as $status)
+				        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
+				        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
+				        	@endforeach
+				        	<!--<button type="button" class="btn btn-warning">Pending</button>
+				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+				    	</div>
+			    	</div>
+			  	</div>
+			</div>
+		</section>
 	</div>
 @stop
