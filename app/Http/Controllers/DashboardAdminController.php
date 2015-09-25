@@ -12,13 +12,17 @@ use App\User;
 use App\Departments;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Announcement;
+use App\Http\Requests\AnnouncementRequest;
+use App\Http\Requests\AnnouncementDraftRequest;
+
 class DashboardAdminController extends Controller
 {
      public function __construct()
     {
-       // $this->middleware('auth');
+        $this->middleware('auth');
      /*   $this->middleware('login');*/
-       // $this->middleware('admin');
+        $this->middleware('admin');
     }
     /**
      * Display a listing of the resource.
@@ -172,8 +176,30 @@ class DashboardAdminController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function announcement()
     {
         //
+         $user = Auth::user();
+        return view('admin.announcement')->with('user', $user);
+    }
+    public function saveAnnouncement(AnnouncementRequest $request)
+    {
+         $input = $request->all();
+         $announcement = new Announcement;
+         $announcement->subject = $input['subject'];
+         $announcement->message=$input['message'];
+         $announcement->status = 1;
+         $announcement->save();
+         return redirect('/')->with('message','Announcement successfully added');
+    }
+    public function draftAnnouncement(AnnouncementDraftRequest $request)
+    {
+         $input = $request->all();
+         $announcement = new Announcement;
+         $announcement->subject = $input['subject'];
+         $announcement->message=$input['message'];
+         $announcement->status = 0;
+         $announcement->save();
+         return redirect('/')->with('message','Announcement is saved on Draft');
     }
 }

@@ -82,10 +82,7 @@ Route::get('adddept', 'DashboardAdminController@show');
 Route::post('adddept', 'DashboardAdminController@addDept');
 Route::get('validateDepartment', 'DashboardAdminController@validateDepartment');
 Route::get('validateDeptRep', 'DashboardAdminController@validateDeptRep');
-Route::post('admin/flash', function (){
-    Session::flash('message.' . Input::get('status'), Input::get('message') );
-    return ['status' => Input::get('status'), 'message'=> Input::get('message')];
-});
+
 
 
 
@@ -133,4 +130,14 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::get('ticket-list', 'TicketApiController@index');
 	Route::post('add-comment/{id}', 'CommentController@storeFromApp');
 	Route::get('cancel-ticket/{id}', 'TicketApiController@cancelTicket');
+	Route::get('announcements', 'AnnouncementApiController@index');
 });
+
+ Route::get('announcement', 'DashboardAdminController@announcement'); 
+ Route::post('announcement', [ 		
+ 	'as' => 'annoucement', 'uses' => 'DashboardAdminController@saveAnnouncement']); 
+ Route::get('cancel-announcement', function(){
+	return redirect('/')->with('message', 'Announcement cancelled.');
+});
+ Route::post('draftAnnouncement', 'DashboardAdminController@draftAnnouncement');
+
