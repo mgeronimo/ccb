@@ -187,3 +187,123 @@ jQuery(document).on("click",".del-dept", function (event) {
         }
     });
 });
+
+/*
+ * Escalate Ticket
+ */
+jQuery(document).on("click",".escalate", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to escalate this ticket to the representative of the department concerned?",
+        title: "Escalate Ticket",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Escalate",
+                className: "bg-purple",
+                callback: function () {
+                    console.log("Escalated");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Close Ticket
+ */
+jQuery(document).on("click",".close-ticket", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to close this ticket? Once it's done, you won't be able to reopen this anymore and the user who logged this ticket will be notified regarding this change.",
+        title: "Close Ticket",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Closing Ticket",
+                className: "bg-navy",
+                callback: function () {
+                    console.log("Escalated");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Close Ticket
+ */
+jQuery(document).on("click",".cancel-ticket", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to cancel this ticket? You cannot undo this action and the user who logged this ticket will be notified regarding this change.",
+        title: "Cancel Ticket",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Cancelling Ticket",
+                className: "btn-danger",
+                callback: function () {
+                    console.log("Cancelled Ticket");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Reopen Ticket
+ */
+jQuery(document).on("click",".reopen-ticket", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to reopen this ticket? You cannot undo this action and the user who logged this ticket will be notified regarding this change.",
+        title: "Reopen Ticket",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Reopening Ticket",
+                className: "btn-info",
+                callback: function () {
+                    console.log("Reopened");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});

@@ -32,10 +32,18 @@
     @if(Session::has('error'))
         <div class="no-print">
             <div class="callout callout-danger" style="margin-bottom: 0!important;">
-                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get('error') }}
+                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get("error") }}
             </div>
         </div>
     @endif
+    @if ($errors->has('ticket_comment'))
+    	<div class="no-print">
+            <div class="callout callout-danger" style="margin-bottom: 0!important;">
+                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ $errors->first('ticket_comment') }}
+            </div>
+        </div>
+    @endif
+
     <br/>
 	<div class="row">
 		<section class="col-lg-8">
@@ -46,9 +54,9 @@
                     <!--<a class="btn btn-sm btn-default pull-right" href="/addgroup" role="button">
                     Change Status</a>-->
                     @if($ticket->assignee == $user->id)
-	                    <button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#changeStat">
+	                    <!--<button type="button" class="btn btn-sm btn-default pull-right" data-toggle="modal" data-target="#changeStat">
 							<i class="fa fa-check-square"></i> &nbsp;&nbsp;Change Status
-						</button>
+						</button>-->
 					@endif
                 </div><!-- /.box-header -->
                 <div class="box-body incident-body">
@@ -61,10 +69,12 @@
                 	<div class="space"></div>
                 	<h4 class="incident-details">Complainee:</h4>
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
+            		<div class="space"></div>
             		<h4 class="incident-details">Ticket Status:</h4>
             		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span>
+            		<br/><br/>
                 </div>
-                <div class="box-footer clearfix no-border">
+                <div class="box-footer clearfix">
                 </div>
             </div>
 		</section>
@@ -125,7 +135,17 @@
 				                      	<span class="name">
 				                        	{{ $agent->first_name." ".$agent->last_name }}
 				                      	</span>
-				                      	<small>{{ $group->group_name }}</small>
+				                      	@if($user->role < 3 && $user->role > 0) 
+				                      		<small>{{ $group->group_name }}</small>
+				                      	@elseif($user->role == 4) 
+				                      		<small>{{ $dept->dept_name }} Representative</small>
+				                      	@elseif($user->role == 0) 
+				                      		@if(count($group)==0)
+				                      			<small>{{ $dept->dept_name }}</small>
+				                      		@else
+				                      			<small>{{ $group->group_name }}</small>
+				                      		@endif
+				                      	@endif
 			                    	</p>
 			                   	</div>
 			                </div>
@@ -133,27 +153,116 @@
 	                <div class="box-footer clearfix no-border">
 	                </div>
 	            </div>
+	            <div class="box box-solid">
+		            <div class="box-header with-header incident-header">
+		            	<i class="fa fa-cog"></i>
+		                <h2 class="box-title">Actions</h2>
+		            </div><!-- /.box-header -->
+		            <div class="box-body incident-body">
+	        			<div class="col-lg-12">
+	        				@if($ticket->status == 5 && $user->role > 1)
+	        					<em><center>No action available. <br/>Ticket is already closed.</center></em>
+	        				@endif
+	        				@if($ticket->status == 3 && $ticket->assignee == $user->id)
+	        					<em><center>No action available. Ticket is currently waiting for department representative's acceptance.</center></em>
+	        				@endif
+	        				@if($ticket->status == 3 && $user->role == 4 && $user->group_number == NULL)
+	        					<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>
+	        				@endif
+		                    @if($ticket->status == 2)
+		                    	@if($user->role < 4 && $user->role > 0)
+		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/3" role="button">Escalate to Dept. Representative</a>
+		                		@endif
+		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
+		                	@endif
+		                	@if($user->role == 0 && $ticket->status < 4)
+	                			<a class="btn btn-danger btn-block cancel-ticket" href="/tickets/{{ $ticket->id }}/status/4" role="button">Cancel Ticket</a>
+	                		@endif
+	                		@if($ticket->status == 4 && $user->role == 0)
+	        					<em><center>No action available. <br/>Ticket is already cancelled.</center></em>
+	        				@endif
+	                		@if($user->role < 2 && $ticket->status == 5)
+	                			<a class="btn btn-info btn-block reopen-ticket" href="/tickets/{{ $ticket->id }}/status/2" role="button">Reopen Ticket</a>
+	                		@endif
+		                </div>
+		            </div>
+		            <div class="box-footer clearfix no-border">
+		            </div>
+		        </div>
 	        @endif
 		</section>
-	</div>
+		<section class="col-lg-12">
+			@if($ticket->assignee!=NULL)
+				@if(count($comments)>0)
+					<div class="row">
+						<div class="col-md-12">
+							<ul class="timeline">
+						        <!-- timeline time label -->
+						        @foreach($comments as $comment)
+							        <li class="time-label">
+							          	<span class="bg-gray">
+							            	{{ $comment->created_at->toDateString() }}
+							          	</span>
+							        </li>
+							        <!-- /.timeline-label -->
+							        <!-- timeline item -->
+							        <li>
+							          	<i class="fa fa-comment {{ $comment->commenter_role }} @if($comment->commenter_role < 3) bg-blue @elseif($comment->commenter_role==3) bg-red @elseif($comment->commenter_role == 4) bg-yellow @endif"></i>
+							          	<div class="timeline-item">
+							            	<span class="time"><i class="fa fa-clock-o"></i> {{ $comment->created_at->toTimeString() }}</span>
+							            	<h3 class="timeline-header"><a href="#">{{ $comment->commenter }}</a></h3>
+							            	<div class="timeline-body">
+									            {{ $comment->comment }}
+									        </div>
+								        </div>
+							        </li>
+							    @endforeach
+						        <li>
+				                  	<i class="fa fa-clock-o bg-gray"></i>
+				                </li>
+						    </ul>
+						</div>
+					</div>
+				@endif
+			    <!-- END timeline item -->
+			    <div class="row" style="margin-top: 10px;">
+			        <div class="col-md-12">
+			            <div class="box box-info">
+			                <div class="box-header">
+			                  	<h3 class="box-title"><i class="fa fa-commenting"></i> Comment</h3>
+			                </div>
+			                <form method="POST" action="{{url('/add-comment/'.$ticket->id) }}">
+			                <div class="box-body">
+			                	<input type="textarea" name="ticket_comment" class="form-control" placeholder="Enter your comment">
+			                </div>
+			                <div class="box-footer clearfix no-border">
+			                	<button type="submit" class="btn btn-info pull-right">Send</button>
+					        </div>
+					        </form>
+					    </div>
+					</div>
+				</div>
+			@endif
 
-	<!-- Modal -->
-	<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  	<div class="modal-dialog" role="document">
-	    	<div class="modal-content">
-	      		<div class="modal-header">
-	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
-	      		</div>
-		      	<div class="modal-body">
-		      		@foreach($statuses as $status)
-		        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
-		        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
-		        	@endforeach
-		        	<!--<button type="button" class="btn btn-warning">Pending</button>
-		        	<button type="button" class="btn btn-danger">Cancelled</button>-->
-		    	</div>
-	    	</div>
-	  	</div>
+		    <!-- Modal -->
+			<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  	<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
+			      		</div>
+				      	<div class="modal-body">
+				      		@foreach($statuses as $status)
+				        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
+				        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
+				        	@endforeach
+				        	<!--<button type="button" class="btn btn-warning">Pending</button>
+				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+				    	</div>
+			    	</div>
+			  	</div>
+			</div>
+		</section>
 	</div>
 @stop

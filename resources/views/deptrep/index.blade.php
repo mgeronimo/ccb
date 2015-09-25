@@ -30,7 +30,7 @@
         	@if(count($new_tickets)==0)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All Unassigned Tickets</a>
-            @elseif($count_new_tickets>5)
+            @elseif($all_unassigned>5)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All</a>
             @endif
@@ -44,11 +44,11 @@
             <h3 class="box-title">Ongoing Tickets</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-            @if(count($ongoing_tickets)==0)
+            @if(count($show_ongoing_tickets)==0)
                 <em><center>No tickets assigned to you yet.</center></em>
             @else
                 <ul class="todo-list">
-                    @foreach($ongoing_tickets as $ongoing_ticket)
+                    @foreach($show_ongoing_tickets as $ongoing_ticket)
                         <li>
                             <i class="fa fa-circle-o"></i>
                             <!-- todo text -->
@@ -66,10 +66,10 @@
             @endif
         </div>
         <div class="box-footer clearfix no-border">
-            @if(count($ongoing_tickets)==0)
+            @if(count($show_ongoing_tickets)==0)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All Unassigned Tickets</a>
-            @elseif($count_ongoing_tickets>5)
+            @elseif($ongoing_tickets>5)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All</a>
             @endif
@@ -83,11 +83,11 @@
             <h3 class="box-title">Closed Tickets</h3>
         </div><!-- /.box-header -->
         <div class="box-body">
-            @if(count($closed_tickets)==0)
+            @if(count($show_closed_tickets)==0)
                 <em><center>No tickets are closed yet.</center></em>
             @else
                 <ul class="todo-list">
-                    @foreach($closed_tickets as $closed_ticket)
+                    @foreach($show_closed_tickets as $closed_ticket)
                         <li>
                             <i class="fa fa-circle-o"></i>
                             <!-- todo text -->
@@ -105,10 +105,10 @@
             @endif
         </div>
         <div class="box-footer clearfix no-border">
-            @if(count($closed_tickets)==0)
+            @if(count($show_closed_tickets)==0)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All Unassigned Tickets</a>
-            @elseif($count_closed_tickets>5)
+            @elseif($closed_tickets>5)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All</a>
             @endif

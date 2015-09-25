@@ -85,14 +85,24 @@ class TicketApiController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Cancels the ticket
      *
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function cancelTicket($id)
     {
-        //
+        $userid = Input::get('user_id');
+        $user = User::where('id', $userid)->first();
+        $ticket = Ticket::where('id', $id)->first();
+
+        if($user->role == 3 && $user->id == $ticket->created_by){
+            $ticket->status = 4;
+            $ticket->save();
+
+            return response()->json(['msg' => 'Ticket was successfully cancelled!'], 200);
+        }
+        else return response()->json(['error' => 'You have no permission to cancel this ticket!'], 200);
     }
 
     /**
@@ -139,6 +149,8 @@ class TicketApiController extends Controller
     {
         return array_map(function($tickets){
             return [
+                'id'                    => $tickets['id'],
+                'ticket_id'             => $tickets['ticket_id'],
                 'incident_date_time'    => $tickets['incident_date_time'],
                 'agency'                => $tickets['agency'],
                 'complainee'            => $tickets['complainee'],
@@ -146,7 +158,8 @@ class TicketApiController extends Controller
                 'incident_details'      => $tickets['message'],
                 'status'                => $tickets['status'],
                 'date'                  => $tickets['created_at'],
-                'assignee'              => $tickets['assignee']
+                'assignee'              => $tickets['assignee'],
+                'updated_at'            => $tickets['updated_at']
             ];
         }, $tickets->toArray());
     }    

@@ -15,8 +15,8 @@ class CreateTicketComments extends Migration
         Schema::create('ticket_comments', function (Blueprint $table) {
             $table->increments('id');
             $table->String('comment', 255);
-            $table->integer('usr_id');
-            $table->integer('is_ccb_agent');
+            $table->integer('user_id');
+            $table->integer('commenter_role');
             $table->String('attachment');
             $table->timestamps('commented_at');
         });
