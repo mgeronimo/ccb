@@ -175,9 +175,12 @@
 		                		@endif
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif
-		                	@if($user->role == 0 && $ticket->status != 5)
+		                	@if($user->role == 0 && $ticket->status < 4)
 	                			<a class="btn btn-danger btn-block cancel-ticket" href="/tickets/{{ $ticket->id }}/status/4" role="button">Cancel Ticket</a>
 	                		@endif
+	                		@if($ticket->status == 4 && $user->role == 0)
+	        					<em><center>No action available. <br/>Ticket is already cancelled.</center></em>
+	        				@endif
 	                		@if($user->role < 2 && $ticket->status == 5)
 	                			<a class="btn btn-info btn-block reopen-ticket" href="/tickets/{{ $ticket->id }}/status/2" role="button">Reopen Ticket</a>
 	                		@endif

@@ -85,14 +85,24 @@ class TicketApiController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Cancels the ticket
      *
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function cancelTicket($id)
     {
-        //
+        $userid = Input::get('user_id');
+        $user = User::where('id', $userid)->first();
+        $ticket = Ticket::where('id', $id)->first();
+
+        if($user->role == 3 && $user->id == $ticket->created_by){
+            $ticket->status = 4;
+            $ticket->save();
+
+            return response()->json(['msg' => 'Ticket was successfully cancelled!'], 200);
+        }
+        else return response()->json(['error' => 'You have no permission to cancel this ticket!'], 200);
     }
 
     /**
