@@ -32,10 +32,18 @@
     @if(Session::has('error'))
         <div class="no-print">
             <div class="callout callout-danger" style="margin-bottom: 0!important;">
-                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get('error') }}
+                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get("error") }}
             </div>
         </div>
     @endif
+    @if ($errors->has('ticket_comment'))
+    	<div class="no-print">
+            <div class="callout callout-danger" style="margin-bottom: 0!important;">
+                <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ $errors->first('ticket_comment') }}
+            </div>
+        </div>
+    @endif
+
     <br/>
 	<div class="row">
 		<section class="col-lg-8">

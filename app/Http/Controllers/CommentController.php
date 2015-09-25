@@ -28,7 +28,7 @@ class CommentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->with('error', 'Comment cannot be sent empty!');
+            return redirect()->back()->withErrors($validator->errors());
         }
 
         $comment = Comment::create([
