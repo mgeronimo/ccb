@@ -59,6 +59,13 @@
                     <i class="fa fa-building-o"></i> <span>Departments</span>
                 </a>
             </li>
+            @if($user->role==0)
+            <li class="{{ Request::is( 'announcement') ? 'active' : '' }}">
+                <a href="/announcement">
+                    <i class="fa fa-quote-left"></i> <span>Annoucement</span>
+                </a>
+            </li>
+            @endif
         </ul>
     </section>
     <!-- /.sidebar -->
