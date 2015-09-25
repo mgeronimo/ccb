@@ -82,10 +82,7 @@ Route::get('adddept', 'DashboardAdminController@show');
 Route::post('adddept', 'DashboardAdminController@addDept');
 Route::get('validateDepartment', 'DashboardAdminController@validateDepartment');
 Route::get('validateDeptRep', 'DashboardAdminController@validateDeptRep');
-Route::post('admin/flash', function (){
-    Session::flash('message.' . Input::get('status'), Input::get('message') );
-    return ['status' => Input::get('status'), 'message'=> Input::get('message')];
-});
+
 
 
 
