@@ -16,5 +16,6 @@ class GroupTableSeeder extends Seeder
         DB::table('groups')->insert([
             'group_name' => 'Group 1',
         ]);
+
     }
 }
