@@ -307,3 +307,33 @@ jQuery(document).on("click",".reopen-ticket", function (event) {
         }
     });
 });
+
+/*
+ * Delete Announcement
+ */
+jQuery(document).on("click",".delete-announcement", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to delete this post? You cannot undo this action",
+        title: "Delete Post",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Deleting Post",
+                className: "btn-info",
+                callback: function () {
+                    console.log("Deleted");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});

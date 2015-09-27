@@ -61,8 +61,8 @@
             </li>
             @if($user->role==0)
             <li class="{{ Request::is( 'announcement') ? 'active' : '' }}">
-                <a href="/announcement">
-                    <i class="fa fa-quote-left"></i> <span>Annoucement</span>
+                <a href="/announcements">
+                    <i class="fa fa-quote-left"></i> <span>Announcements</span>
                 </a>
             </li>
             @endif
