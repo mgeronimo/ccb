@@ -142,11 +142,11 @@ class DashboardController extends Controller
             $dept = Department::where('dept_rep', $user->id)->first();
             $new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->orderBy('created_at', 'DESC')->take(5)->get();
             $count_new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->get();
-            $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
-            $count_ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
-            $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $user->id)->take(5)->get();
-            $count_closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
-            $count_cancelled_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $user->id)->get();
+            $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $dept->id)->take(5)->get();
+            $count_ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
+            $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $dept->id)->take(5)->get();
+            $count_closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
+            $count_cancelled_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
             return view('dashboard')->with('user', $user)
                 ->with('new_tickets', $new_tickets)
                 ->with('all_unassigned', count($count_new_tickets))

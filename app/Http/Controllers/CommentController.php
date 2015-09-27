@@ -32,6 +32,7 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create([
+            'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
@@ -61,6 +62,7 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create([
+            'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,

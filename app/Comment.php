@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     protected $table = 'ticket_comments';
-    protected $fillable = ['comment', 'user_id', 'commenter_role', 'attachment', 'ticket_id'];
+    protected $fillable = ['is_comment', 'comment', 'user_id', 'commenter_role', 'attachment', 'ticket_id'];
 
     public function getDates()
 	{

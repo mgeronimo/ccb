@@ -51,7 +51,7 @@
             <div class="small-box bg-gray">
                 <div class="inner">
                     <h3>{{ $closed_tickets }}</h3>
-                    <p>Resolved Tickets</p>
+                    <p>Closed Tickets</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-checkmark-circled"></i>
