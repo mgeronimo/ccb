@@ -51,8 +51,8 @@
 			                  	<tr>
 				                    <th width="15%">Group ID</th>
 				                    <th width="35%">Name</th>
-				                    <th width="35%">Supervisor</th>
-				                    <th width="15%">Action</th>
+				                    <th width="27%">Supervisor</th>
+				                    <th width="23%">Action</th>
 			                  	</tr>
 			                </thead>
 			                <tbody>
@@ -65,6 +65,9 @@
 					                		<div class="btn-group">
 					                			<a class="btn btn-info btn-sm" href="group/{{ $group->id }}">
 		                    						<i class="fa fa-search"></i> View
+		                  						</a>
+		                  						<a class="btn btn-warning btn-sm" href="group/edit/{{ $group->id }}">
+		                    						<i class="fa fa-edit"></i> Edit
 		                  						</a>
 		                  						<a class="btn btn-danger btn-sm del-group" href="group/delete/{{ $group->id }}">
 		                    						<i class="fa fa-trash"></i> Delete

@@ -138,7 +138,10 @@ class GroupController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        $group = Group::find($id);
+
+        return view('admin.group.edit-group')->with('user', $user)->with('group', $group);
     }
 
     /**
@@ -148,9 +151,23 @@ class GroupController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $input = $request->all();
+        $validator = Validator::make($request->all(), [
+            'group_name'     => 'required|max:45|unique:groups,group_name',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+            //dd($validator->errors());
+        }
+
+        $group = Group::where('id', $input['group'])->first();
+        $group->group_name = $input['group_name'];
+        $group->save();
+
+        return redirect('/groups')->with('message', 'Successfully changed group name.');
     }
 
     /**
