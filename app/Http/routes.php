@@ -53,6 +53,11 @@ Route::get('users/delete/{id}', 'UserController@destroy');
  */
 Route::get('departments', 'DepartmentController@index');
 Route::get('departments/delete/{id}', 'DepartmentController@destroy');
+Route::get('departments/edit/{id}', 'DepartmentController@edit');
+Route::post('update-dept', 'DepartmentController@update');
+Route::get('cancel-update-dept', function(){
+	return redirect('/departments')->with('message', 'Editing department cancelled.');
+});
 
 /*
  * ---------- Group Routes
@@ -68,6 +73,9 @@ Route::get('validateSupervisorAgent/{counter}', 'GroupController@validateSupervi
 Route::get('group/delete/{id}', 'GroupController@destroy');
 Route::get('group/edit/{id}', 'GroupController@edit');
 Route::post('update-group', 'GroupController@update');
+Route::get('cancel-update-group', function(){
+	return redirect('/groups')->with('message', 'Editing group cancelled.');
+});
 
 
 /*

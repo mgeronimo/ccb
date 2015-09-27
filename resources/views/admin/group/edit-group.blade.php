@@ -4,6 +4,10 @@
 	Edit Group
 @stop
 
+@section('heads')
+    <link rel="stylesheet" href="{{ url('assets/css/styleadmin.css') }}">
+@stop
+
 @section('page-title')
 	{{ $group->group_name }}
 @stop
@@ -40,23 +44,16 @@
         </div>
     @endif
 	<br/>
-	<div class="box box-primary">
-		<div class="box-header with-border">
-			<h3 class="box-title">Edit Group Name</h3>
-		</div>
-		<div class="box-body" style="font-size: 15px">
-			<form method="POST" action="{{url('/update-group')}}">
-				<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				<input type="hidden" name="group" value="{{ $group->id }}">
-				<div class="row">
-					<div class="col-lg-10">
-						<input type="text" name="group_name" class="form-control" value="{{ $group->group_name }}" />
-					</div>
-					<div class="col-lg-2">
-						<button type="submit" name="submit" class="btn btn-block btn-primary" default>Submit</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
+	<form id="msform" method="POST" action="{{url('/update-group')}}">
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
+		<input type="hidden" name="group" value="{{ $group->id }}">
+		<fieldset>
+			<h2 class="fs-title">Edit Group Name</h2>
+			<div id="this-group">
+				<input type="text" name="group_name" placeholder="Group Name" value="{{ $group->group_name }}" required />
+			</div>
+			<a href="/cancel-update-group" class="action-button btndesign" style="padding: 10px 25px">Cancel</a>
+			<button type="submit" name="submit" class="btn btn-primary action-button" default>Submit</button>
+		</fieldset>
+	</form>
 @stop
