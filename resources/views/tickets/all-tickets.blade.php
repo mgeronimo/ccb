@@ -139,6 +139,9 @@
                         </ul>
                     @endif
                 </div>
+                <div class="box-footer clearfix no-border">
+                    {!! $pending_tickets->render() !!}
+                </div>
             </div>
             <div class="box box-default">
                 <div class="box-header">
@@ -166,6 +169,9 @@
                             @endforeach
                         </ul>
                     @endif
+                </div>
+                <div class="box-footer clearfix no-border">
+                    {!! $closed_tickets->render() !!}
                 </div>
             </div>
         </section>
