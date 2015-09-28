@@ -65,9 +65,9 @@
                 		<p>{{ $ticket->message }}</p>
                 	</blockquote>
                 	<h4 class="incident-details">Agency:</h4>
-                	<p class="incident-data"><a href="/department/{{ $dept->id }}">{{ $dept->dept_name }} - {{ $dept->description }}</a></p>
+                	<p class="incident-data">{{ $dept->dept_name }} - {{ $dept->description }}</p>
                 	<div class="space"></div>
-                	<h4 class="incident-details">Complainee:</h4>
+                	<h4 class="incident-details">Person to Address:</h4>
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
             		<div class="space"></div>
             		<h4 class="incident-details">Ticket Status:</h4>
