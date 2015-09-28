@@ -113,6 +113,15 @@ class RegistrationController extends Controller
         $user->update();
         return redirect('/login');     
     }
+     public function confirmPublic($token)
+    {
+        $user = User::where('token', $token)->firstOrFail();
+        $user->is_verified = true;
+        $user->token = null;
+        $user->save();
+        return redirect()->away('http://contactcenterngbayan.gov.ph');     
+    }
+
 
 
         

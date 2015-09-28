@@ -5,7 +5,7 @@ namespace App\Mailers;
 use App\User;
 use Illuminate\Contracts\Mail\Mailer;
 
-class AppMailer{
+class AppStatus{
 
 	protected $mailer;
 
@@ -22,17 +22,10 @@ class AppMailer{
 		$this->mailer = $mailer;
 	}
 
-	public function sendEmailConfirmationTo(User $user)
+	public function sendStatusChanged(User $user)
 	{
-		$this->to = $user->email;
-		if($user->role <= 2)
-		{
-			$this->view = 'emails.verification';
-		}
-		else
-		{
-			$this->view='emails.publicuser';
-		}
+		$this->to = $user->email;	
+		$this->view = 'emails.statuschange';
 		$this->data = compact('user');
 		$this->deliver();
 	}
@@ -42,7 +35,7 @@ class AppMailer{
 		$this->mailer->send($this->view, $this->data, function($message){
 			$message->from($this->from, 'Contact Center ng Bayan')
 
-					->to($this->to)->subject('Verify your account');
+					->to($this->to)->subject('Ticket Status Changed');
 		});
 	}
 } 
