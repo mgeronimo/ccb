@@ -20,23 +20,29 @@ class NotAssignToAgent
         $user = Auth::user();
         $ticket = $request->id;
         $ticket = Ticket::where('id',$request->id)->first();
-        $ticketGroup = User::where('id', $ticket->assignee)->first();
-        if(!$ticketGroup==null)
-        {   $supervisor = User::where('group_number', $ticketGroup->group_number)
-                                 ->where('role',1)->first();}
-        if($user->role == 2 && $ticket->assignee==$user->id)
-        { 
-                return $next($request);
+        if($ticket!=null)
+       { 
+             $ticketGroup = User::where('id', $ticket->assignee)->first();
+               if(!$ticketGroup==null)
+               {   $supervisor = User::where('group_number', $ticketGroup->group_number)
+                                        ->where('role',1)->first();
+               }
+                                      
+               if($user->role == 2 &&( $ticket->assignee==$user->id || $ticket->asignee == null))
+               { 
+                       return $next($request);
+               }
+               else if($user->role == 1 && $ticket->assignee == null)
+               {
+                   return $next($request);
+               }
+               else if($user->role==1 &&  $supervisor->group_number == Auth::user()->group_number)
+               {
+                   // $supervisor->group_number;
+                   return $next($request);
+               }
+           
         }
-        else if($user->role == 1 && $ticket->assignee == null)
-        {
-            return $next($request);
-        }
-        else if($user->role==1 &&  $supervisor->group_number == Auth::user()->group_number)
-        {
-            return $supervisor->group_number;
-            return $next($request);
-        }
-        return redirect('/');
+        return redirect('/tickets');
     }
 }
