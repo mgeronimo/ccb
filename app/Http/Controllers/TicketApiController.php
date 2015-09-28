@@ -12,7 +12,7 @@ use App\User;
 use App\Mailers\AppMailer;
 use Input;
 use Validator;
-
+use App\Mailers\AppTicketSubmitted;
 class TicketApiController extends Controller
 {
     /**
@@ -50,7 +50,7 @@ class TicketApiController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request, AppMailer $mailer)
+    public function store(Request $request, AppTicketSubmitted $mailer)
     {
         $validator = Validator::make($request->all(), [
             'date_time'     => 'required',
@@ -78,8 +78,11 @@ class TicketApiController extends Controller
 
         $prev_ticket->ticket_id = 'M'.date('Y').date('m').'-'.str_pad($prev_ticket->id, 5, 0, STR_PAD_LEFT);
         $prev_ticket->save();
+        $user = User::where('id',$request->input('user_id'))->first();
+        $mailer->sendSubmittedEmail($user);
 
         //Must send email to public user an email as notification regarding the ticket submitted
+        
     
         return response()->json(['msg' => 'Ticket was successfully created!'], 200);
     }

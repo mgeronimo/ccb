@@ -27,6 +27,9 @@ Route::get('confirm', function () {
  */
 Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
 Route::post('register/confirm/{token}', 'RegistrationController@confirmRegister');
+Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
+Route::get('register/confirm/public/{token}', 'RegistrationController@confirmPublic');
+
 
 /*
  * ---------- Redirects to the dashboard with message when group creation was cancelled

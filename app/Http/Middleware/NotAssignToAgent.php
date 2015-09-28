@@ -41,6 +41,10 @@ class NotAssignToAgent
                    // $supervisor->group_number;
                    return $next($request);
                }
+               else if($user->role==0)
+               {
+                 return $next($request);
+               }
            
         }
         return redirect('/tickets');
