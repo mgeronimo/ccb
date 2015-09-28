@@ -134,6 +134,7 @@ class CommentController extends Controller
         return array_map(function($comments){
             return [
                 'id'                => $comments['id'],
+                'is_comment'        => $comments['is_comment'],
                 'comment'           => $comments['comment'],
                 'user_id'           => $comments['user_id'],
                 'commenter_role'    => $comments['commenter_role'],
