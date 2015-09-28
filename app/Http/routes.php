@@ -79,11 +79,16 @@ Route::get('cancel-update-group', function(){
 
 
 /*
- * ---------- Agent Routes
+ * ---------- Agent/User Routes
  */
 Route::get('agent/delete/{id}', 'AgentController@delete');
 Route::get('email', function(){
 	return view('emails.verification');
+});
+Route::get('users/update/{id}', 'UserController@edit');
+Route::post('update-user', 'UserController@update');
+Route::get('cancel-update-user', function(){
+	return redirect('/users')->with('message', 'Editing user cancelled.');
 });
 
 /*

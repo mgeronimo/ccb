@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -91,7 +92,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $user = Auth::user();
+        if($id>1){
+            $update_user = User::where('id', $id)->first();
+
+            return view('admin.user.edit-user')->with('user', $user)->with('update_user', $update_user);
+        }
+        return redirect('users')->with('error', 'Administrator details cannot be edited.');
     }
 
     /**
@@ -101,9 +108,28 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $input = $request->all();
+
+        $validator = Validator::make($request->all(), [
+            'first_name'     => 'required|max:255',
+            'last_name'      => 'required|max:255',
+            'email'          => 'required|max:255|unique:users,email',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $update_user = User::where('id', $input['user'])->first();
+        $update_user->first_name = $input['first_name'];
+        $update_user->last_name = $input['last_name'];
+        $update_user->email = $input['email'];
+
+        $update_user->save();
+
+        return redirect('/users')->with('message', 'Successfully changed user details.');
     }
 
     /**
