@@ -52,10 +52,9 @@
                         <li>
                             <i class="fa fa-circle-o"></i>
                             <!-- todo text -->
-                            <span class="text"><a href="/tickets/{{ $new_ticket->id }}">{{ $ongoing_ticket->ticket_id }}</a> - {{ $ongoing_ticket->subject }}</span><br/>
+                            <span class="text"><a href="/tickets/{{ $ongoing->id }}">{{ $ongoing_ticket->ticket_id }}</a> - {{ $ongoing_ticket->subject }}</span><br/>
                             <!-- Emphasis label -->
                             <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ongoing_ticket->created_at }}</span>
-                            <!--<span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $new_ticket->dept_name }}</span>-->
                             <!-- General tools such as edit or delete-->
                             <div class="tools">
                                 <a href="/tickets/{{ $ongoing_ticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
@@ -91,10 +90,9 @@
                         <li>
                             <i class="fa fa-circle-o"></i>
                             <!-- todo text -->
-                            <span class="text"><a href="/tickets/{{ $new_ticket->id }}">{{ $closed_ticket->ticket_id }}</a> - {{ $closed_ticket->subject }}</span><br/>
+                            <span class="text"><a href="/tickets/{{ $closed_ticket->id }}">{{ $closed_ticket->ticket_id }}</a> - {{ $closed_ticket->subject }}</span><br/>
                             <!-- Emphasis label -->
                             <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $closed_ticket->created_at }}</span>
-                            <!--<span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $new_ticket->dept_name }}</span>-->
                             <!-- General tools such as edit or delete-->
                             <div class="tools">
                                 <a href="/tickets/{{ $closed_ticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>

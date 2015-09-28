@@ -25,6 +25,13 @@
           	</div>
         </div>
 	@endif
+	@if(Session::has('error'))
+		<div class="no-print">
+          	<div class="callout callout-danger" style="margin-bottom: 0!important;">
+            	<i class="fa fa-fw fa-info-circle"></i> &nbsp;{{ Session::get('error') }}
+          	</div>
+        </div>
+	@endif
 	<br/>
 	<div class="box box-primary">
 		<div class="box-header with-border">
@@ -60,6 +67,7 @@
 			</table>
 		</div>
 	</div>
+	<a class="btn btn-primary pull-right" href="edit/{{ $group->id }}" role="button"><i class="fa fa-fw fa-edit"></i> &nbsp;&nbsp;Edit Group</a>
 @stop
 
 

@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
-
+use App\Ticket;
 
 class AgentController extends Controller
 {
@@ -85,8 +85,14 @@ class AgentController extends Controller
     public function delete($id)
     {
         $user = User::find($id);
-        $user->destroy($id);
 
-        return redirect()->back()->with('message', 'Successfully deleted agent.');
+        $tickets = Ticket::where('assignee', $user->id)->get();
+
+        if(count($tickets)>0)
+            return redirect()->back()->with('error', 'User cannot be deleted. There are tickets still assigned to this user.');
+        else{
+            $user->delete();
+            return redirect()->back()->with('message', 'Successfully deleted agent.');
+        }
     }
 }

@@ -15,6 +15,23 @@ use App\User;
 class CommentController extends Controller
 {
     /**
+     * Fetch all comments
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function index($id)
+    {
+        $comments = Comment::where('ticket_id', $id)->get();
+        foreach ($comments as $key => $comment) {
+            $commenter = User::where('id', $comment->user_id)->first();
+            $comment->commenter = $commenter->first_name." ".$commenter->last_name;
+        }
+
+        return response()->json(['data' => $this->transform($comments)], 200);        
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
@@ -32,6 +49,7 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create([
+            'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
@@ -61,6 +79,7 @@ class CommentController extends Controller
         }
 
         $comment = Comment::create([
+            'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
@@ -103,4 +122,24 @@ class CommentController extends Controller
     {
         //
     }
+
+    /**
+     * Transforms comment list
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    private function transform($comments)
+    {
+        return array_map(function($comments){
+            return [
+                'id'                => $comments['id'],
+                'comment'           => $comments['comment'],
+                'user_id'           => $comments['user_id'],
+                'commenter_role'    => $comments['commenter_role'],
+                'created_at'        => $comments['created_at'],
+                'ticket_id'         => $comments['ticket_id']
+            ];
+        }, $comments->toArray());
+    } 
 }

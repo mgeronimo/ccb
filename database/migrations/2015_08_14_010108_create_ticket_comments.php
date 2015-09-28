@@ -14,6 +14,7 @@ class CreateTicketComments extends Migration
     {
         Schema::create('ticket_comments', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('is_comment');
             $table->String('comment', 255);
             $table->integer('user_id');
             $table->integer('commenter_role');
