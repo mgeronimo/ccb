@@ -53,6 +53,11 @@ Route::get('users/delete/{id}', 'UserController@destroy');
  */
 Route::get('departments', 'DepartmentController@index');
 Route::get('departments/delete/{id}', 'DepartmentController@destroy');
+Route::get('departments/edit/{id}', 'DepartmentController@edit');
+Route::post('update-dept', 'DepartmentController@update');
+Route::get('cancel-update-dept', function(){
+	return redirect('/departments')->with('message', 'Editing department cancelled.');
+});
 
 /*
  * ---------- Group Routes
@@ -66,6 +71,11 @@ Route::post('group/{id}/add-agent', 'GroupController@saveAddedAgent');
 Route::get('validateGroup', 'GroupController@validateGroup');
 Route::get('validateSupervisorAgent/{counter}', 'GroupController@validateSupervisorAgent');
 Route::get('group/delete/{id}', 'GroupController@destroy');
+Route::get('group/edit/{id}', 'GroupController@edit');
+Route::post('update-group', 'GroupController@update');
+Route::get('cancel-update-group', function(){
+	return redirect('/groups')->with('message', 'Editing group cancelled.');
+});
 
 
 /*
@@ -75,6 +85,7 @@ Route::get('agent/delete/{id}', 'AgentController@delete');
 Route::get('email', function(){
 	return view('emails.verification');
 });
+
 /*
  * ---------- Department Routes
  */
@@ -82,9 +93,6 @@ Route::get('adddept', 'DashboardAdminController@show');
 Route::post('adddept', 'DashboardAdminController@addDept');
 Route::get('validateDepartment', 'DashboardAdminController@validateDepartment');
 Route::get('validateDeptRep', 'DashboardAdminController@validateDeptRep');
-
-
-
 
 /*
  * ---------- Ticket Routes
@@ -99,29 +107,37 @@ Route::get('tickets/{id}/status/{statid}', 'TicketController@changeStatus');
  */
 Route::post('add-comment/{id}', 'CommentController@store');
 
-
-/*Route::controllers([
-	'auth' 		=> 'Auth\AuthController',
-	'password'	=> 'Auth\PasswordController'
-]);*/
-
 /*
-OAuth Routes
+ * Announcement Routes
  */
-
-/*Route::post('login', function(){
-	$credentials = app()->make('request')->input("credentials");
-    return App\Auth\Proxy::attemptLogin($credentials);
+Route::get('announcements', 'AnnouncementController@allAnnouncements'); 
+Route::get('add-announcement', 'DashboardAdminController@announcement'); 
+Route::get('announcements/{id}', 'AnnouncementController@show');
+Route::post('announcement', [ 		
+ 	'as' => 'annoucement', 'uses' => 'DashboardAdminController@saveAnnouncement']); 
+Route::get('cancel-announcement', function(){
+	return redirect('/announcements')->with('message', 'Adding announcement cancelled.');
+});
+Route::post('draftAnnouncement', 'DashboardAdminController@draftAnnouncement');
+Route::get('announcements/delete/{id}', 'AnnouncementController@delete');
+Route::get('announcements/edit/{id}', 'AnnouncementController@edit');
+Route::post('update-announcement', ['as' => 'update-announcement', 'uses' => 'AnnouncementController@update']);
+Route::post('draftEditedAnnouncement', 'AnnouncementController@draftEditedAnnouncement');
+Route::get('cancel-edit-announcement', function(){
+	return redirect('/announcements')->with('message', 'Editing announcement cancelled.');
 });
 
-Route::post('refresh-token', function() {
-    return App\Auth\Proxy::attemptRefresh();
-});*/
-
+/*
+ * OAuth Route
+ */
 Route::post('oauth/access_token', function() {
     return Response::json(Authorizer::issueAccessToken());
 });
 
+
+/*
+ * API Routes
+ */
 Route::group(['prefix' => 'api/v1'], function(){
 	Route::get('userinfo', 'UserApiController@show');
 	Route::post('register', 'UserApiController@store');
@@ -131,14 +147,6 @@ Route::group(['prefix' => 'api/v1'], function(){
 	Route::get('comments/{id}', 'CommentController@index');
 	Route::post('add-comment/{id}', 'CommentController@storeFromApp');
 	Route::get('cancel-ticket/{id}', 'TicketApiController@cancelTicket');
-	Route::get('announcements', 'AnnouncementApiController@index');
+	Route::get('announcements', 'AnnouncementController@index');
 });
-
- Route::get('announcement', 'DashboardAdminController@announcement'); 
- Route::post('announcement', [ 		
- 	'as' => 'annoucement', 'uses' => 'DashboardAdminController@saveAnnouncement']); 
- Route::get('cancel-announcement', function(){
-	return redirect('/')->with('message', 'Announcement cancelled.');
-});
- Route::post('draftAnnouncement', 'DashboardAdminController@draftAnnouncement');
 

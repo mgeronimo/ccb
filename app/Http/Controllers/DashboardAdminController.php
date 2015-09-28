@@ -179,9 +179,10 @@ class DashboardAdminController extends Controller
     public function announcement()
     {
         //
-         $user = Auth::user();
+        $user = Auth::user();
         return view('admin.announcement')->with('user', $user);
     }
+    
     public function saveAnnouncement(AnnouncementRequest $request)
     {
          $input = $request->all();
@@ -190,7 +191,7 @@ class DashboardAdminController extends Controller
          $announcement->message=$input['message'];
          $announcement->status = 1;
          $announcement->save();
-         return redirect('/')->with('message','Announcement successfully added');
+         return redirect('/announcements')->with('message','Announcement successfully added!');
     }
     public function draftAnnouncement(AnnouncementDraftRequest $request)
     {
@@ -200,6 +201,6 @@ class DashboardAdminController extends Controller
          $announcement->message=$input['message'];
          $announcement->status = 0;
          $announcement->save();
-         return redirect('/')->with('message','Announcement is saved on Draft');
+         return redirect('/announcements')->with('message','Announcement is saved as draft.');
     }
 }

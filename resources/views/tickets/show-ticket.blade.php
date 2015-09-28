@@ -199,23 +199,33 @@
 							<ul class="timeline">
 						        <!-- timeline time label -->
 						        @foreach($comments as $comment)
-							        <li class="time-label">
-							          	<span class="bg-gray">
-							            	{{ $comment->created_at->toDateString() }}
-							          	</span>
-							        </li>
-							        <!-- /.timeline-label -->
-							        <!-- timeline item -->
-							        <li>
-							          	<i class="fa fa-comment {{ $comment->commenter_role }} @if($comment->commenter_role < 3) bg-blue @elseif($comment->commenter_role==3) bg-red @elseif($comment->commenter_role == 4) bg-yellow @endif"></i>
-							          	<div class="timeline-item">
-							            	<span class="time"><i class="fa fa-clock-o"></i> {{ $comment->created_at->toTimeString() }}</span>
-							            	<h3 class="timeline-header"><a href="#">{{ $comment->commenter }}</a></h3>
-							            	<div class="timeline-body">
-									            {{ $comment->comment }}
+						        	@if($comment->is_comment==1)
+								        <li class="time-label">
+								          	<span class="bg-gray">
+								            	{{ $comment->created_at->toDateString() }}
+								          	</span>
+								        </li>
+								        <!-- /.timeline-label -->
+								        <!-- timeline item -->
+								        <li>
+								          	<i class="fa fa-comment {{ $comment->commenter_role }} @if($comment->commenter_role < 3) bg-blue @elseif($comment->commenter_role==3) bg-red @elseif($comment->commenter_role == 4) bg-yellow @endif"></i>
+								          	<div class="timeline-item">
+								            	<span class="time"><i class="fa fa-clock-o"></i> {{ $comment->created_at->toTimeString() }}</span>
+								            	<h3 class="timeline-header"><a href="#">{{ $comment->commenter }}</a></h3>
+								            	<div class="timeline-body">
+										            {{ $comment->comment }}
+										        </div>
 									        </div>
-								        </div>
-							        </li>
+								        </li>
+								    @else
+								    	<li>
+						                  	<i class="fa fa-ticket bg-aqua"></i>
+						                  	<div class="timeline-item bg-log">
+						                    	<span class="time"><i class="fa fa-clock-o"></i> {{ $comment->created_at }}</span>
+						                    	<h3 class="timeline-header no-border"><a href="#">{{ $comment->commenter }}</a>{{ $comment->comment }}</h3>
+						                  	</div>
+						                </li>
+						            @endif
 							    @endforeach
 						        <li>
 				                  	<i class="fa fa-clock-o bg-gray"></i>

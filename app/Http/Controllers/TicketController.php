@@ -135,6 +135,20 @@ class TicketController extends Controller
         $ticket->status = 2;
         $ticket->assignee = $agentid;
         $ticket->save();
+
+        if($user->id==$agentid) $assigned = 'self';
+        else{
+            $assigned = User::where('id', $agentid)->first();
+            $assigned = $assigned->first_name.' '.$assigned->last_name;
+        }
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' assigned '.$assigned.' to this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $id
+        ]);
         
         return redirect()->back()->with('message', 'Successfully assigned agent to ticket!');
     } 
@@ -161,6 +175,14 @@ class TicketController extends Controller
                 $ticket->status = $statid;
                 $ticket->save();
 
+                $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => ' reopened ticket.',
+                    'user_id'           => $user->id,
+                    'commenter_role'    => $user->role,
+                    'ticket_id'         => $id
+                ]);
+
                 return redirect('tickets')->with('message', 'Successfully reopened ticket!');
             }
             else if($ticket->status != 5 && ($user->role == 0 || $user->id == $supervisor->id)){
@@ -175,6 +197,14 @@ class TicketController extends Controller
 
                 $ticket->save();
 
+                $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => ' of '.$dept->dept_name.' is now processing the ticket.',
+                    'user_id'           => $user->id,
+                    'commenter_role'    => $user->role,
+                    'ticket_id'         => $id
+                ]);
+
                 return redirect()->back()->with('message', 'Ticket now in process.');                
             }
             else return redirect()->back()->with('error', "You don't have the permission to reopen a ticket!");
@@ -188,6 +218,16 @@ class TicketController extends Controller
                 if($ticket->status == 2){
                     $ticket->status = $statid;
                     $ticket->save();
+
+                    $dept = Department::where('id', $ticket->dept_id)->first();
+
+                    $log = Comment::create([
+                        'is_comment'        => 0,
+                        'comment'           => ' escalated the ticket to '.$dept->dept_name.'.',
+                        'user_id'           => $user->id,
+                        'commenter_role'    => $user->role,
+                        'ticket_id'         => $id
+                    ]);
 
                     return redirect('tickets')->with('message', 'Successfully escalated ticket to department representative!');
                 }
@@ -204,6 +244,14 @@ class TicketController extends Controller
                 $ticket->status = $statid;
                 $ticket->save();
 
+                $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => ' cancelled the ticket.',
+                    'user_id'           => $user->id,
+                    'commenter_role'    => $user->role,
+                    'ticket_id'         => $id
+                ]);
+
                 return redirect('tickets')->with('message', 'Successfully cancelled ticket!');
             }
             else return redirect('tickets')->with('error', "You have no permission to cancel this ticket!");
@@ -216,6 +264,14 @@ class TicketController extends Controller
             if($user->id == $ticket->assignee || $user->role < 2){
                 $ticket->status = $statid;
                 $ticket->save();
+
+                $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => ' closed the ticket.',
+                    'user_id'           => $user->id,
+                    'commenter_role'    => $user->role,
+                    'ticket_id'         => $id
+                ]);
 
                 return redirect('tickets')->with('message', 'Successfully closed ticket!');
             }

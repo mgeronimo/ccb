@@ -65,7 +65,7 @@
 			                		<td>{{ $department->deptrep_name }}</td>
 			                		<td style="text-align: center">
 				                		<div class="btn-group">
-				                			<a class="btn btn-info btn-sm">
+				                			<a href="/departments/edit/{{ $department->id }}" class="btn btn-info btn-sm">
 	                    						<i class="fa fa-search"></i> Edit
 	                  						</a>
 	                  						<a class="btn btn-danger btn-sm del-dept" href="/departments/delete/{{ $department->id }}">

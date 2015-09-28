@@ -1,7 +1,7 @@
 @extends('template.dashboard')
 
 @section('title')
-    Add Announcement
+    Edit Announcement
 @stop
 
 @section('heads')
@@ -11,12 +11,12 @@
 @stop
 
 @section('page-title')
-    Add Announcements
+    Edit Announcement
 @stop
 
 @section('breadcrumb')
     <li>Annoucements</li>
-    <li class="active">Add Announcements</li>
+    <li class="active">Edit Announcements</li>
 @stop
 
 @section('content')
@@ -39,19 +39,20 @@
         </div><!-- /.box-header -->
         <div class="box-body">
             <div class="form-group">
-                <form role="form" method="POST" action="{{url('announcement')}}">
-                    <input class="form-control" name="subject" placeholder="Title:">
+                <form role="form" method="POST" action="{{url('update-announcement')}}">
+                    <input type="hidden" value="{{ $announcement->id }}" name="id" />
+                    <input class="form-control" name="subject" placeholder="Title:" value="{{ $announcement->subject }}">
             </div>
             <div class="form-group">
-                <textarea id="compose-textarea" name="message" class="form-control" style="height: 300px"></textarea>
+                <textarea id="compose-textarea" name="message" class="form-control" style="height: 300px">{{ $announcement->message }}</textarea>
             </div>
         </div><!-- /.box-body -->
         <div class="box-footer">
             <div class="pull-right">
-                <button type="submit" formaction="draftAnnouncement" name="submit1" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
+                <button type="submit" formaction="/draftEditedAnnouncement" name="submit1" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
                 <button type="submit" name="submit2" class="btn btn-primary" default><i class="fa fa-envelope-o"></i> Send</button>
             </div>
-                <a href="cancel-announcement" class="btn btn-default"><i class="fa fa-times"></i> Discard</a>
+                <a href="/cancel-edit-announcement" class="btn btn-default"><i class="fa fa-times"></i> Discard</a>
             </form>
         </div><!-- /.box-footer -->
     </div><!-- /. box -->
