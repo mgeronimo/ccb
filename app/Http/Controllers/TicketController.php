@@ -13,6 +13,8 @@ use App\Group;
 use App\Status;
 use App\Comment;
 use Auth;
+use App\Mailers\AppStatus;
+use App\Mailers\AppAssigned;
 
 class TicketController extends Controller
 {
@@ -128,14 +130,16 @@ class TicketController extends Controller
      * @param  int  $id, int  $agentid
      * @return Response
      */
-    public function assign($id, $agentid)
+    public function assign($id, $agentid, AppAssigned $mailer)
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
         $ticket->status = 2;
         $ticket->assignee = $agentid;
         $ticket->save();
-        
+        $created_by = User::where('id', $ticket->created_by)->first();
+        $mailer->sendStatus($created_by);
+
         return redirect()->back()->with('message', 'Successfully assigned agent to ticket!');
     } 
 
@@ -145,12 +149,13 @@ class TicketController extends Controller
      * @param  int  $id, int  $agentid
      * @return Response
      */
-    public function changeStatus($id, $statid)
+    public function changeStatus($id, $statid, AppAssigned $mailer)
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
         $assignee = User::where('id', $ticket->assignee)->first();
-
+        $created_by = User::where('id', $ticket->created_by)->first();
+        $mailer->sendStatusChanged($created_by);
         $supervisor = User::where('role', 1)->where('group_number', $assignee->group_number)->first();
 
         /*
@@ -160,7 +165,9 @@ class TicketController extends Controller
             if($ticket->status == 5 && ($user->role == 0 || $user->id == $supervisor->id)){
                 $ticket->status = $statid;
                 $ticket->save();
-
+                //email
+                $status = 'Reopened ticket';
+                $mailer->sendStatusChanged($created_by);
                 return redirect('tickets')->with('message', 'Successfully reopened ticket!');
             }
             else if($ticket->status != 5 && ($user->role == 0 || $user->id == $supervisor->id)){
@@ -174,7 +181,8 @@ class TicketController extends Controller
                 $ticket->assignee = $deptrep->id;
 
                 $ticket->save();
-
+                //email
+                $mailer->sendStatusChanged($created_by);
                 return redirect()->back()->with('message', 'Ticket now in process.');                
             }
             else return redirect()->back()->with('error', "You don't have the permission to reopen a ticket!");
@@ -188,6 +196,8 @@ class TicketController extends Controller
                 if($ticket->status == 2){
                     $ticket->status = $statid;
                     $ticket->save();
+                    //email
+                    $mailer->sendStatusChanged($created_by);
 
                     return redirect('tickets')->with('message', 'Successfully escalated ticket to department representative!');
                 }
@@ -203,6 +213,8 @@ class TicketController extends Controller
             if($user->role == 0){
                 $ticket->status = $statid;
                 $ticket->save();
+                //email
+                $mailer->sendStatusChanged($created_by);
 
                 return redirect('tickets')->with('message', 'Successfully cancelled ticket!');
             }
@@ -216,6 +228,7 @@ class TicketController extends Controller
             if($user->id == $ticket->assignee || $user->role < 2){
                 $ticket->status = $statid;
                 $ticket->save();
+                $mailer->sendStatusChanged($created_by);
 
                 return redirect('tickets')->with('message', 'Successfully closed ticket!');
             }
