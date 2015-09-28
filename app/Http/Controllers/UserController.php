@@ -36,7 +36,7 @@ class UserController extends Controller
 
         $agents = User::where('role', 2)->get();
         foreach ($agents as $key => $agent) {
-            $group = Group::where('id', $supervisor->group_number)->first();
+            $group = Group::where('id', $agent->group_number)->first();
             $agent->group_name = $group->group_name;
         }
 
@@ -145,7 +145,13 @@ class UserController extends Controller
         if($user==NULL)
             return redirect()->back()->with('error', 'User not existing!');
 
-        $tickets = Ticket::where('assignee', $user->id)->get();
+        if($user->role==1){
+            $members = User::where('role', 2)->where('group_number', $user->group_number)->lists('id');
+            $tickets = Ticket::whereIn('assignee', $members)->get();
+        }
+        else{
+            $tickets = Ticket::where('assignee', $user->id)->get();
+        }
 
         if(count($tickets)>0)
             return redirect()->back()->with('error', 'User cannot be deleted. There are tickets still assigned to this user.');
