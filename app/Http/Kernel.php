@@ -38,5 +38,7 @@ class Kernel extends HttpKernel
         'login' =>\App\Http\Middleware\LoginRedirect::class,
         'admin' =>\App\Http\Middleware\IfNotAdministrator::class,
         'sup_agent' => \App\Http\Middleware\IfNotAgentOrSupervisor::class,
+        'notassign_agent' => \App\Http\Middleware\NotAssignToAgent::class,
+
     ];
 }
