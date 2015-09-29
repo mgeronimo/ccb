@@ -193,6 +193,23 @@
 		</section>
 		<section class="col-lg-12">
 			@if($ticket->assignee!=NULL)
+				<div class="row" style="margin-top: 10px;">
+			        <div class="col-md-12">
+			            <div class="box box-info">
+			                <div class="box-header">
+			                  	<h3 class="box-title"><i class="fa fa-commenting"></i> Comment</h3>
+			                </div>
+			                <form method="POST" action="{{url('/add-comment/'.$ticket->id) }}">
+			                <div class="box-body">
+			                	<input type="textarea" name="ticket_comment" class="form-control" placeholder="Enter your comment">
+			                </div>
+			                <div class="box-footer clearfix no-border">
+			                	<button type="submit" class="btn btn-info pull-right">Send</button>
+					        </div>
+					        </form>
+					    </div>
+					</div>
+				</div>
 				@if(count($comments)>0)
 					<div class="row">
 						<div class="col-md-12">
@@ -235,23 +252,7 @@
 					</div>
 				@endif
 			    <!-- END timeline item -->
-			    <div class="row" style="margin-top: 10px;">
-			        <div class="col-md-12">
-			            <div class="box box-info">
-			                <div class="box-header">
-			                  	<h3 class="box-title"><i class="fa fa-commenting"></i> Comment</h3>
-			                </div>
-			                <form method="POST" action="{{url('/add-comment/'.$ticket->id) }}">
-			                <div class="box-body">
-			                	<input type="textarea" name="ticket_comment" class="form-control" placeholder="Enter your comment">
-			                </div>
-			                <div class="box-footer clearfix no-border">
-			                	<button type="submit" class="btn btn-info pull-right">Send</button>
-					        </div>
-					        </form>
-					    </div>
-					</div>
-				</div>
+			    
 			@endif
 
 		    <!-- Modal -->

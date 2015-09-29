@@ -106,7 +106,7 @@ class TicketController extends Controller
                 return redirect('tickets');
             $agent = User::where('id', $ticket->assignee)->first();
             $agency = Department::where('id', $agent->agency_id)->first();
-            $comments = Comment::where('ticket_id', $ticket->id)->get();
+            $comments = Comment::where('ticket_id', $ticket->id)->orderBy('created_at', 'DESC')->get();
 
             foreach ($comments as $key => $comment) {
                 $commenter = User::where('id', $comment->user_id)->first();
