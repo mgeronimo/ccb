@@ -170,7 +170,7 @@ class TicketController extends Controller
         $ticket = Ticket::where('id', $id)->first();
         $assignee = User::where('id', $ticket->assignee)->first();
         $created_by = User::where('id', $ticket->created_by)->first();
-        $mailer->sendStatusChanged($created_by);
+        //$mailer->sendStatusChanged($created_by);
         $supervisor = User::where('role', 1)->where('group_number', $assignee->group_number)->first();
 
         /*
@@ -182,7 +182,7 @@ class TicketController extends Controller
                 $ticket->save();
                 //email
                 $status = 'Reopened ticket';
-                $mailer->sendStatusChanged($created_by);
+                //$mailer->sendStatusChanged($created_by);
 
                 $log = Comment::create([
                     'is_comment'        => 0,
@@ -279,7 +279,7 @@ class TicketController extends Controller
             if($user->id == $ticket->assignee || $user->role < 2){
                 $ticket->status = $statid;
                 $ticket->save();
-                $mailer->sendStatusChanged($created_by);
+                //$mailer->sendStatusChanged($created_by);
 
                 $log = Comment::create([
                     'is_comment'        => 0,
