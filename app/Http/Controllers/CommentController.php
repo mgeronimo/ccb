@@ -22,7 +22,7 @@ class CommentController extends Controller
      */
     public function index($id)
     {
-        $comments = Comment::where('ticket_id', $id)->get();
+        $comments = Comment::where('ticket_id', $id)->where('is_comment', 1)->get();
         foreach ($comments as $key => $comment) {
             $commenter = User::where('id', $comment->user_id)->first();
             $comment->commenter = $commenter->first_name." ".$commenter->last_name;

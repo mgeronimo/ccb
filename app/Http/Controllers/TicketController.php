@@ -38,7 +38,7 @@ class TicketController extends Controller
                 $closed_tickets = Ticket::where('status', 5)->paginate(10);
             }
             else if($user->role == 1){
-                $subs = User::where('role', 2)->where('group_number', $user->group_number)->lists('id');
+                $subs = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
                 $inprocess_tickets = Ticket::where('status', 2)->whereIn('assignee', $subs)->paginate(10);
                 $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $subs)->paginate(10);
                 $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $subs)->paginate(10);
@@ -105,7 +105,7 @@ class TicketController extends Controller
             if($user->role == 2 && $ticket->assignee != $user->id)
                 return redirect('tickets');
             $agent = User::where('id', $ticket->assignee)->first();
-            $group = Group::where('id', $agent->group_number)->first();
+            $agency = Department::where('id', $agent->agency_id)->first();
             $comments = Comment::where('ticket_id', $ticket->id)->get();
 
             foreach ($comments as $key => $comment) {
@@ -118,7 +118,7 @@ class TicketController extends Controller
                 ->with('ticket', $ticket)
                 ->with('dept', $dept)
                 ->with('agent', $agent)
-                ->with('group', $group)
+                ->with('agency', $agency)
                 ->with('statuses', $statuses)
                 ->with('comments', $comments);
         }
@@ -171,7 +171,7 @@ class TicketController extends Controller
         $assignee = User::where('id', $ticket->assignee)->first();
         $created_by = User::where('id', $ticket->created_by)->first();
         //$mailer->sendStatusChanged($created_by);
-        $supervisor = User::where('role', 1)->where('group_number', $assignee->group_number)->first();
+        $supervisor = User::where('role', 1)->where('agency_id', $assignee->agency_id)->first();
 
         /*
          * In Process

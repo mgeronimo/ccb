@@ -24,7 +24,7 @@ class NotAssignToAgent
        { 
              $ticketGroup = User::where('id', $ticket->assignee)->first();
                if(!$ticketGroup==null)
-               {   $supervisor = User::where('group_number', $ticketGroup->group_number)
+               {   $supervisor = User::where('agency_id', $ticketGroup->agency_id)
                                         ->where('role',1)->first();
                }
                                       
@@ -36,7 +36,7 @@ class NotAssignToAgent
                {
                    return $next($request);
                }
-               else if($user->role==1 &&  $supervisor->group_number == Auth::user()->group_number)
+               else if($user->role==1 &&  $supervisor->agency_id == Auth::user()->agency_id)
                {
                    // $supervisor->group_number;
                    return $next($request);
