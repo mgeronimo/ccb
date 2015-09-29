@@ -21,7 +21,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        $announcements = Announcement::all();
+        $announcements = Announcement::where('status', 1)->get();
 
         return response()->json(['data' => $this->transform($announcements)], 200);        
     }

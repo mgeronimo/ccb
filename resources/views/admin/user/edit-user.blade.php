@@ -51,9 +51,15 @@
 					<input type="text" name="first_name" placeholder="User First Name" value="{{ $update_user->first_name }}" required>
 					<input type="text" name="last_name" placeholder="User Last Name" value="{{ $update_user->last_name }}" required>
 					<input type="email" name="email" placeholder="User Email" value="{{ $update_user->email }}" required>
+					{!! Form::select('agency_id', [null=>"--- Select Agency of User ---"] + [0=>"CCB"] + $agencies, $update_user->agency_id, array('name' => 'agency_id', 'class' => 'input-group form-control')) !!}
+					<div class="checkbox">
+						<label class="radio-inline"><strong> User Designation: &nbsp;&nbsp;&nbsp;</strong></label>
+						<label class="radio-inline"><input type="radio" value="1" id="1" name ="role" {{ $update_user->role == 1 ? 'checked' : '' }}>Supervisor</label> &nbsp;&nbsp;
+						<label class="radio-inline"><input type="radio" value="2" id ="2" name ="role" {{ $update_user->role == 2 ? 'checked' : '' }}>Agent</label>
+					</div>
 				</div>
 				<a href="/cancel-update-user" class="action-button btndesign" style="padding: 10px 25px">Cancel</a>
-				<button type="submit" name="submit" class="btn btn-primary action-button" default>Submit</button>
+				<button type="submit" name="submit" class="btn btn-primary action-button" default style="margin-top: 7px; padding: 9px;">Submit</button>
 			</fieldset>
 	</form>
 @stop

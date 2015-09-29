@@ -40,11 +40,14 @@
         <div class="col-md-12">
             <!-- Custom Tabs -->
             <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs col-md-10">
                   	<li class="active"><a href="#tab_1" data-toggle="tab">Supervisors</a></li>
                   	<li><a href="#tab_2" data-toggle="tab">Agents</a></li>
-                  	<li><a href="#tab_3" data-toggle="tab">Department Representatives</a></li>
                 </ul>
+                <div class="col-md-2">
+	                <a class="btn btn-sm btn-primary add-user" href="/add-user" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+	                    Add User</a>
+	            </div>
 	            <div class="tab-content">
 	                <div class="tab-pane active" id="tab_1">
 	                	<div class="box-body">
@@ -54,7 +57,7 @@
 					                  	<tr>
 						                    <th width="15%">User ID</th>
 						                    <th width="35%">Name</th>
-						                    <th width="35%">Group Name</th>
+						                    <th width="35%">Agency</th>
 						                    <th width="15%">Action</th>
 					                  	</tr>
 					                </thead>
@@ -63,7 +66,7 @@
 						                	<tr>
 						                		<td>{{ $supervisor->id }}</td>
 						                		<td>{{ $supervisor->first_name." ".$supervisor->last_name }}</td>
-						                		<td>{{ $supervisor->group_name }}</td>
+						                		<td>{{ $supervisor->agency }}</td>
 						                		<td style="text-align: center">
 							                		<div class="btn-group">
 							                			<a class="btn btn-info btn-sm" href="/users/update/{{ $supervisor->id }}">
@@ -91,7 +94,7 @@
 					                  	<tr>
 						                    <th width="15%">User ID</th>
 						                    <th width="35%">Name</th>
-						                    <th width="35%">Group Name</th>
+						                    <th width="35%">Agency</th>
 						                    <th width="15%">Action</th>
 					                  	</tr>
 					                </thead>
@@ -100,7 +103,7 @@
 						                	<tr>
 						                		<td>{{ $agent->id }}</td>
 						                		<td>{{ $agent->first_name." ".$agent->last_name }}</td>
-						                		<td>{{ $agent->group_name }}</td>
+						                		<td>{{ $agent->agency }}</td>
 						                		<td style="text-align: center">
 							                		<div class="btn-group">
 							                			<a class="btn btn-info btn-sm" href="/users/update/{{ $agent->id }}">
@@ -117,43 +120,6 @@
 					            </table>
 					        @else
 					        	<em><center>There are no agents added yet. <a href="/addgroup">Add a group first!</a></center></em>
-	             			@endif
-				        </div>
-	                </div>
-	                <div class="tab-pane" id="tab_3">
-	                	<div class="box-body">
-	                		@if(count($deptreps)>0)
-			             		<table id="example2" class="table table-bordered table-hover">
-			             			<thead>
-					                  	<tr>
-						                    <th width="15%">User ID</th>
-						                    <th width="35%">Name</th>
-						                    <th width="35%">Department Name</th>
-						                    <th width="15%">Action</th>
-					                  	</tr>
-					                </thead>
-					                <tbody>
-					                	@foreach($deptreps as $deptrep)
-						                	<tr>
-						                		<td>{{ $deptrep->id }}</td>
-						                		<td>{{ $deptrep->first_name." ".$deptrep->last_name }}</td>
-						                		<td>{{ $deptrep->dept_name }}</td>
-						                		<td style="text-align: center">
-							                		<div class="btn-group">
-							                			<a class="btn btn-info btn-sm" href="/users/update/{{ $deptrep->id }}">
-				                    						<i class="fa fa-search"></i> Edit
-				                  						</a>
-				                  						<a class="btn btn-danger btn-sm del-deptrep" href="/users/delete/{{ $deptrep->id }}">
-				                    						<i class="fa fa-trash"></i> Delete
-				                  						</a>
-				                  					</div>
-			                  					</td>
-						                	</tr>
-						                @endforeach
-					                </tbody>
-					            </table>
-					        @else
-					        	<em><center>There are no departments representatives added yet. <a>Add a department first!</a></center></em>
 	             			@endif
 				        </div>
 	                </div>
