@@ -24,8 +24,8 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         if($user->role==0){
-            $groups = Group::orderBy('group_name')->take(5)->get();
-            $all_groups = Group::orderBy('group_name')->get();
+            //$groups = Group::orderBy('group_name')->take(5)->get();
+            //$all_groups = Group::orderBy('group_name')->get();
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $depts = Department::orderby('dept_name')->take(5)->get();
             $unassigned_tickets = Ticket::where('assignee', NULL)->get();
@@ -35,11 +35,11 @@ class DashboardController extends Controller
             $cancelled_tickets = Ticket::where('status', 4)->get();
             $all_depts = Department::orderby('dept_name')->get();
 
-            foreach ($groups as $key => $group) {
+            /*foreach ($groups as $key => $group) {
                $supervisor = User::where('group_number', $group->id)
                             ->where('role', 1)->first();
                $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
-            }
+            }*/
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -47,8 +47,8 @@ class DashboardController extends Controller
             }
 
             return view('dashboard')->with('user', $user)
-                ->with('all_groups', count($all_groups))
-                ->with('groups', $groups)
+                //->with('all_groups', count($all_groups))
+                //->with('groups', $groups)
                 ->with('tickets', $tickets)
                 ->with('all_unassigned', count($unassigned_tickets))
                 ->with('closed_tickets', count($closed_tickets))
@@ -58,19 +58,19 @@ class DashboardController extends Controller
                 ->with('all_depts', count($all_depts));
         }
         else if($user->role==1){
-            $group = Group::where('id', $user->group_number)->first();
-            $members = User::where('role', 2)->where('group_number', $user->group_number)->take(5)->get();
+            //$group = Group::where('id', $user->group_number)->first();
+            $members = User::where('role', 2)->where('agency_id', $user->agency_id)->take(5)->get();
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $all_unassigned = Ticket::where('assignee', NULL)->get();
-            $all_members = User::where('role', 2)->where('group_number', $user->group_number)->get();
+            $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
             $all_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
-                            ->where('a.role', 2)->where('a.group_number', $user->group_number)
+                            ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
                             ->groupBy('b.ticket_id')->take(5)->get();
             $count_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
-                            ->where('a.role', 2)->where('a.group_number', $user->group_number)
+                            ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
                             ->groupBy('b.ticket_id')->get();
 
-            $all_members = User::where('role', 2)->where('group_number', $user->group_number)->lists('id');
+            $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
@@ -94,7 +94,7 @@ class DashboardController extends Controller
             }
 
             return view('dashboard')->with('user', $user)
-                ->with('group', $group)
+                //->with('group', $group)
                 ->with('all_members', count($all_members))
                 ->with('members', $members)
                 ->with('all_assigned', $all_assigned)

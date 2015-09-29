@@ -26,7 +26,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     
-    protected $fillable = ['username', 'email', 'password', 'first_name', 'last_name', 'contact_number', 'role', 'remember_token'];
+    protected $fillable = ['username', 'email', 'password', 'first_name', 'last_name', 'contact_number', 'role', 'agency_id', 'remember_token'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -35,10 +35,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
-    public function group()
+    /*public function group()
     {
         return $this -> belongsTo('App\Group');
-    }
+    }*/
 
     public function supervisor()
     {
@@ -66,7 +66,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $this->save();
     
     }
-      public function departments()
+    
+    public function departments()
     {
         return $this->hasOne('App\Departments', 'dept_rep', 'id');
     }

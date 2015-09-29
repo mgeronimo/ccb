@@ -41,11 +41,6 @@
                 </a>
             </li>
             @if($user->role<1)
-                <li class="{{ Request::is( 'groups') ? 'active' : '' }}">
-                    <a href="/groups">
-                        <i class="fa fa-group"></i> <span>Groups</span>
-                    </a>
-                </li>
                 <li class="{{ Request::is( 'users') ? 'active' : '' }}">
                     <a href="/users">
                         <i class="fa fa-user"></i> <span>Users</span>
