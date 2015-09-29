@@ -136,14 +136,14 @@
 				                        	{{ $agent->first_name." ".$agent->last_name }}
 				                      	</span>
 				                      	@if($user->role < 3 && $user->role > 0) 
-				                      		<small>{{ $group->group_name }}</small>
+				                      		<small>{{ $agency->dept_name }}</small>
 				                      	@elseif($user->role == 4) 
 				                      		<small>{{ $dept->dept_name }} Representative</small>
 				                      	@elseif($user->role == 0) 
-				                      		@if(count($group)==0)
+				                      		@if(count($agency)==0)
 				                      			<small>{{ $dept->dept_name }}</small>
 				                      		@else
-				                      			<small>{{ $group->group_name }}</small>
+				                      			<small>{{ $agency->agency_id }}</small>
 				                      		@endif
 				                      	@endif
 			                    	</p>
@@ -166,7 +166,7 @@
 	        				@if($ticket->status == 3 && $ticket->assignee == $user->id)
 	        					<em><center>No action available. Ticket is currently waiting for department representative's acceptance.</center></em>
 	        				@endif
-	        				@if($ticket->status == 3 && $user->role == 4 && $user->group_number == NULL)
+	        				@if($ticket->status == 3 && $user->role == 4)
 	        					<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>
 	        				@endif
 		                    @if($ticket->status == 2)
