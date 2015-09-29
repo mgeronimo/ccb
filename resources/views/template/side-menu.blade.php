@@ -40,7 +40,7 @@
                     <i class="fa fa-dashboard"></i> <span>Tickets</span>
                 </a>
             </li>
-            @if($user->role<=1)
+            @if($user->role<1)
                 <li class="{{ Request::is( 'groups') ? 'active' : '' }}">
                     <a href="/groups">
                         <i class="fa fa-group"></i> <span>Groups</span>
