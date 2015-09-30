@@ -43,27 +43,33 @@
                 <div class="box-header">
                     <i class="fa fa-hourglass-o"></i>
                     <h3 class="box-title">Closed Tickets</h3>
+                    <div class="box-tools">
+                        <div class="input-group" style="width: 250px;">
+                            <input type="text" id="search" name="table_search" class="form-control input-sm pull-right" placeholder="Search">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body table-responsive no-padding">
                     @if(count($closed_tickets)==0)
                         <em><center>No tickets added yet.</center></em>
                     @else
-                        <ul class="todo-list">
+                        <table id="table" class="table table-hover">
                             @foreach($closed_tickets as $ticket)
-                                <li>
-                                    <i class="fa fa-circle-o"></i>
-                                    <!-- todo text -->
-                                    <span class="text"><a href="/tickets/{{ $ticket->id }}">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
-                                    <!-- Emphasis label -->
-                                    <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
-                                    <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
-                                    <!-- General tools such as edit or delete-->
-                                    <div class="tools">
-                                        <a href="/tickets/{{ $ticket->id }}"><i class="fa fa-info-circle" style="color: #222F4E" role="button"  data-toggle="tooltip" data-placement="top" title="See details"></i></a>
-                                    </div>
-                                </li>
+                                <tr>
+                                    <td class="ticket-td">
+                                        <i class="fa fa-circle-o"></i>
+                                        <!-- todo text -->
+                                        <span class="text"><a href="/tickets/{{ $ticket->id }}">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
+                                        <!-- Emphasis label -->
+                                        <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
+                                        <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
+                                    </td>
+                                </tr>
                             @endforeach
-                        </ul>
+                        </table>
                     @endif
                 </div>
                 <div class="box-footer clearfix no-border">
@@ -80,5 +86,17 @@
         $(document).ready(function() {
             $(".pagination").addClass('pagination-sm no-margin pull-right')
         });
+        // Write on keyup event of keyword input element
+        $("#search").keyup(function(){
+            _this = this;
+            // Show only matching TR, hide rest of them
+            $.each($("#table tbody").find("tr"), function() {
+                console.log($(this).text());
+                if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1)
+                   $(this).hide();
+                else
+                     $(this).show();                
+            });
+        }); 
     </script>
 @stop
