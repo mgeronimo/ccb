@@ -147,6 +147,7 @@ return [
         'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
         Collective\Html\HtmlServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
+        'Intervention\Image\ImageServiceProvider'
 
     ],
 
@@ -198,6 +199,7 @@ return [
         'Authorizer' => 'LucaDegasperi\OAuth2Server\Facades\Authorizer',
         'Form'      => Illuminate\Html\FormFacade::class,
         'Html'      => Illuminate\Html\HtmlFacade::class,
+        'Image'     => 'Intervention\Image\Facades\Image'
     ],
 
 ];
