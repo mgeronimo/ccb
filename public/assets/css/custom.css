@@ -122,3 +122,10 @@ a.to-members{
 .bg-log{
 	background: #E0E5EA !important;
 }
+
+.add-user{
+	display: block;
+    margin: auto;
+    margin-top: 7px;
+    width: 90%;
+}

@@ -29,27 +29,27 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $supervisors = User::where('role', 1)->get();
-        foreach ($supervisors as $key => $supervisor) {
-            $group = Group::where('id', $supervisor->group_number)->first();
-            $supervisor->group_name = $group->group_name;
-        }
-
         $agents = User::where('role', 2)->get();
-        foreach ($agents as $key => $agent) {
-            $group = Group::where('id', $agent->group_number)->first();
-            $agent->group_name = $group->group_name;
+
+        foreach ($supervisors as $key => $supervisor) {
+            if($supervisor->agency_id==0) $supervisor->agency = "CCB";
+            else{
+                $agency = Department::where('id', $supervisor->agency_id)->first();
+                $supervisor->agency = $agency->dept_name;
+            }
         }
 
-        $deptreps = User::where('role', 4)->get();
-        foreach ($deptreps as $key => $deptrep) {
-            $dept = Department::where('dept_rep', $deptrep->id)->first();
-            $deptrep->dept_name = $dept->dept_name;
+        foreach ($agents as $key => $agent) {
+            if($agent->agency_id==0) $agent->agency = "CCB";
+            else{
+                $agency = Department::where('id', $agent->agency_id)->first();
+                $agent->agency = $agency->dept_name;
+            }
         }
 
         return view('admin.user.users')->with('user', $user)
             ->with('supervisors', $supervisors)
-            ->with('agents', $agents)
-            ->with('deptreps', $deptreps);
+            ->with('agents', $agents);
     }
 
     /**
@@ -59,7 +59,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $user = Auth::user();
+        $agencies = Department::lists('dept_name', 'id')->toArray();
+
+        return view('admin.user.add-user')->with('user', $user)->with('agencies', $agencies);
     }
 
     /**
@@ -70,7 +73,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+
+        $user = new User;
+        $user->first_name = $input['first_name'];
+        $user->last_name = $input['last_name'];
+        $user->email = $input['email'];
+        $user->agency_id = $input['agency_id'];
+        $user->role = $input['role'];
+        $user->save();
+
+        return redirect('/')->with('message', 'Successfully created user!');
     }
 
     /**
@@ -93,10 +106,12 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = Auth::user();
+        $agencies = Department::lists('dept_name', 'id')->toArray();
+
         if($id>1){
             $update_user = User::where('id', $id)->first();
 
-            return view('admin.user.edit-user')->with('user', $user)->with('update_user', $update_user);
+            return view('admin.user.edit-user')->with('user', $user)->with('update_user', $update_user)->with('agencies', $agencies);
         }
         return redirect('users')->with('error', 'Administrator details cannot be edited.');
     }
@@ -116,6 +131,8 @@ class UserController extends Controller
             'first_name'     => 'required|max:255',
             'last_name'      => 'required|max:255',
             'email'          => 'required|max:255|unique:users,email',
+            'agency_id'      => 'required',
+            'role'           => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -126,6 +143,8 @@ class UserController extends Controller
         $update_user->first_name = $input['first_name'];
         $update_user->last_name = $input['last_name'];
         $update_user->email = $input['email'];
+        $update_user->agency_id = $input['agency_id'];
+        $update_user->role = $input['role'];
 
         $update_user->save();
 

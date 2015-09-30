@@ -49,7 +49,10 @@ Route::get('register/confirm/{token}', 'RegistrationController@confirmEmail');
  * ----------User Routes
  */
 Route::get('users', 'UserController@index');
+Route::get('add-user', 'UserController@create');
+Route::post('add-user', 'UserController@store');
 Route::get('users/delete/{id}', 'UserController@destroy');
+
 
 /*
  * ----------Department Routes
@@ -65,7 +68,7 @@ Route::get('cancel-update-dept', function(){
 /*
  * ---------- Group Routes
  */
-Route::get('groups', 'GroupController@index');
+/*Route::get('groups', 'GroupController@index');
 Route::get('addgroup', 'GroupController@addGroup');
 Route::post('addgroup', 'GroupController@storeGroup');
 Route::get('group/{id}', 'GroupController@show');
@@ -78,7 +81,7 @@ Route::get('group/edit/{id}', 'GroupController@edit');
 Route::post('update-group', 'GroupController@update');
 Route::get('cancel-update-group', function(){
 	return redirect('/groups')->with('message', 'Editing group cancelled.');
-});
+});*/
 
 
 /*

@@ -12,12 +12,12 @@ class AddFkUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        /*Schema::table('users', function (Blueprint $table) {
             //
             $table->unsignedInteger('group_number')->nullable();
             $table->foreign('group_number')->references('id')->on('groups')->onDelete('cascade')->onUpdate('cascade');
 
-        });
+        });*/
     }
 
     /**
@@ -27,10 +27,10 @@ class AddFkUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        /*Schema::table('users', function (Blueprint $table) {
             //
             $table->dropForeign('users_group_number_foreign');
        
-        });
+        });*/
     }
 }
