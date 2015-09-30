@@ -129,3 +129,12 @@ a.to-members{
     margin-top: 7px;
     width: 90%;
 }
+
+.logs{
+	padding: 10px !important;
+}
+
+.log-time{
+	color: gray;
+    margin-top: 4px;
+}

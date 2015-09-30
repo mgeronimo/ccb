@@ -136,12 +136,16 @@
 				                        	{{ $agent->first_name." ".$agent->last_name }}
 				                      	</span>
 				                      	@if($user->role < 3 && $user->role > 0) 
-				                      		<small>{{ $agency->dept_name }}</small>
+				                      		@if($user->agency_id==0)
+				                      			<small>CCB</small>
+				                      		@else
+				                      			<small>{{ $agency->dept_name }}</small>
+				                      		@endif
 				                      	@elseif($user->role == 4) 
 				                      		<small>{{ $dept->dept_name }} Representative</small>
 				                      	@elseif($user->role == 0) 
 				                      		@if(count($agency)==0)
-				                      			<small>{{ $dept->dept_name }}</small>
+				                      			<small>CCB</small>
 				                      		@else
 				                      			<small>{{ $agency->agency_id }}</small>
 				                      		@endif
@@ -189,7 +193,12 @@
 		            <div class="box-footer clearfix no-border">
 		            </div>
 		        </div>
+		        <br/>
 	        @endif
+	        <div class="col-lg-12">
+	        	<a class="btn bg-navy btn-lg btn-block" role="button" data-toggle="modal" data-target="#changeStat">View Ticket History</a>
+	        </div>
+	        <br/>
 		</section>
 		<section class="col-lg-12">
 			@if($ticket->assignee!=NULL)
@@ -255,19 +264,25 @@
 			    
 			@endif
 
-		    <!-- Modal -->
+		    <!-- Logs Modal -->
 			<div class="modal fade" id="changeStat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			  	<div class="modal-dialog" role="document">
 			    	<div class="modal-content">
 			      		<div class="modal-header">
 			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			        		<h4 class="modal-title" id="myModalLabel">Change Ticket Status</h4>
+			        		<h4 class="modal-title" id="myModalLabel">Ticket Logs</h4>
 			      		</div>
-				      	<div class="modal-body">
-				      		@foreach($statuses as $status)
-				        		<!--<button type="button" class="btn btn-block btn-{{ $status->class }}">{{ $status->status }}</button>-->
-				        		<a class="btn btn-{{ $status->class }} btn-block" href="/tickets/{{ $ticket->id }}/status/{{ $status->id }}" role="button">{{ $status->status }}</a>
-				        	@endforeach
+				      	<div class="modal-body" style="padding-top: 0px">
+				      		<table class="table">
+					      		@foreach($logs as $log)
+					        		<tr>
+					        			<td class="logs"><i class="fa {{$log->class}}" style="color: #3C8DBC"></i> &nbsp;&nbsp;
+					        				{!! '<strong>'.$log->logger.'</strong> '.$log->comment !!}
+					        			</td>
+					        			<td><small class="pull-right log-time"><i class="fa fa-clock-o"></i> {{ $log->created_at }}</small></td>
+					        		</tr>
+					        	@endforeach
+				        	</table>
 				        	<!--<button type="button" class="btn btn-warning">Pending</button>
 				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
 				    	</div>
