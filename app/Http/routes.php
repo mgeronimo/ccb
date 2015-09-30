@@ -109,9 +109,14 @@ Route::get('validateDeptRep', 'DashboardAdminController@validateDeptRep');
  * ---------- Ticket Routes
  */
 Route::get('tickets', 'TicketController@index');
-Route::get('tickets/{id}',['middleware' => 'notassign_agent', 'uses'=> 'TicketController@show']);
+//Route::get('tickets/{id}',['middleware' => 'notassign_agent', 'uses'=> 'TicketController@show']);
+Route::get('tickets/{id}','TicketController@show');
 Route::get('tickets/{id}/assign/{agentid}', 'TicketController@assign');
 Route::get('tickets/{id}/status/{statid}', 'TicketController@changeStatus');
+Route::get('unassigned-tickets', 'TicketController@unassignedTickets');
+Route::get('in-process-tickets', 'TicketController@inProcessTickets');
+Route::get('pending-tickets', 'TicketController@pendingTickets');
+Route::get('closed-tickets', 'TicketController@closedTickets');
 
 /*
  * ---------- Comment Routes

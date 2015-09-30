@@ -18,6 +18,11 @@ use App\Mailers\AppAssigned;
 
 class TicketController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('notassign_agent', ['only' => 'show']);
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -70,6 +75,78 @@ class TicketController extends Controller
                 ->with('closed_tickets', $closed_tickets)
                 ->with('user', $user);
         }
+    }
+
+    /**
+     * Displays list of all unassigned tickets.
+     *
+     * @return Response
+     */
+    public function unassignedTickets()
+    {
+        $user = Auth::user();
+
+        if($user->role > 3)
+            return redirect('/');
+        else{
+            $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+
+        return view('tickets.unassigned')->with('user', $user)->with('unassigned_tickets', $unassigned_tickets);
+    }
+
+    /**
+     * Displays list of all tickets in process.
+     *
+     * @return Response
+     */
+    public function inProcessTickets()
+    {
+        $user = Auth::user();
+
+        if($user->role > 3)
+            return redirect('/');
+        else{
+            $in_process_tickets = Ticket::where('status', 2)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+
+        return view('tickets.in-process')->with('user', $user)->with('in_process_tickets', $in_process_tickets);
+    }
+
+    /**
+     * Displays list of all pending tickets.
+     *
+     * @return Response
+     */
+    public function pendingTickets()
+    {
+        $user = Auth::user();
+
+        if($user->role > 3)
+            return redirect('/');
+        else{
+            $pending_tickets = Ticket::where('status', 3)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+
+        return view('tickets.pending')->with('user', $user)->with('pending_tickets', $pending_tickets);
+    }
+
+    /**
+     * Displays list of all closed tickets.
+     *
+     * @return Response
+     */
+    public function closedTickets()
+    {
+        $user = Auth::user();
+
+        if($user->role > 3)
+            return redirect('/');
+        else{
+            $closed_tickets = Ticket::where('status', 5)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+
+        return view('tickets.closed')->with('user', $user)->with('closed_tickets', $closed_tickets);
     }
 
     /**

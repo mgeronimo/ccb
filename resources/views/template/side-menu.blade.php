@@ -35,10 +35,16 @@
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="{{ Request::is( 'tickets') ? 'active' : '' }}">
-                <a href="/tickets">
+            <li class="{{ Request::is( 'unassigned-tickets') || Request::is( 'in-process-tickets') || Request::is( 'pending-tickets') || Request::is( 'closed-tickets') ? 'active' : '' }} treeview">
+                <a href="#">
                     <i class="fa fa-dashboard"></i> <span>Tickets</span>
                 </a>
+                <ul class="treeview-menu">
+                    <li class="{{ Request::is( 'unassigned-tickets') ? 'active' : '' }}"><a href="unassigned-tickets"><i class="fa fa-circle-o"></i> Unassigned</a></li>
+                    <li class="{{ Request::is( 'in-process-tickets') ? 'active' : '' }}"><a href="in-process-tickets"><i class="fa fa-circle-o"></i> In Process</a></li>
+                    <li class="{{ Request::is( 'pending-tickets') ? 'active' : '' }}"><a href="pending-tickets"><i class="fa fa-circle-o"></i> Pending</a></li>
+                    <li class="{{ Request::is( 'closed-tickets') ? 'active' : '' }}"><a href="closed-tickets"><i class="fa fa-circle-o"></i> Closed</a></li>
+                </ul>
             </li>
             @if($user->role<1)
                 <li class="{{ Request::is( 'users') ? 'active' : '' }}">
