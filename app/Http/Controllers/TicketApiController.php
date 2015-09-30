@@ -11,6 +11,7 @@ use App\Ticket;
 use App\User;
 use App\Mailers\AppMailer;
 use Input;
+use Image;
 use Validator;
 use App\Mailers\AppTicketSubmitted;
 class TicketApiController extends Controller
@@ -77,9 +78,30 @@ class TicketApiController extends Controller
         $prev_ticket = Ticket::orderBy('id', 'DESC')->first();
 
         $prev_ticket->ticket_id = 'M'.date('Y').date('m').'-'.str_pad($prev_ticket->id, 5, 0, STR_PAD_LEFT);
+
+        if(Input::file('file') != NULL){
+            if(Input::file('file')->getSize()<2097152){
+                $quality = 60;  
+                $file=Input::file('file');
+                $rand = rand(0, 1000);
+                $orFile = $file->getClientOriginalName(); 
+                $filename = $rand.$orFile;
+                $img=Image::make($file);
+                $path = public_path('uploads/' . $filename);
+                //$img->resize(300, null, function ($constraint){$constraint->aspectRatio();});
+                $img->save($path, $quality);
+                $fphoto = 'uploads/'.$filename;
+
+                //return 'uploaded';
+            }
+        }
+        else $fphoto = '';
+
+        $prev_ticket->attachments = $fphoto;
+
         $prev_ticket->save();
         $user = User::where('id',$request->input('user_id'))->first();
-        $mailer->sendSubmittedEmail($user);
+        //$mailer->sendSubmittedEmail($user);
 
         //Must send email to public user an email as notification regarding the ticket submitted
         
@@ -162,6 +184,7 @@ class TicketApiController extends Controller
                 'status'                => $tickets['status'],
                 'date'                  => $tickets['created_at'],
                 'assignee'              => $tickets['assignee'],
+                'attachment'           => $tickets['attachments'],
                 'updated_at'            => $tickets['updated_at']
             ];
         }, $tickets->toArray());
