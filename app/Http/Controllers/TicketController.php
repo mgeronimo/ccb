@@ -110,7 +110,7 @@ class TicketController extends Controller
                 $logger = User::where('id', $log->user_id)->first();
                 $log->logger = $logger->first_name." ".$logger->last_name;
             }
-            
+
             return view('tickets.show-ticket')
                 ->with('user', $user)
                 ->with('ticket', $ticket)
@@ -162,6 +162,10 @@ class TicketController extends Controller
         $ticket->status = 2;
         $ticket->assignee = $agentid;
         $ticket->save();
+
+
+        $created_by = User::where('id', $ticket->created_by)->first();
+        //$mailer->sendStatus($created_by);
 
         if($user->id==$agentid) $assigned = 'self';
         else{
@@ -237,6 +241,9 @@ class TicketController extends Controller
 
                 $ticket->save();
 
+                //email
+                //$mailer->sendStatusChanged($created_by);
+
                 $log = Comment::create([
                     'is_comment'        => 0,
                     'comment'           => ' of '.$dept->dept_name.' is now processing the ticket.',
@@ -263,7 +270,7 @@ class TicketController extends Controller
                     $ticket->status = $statid;
                     $ticket->save();
                     //email
-                    $mailer->sendStatusChanged($created_by);
+                    //$mailer->sendStatusChanged($created_by);
 
                     $dept = Department::where('id', $ticket->dept_id)->first();
 
@@ -291,7 +298,7 @@ class TicketController extends Controller
                 $ticket->status = $statid;
                 $ticket->save();
                 //email
-                $mailer->sendStatusChanged($created_by);
+                //$mailer->sendStatusChanged($created_by);
 
                 $log = Comment::create([
                     'is_comment'        => 0,
