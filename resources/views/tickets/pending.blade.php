@@ -6,6 +6,7 @@
 
 @section('heads')
     <link rel="stylesheet" href='{{ url("assets/css/styleadmin.css") }}'>
+    <link rel="stylesheet" href='{{ url("assets/plugins/datatables/dataTables.bootstrap.css") }}'>
 @stop
 
 @section('page-title')
@@ -39,24 +40,22 @@
     <br/>
     <div class="row">
         <section class="col-lg-12">
-            <div class="box box-warning" style="min-height: 360px">
+            <div class="box box-warning" style="min-height: 250px">
                 <div class="box-header">
                     <i class="fa fa-hourglass-end"></i>
                     <h3 class="box-title">Pending Tickets</h3>
-                    <div class="box-tools">
-                        <div class="input-group" style="width: 250px;">
-                            <input type="text" id="search" name="table_search" class="form-control input-sm pull-right" placeholder="Search">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                            </div>
-                        </div>
-                    </div>
                 </div><!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
+                <div class="box-body table-responsive">
                     @if(count($pending_tickets)==0)
-                        <em><center>No tickets added yet.</center></em>
+                        <em class="no-statement"><center style="padding: 60px">No tickets added yet.</center></em>
                     @else
                         <table id="table" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tasks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             @foreach($pending_tickets as $ticket)
                                 <tr>
                                     <td class="ticket-td">
@@ -82,22 +81,15 @@
 
 @section('scripts')
     <script src='{{ url("assets/js/jquery-1.11.1.min.js") }}'></script>]
+    <script src='{{ url("assets/plugins/datatables/jquery.dataTables.min.js") }}'></script>
+    <script src='{{ url("assets/plugins/datatables/dataTables.bootstrap.min.js") }}'></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $(".pagination").addClass('pagination-sm no-margin pull-right')
         });
 
-        // Write on keyup event of keyword input element
-        $("#search").keyup(function(){
-            _this = this;
-            // Show only matching TR, hide rest of them
-            $.each($("#table tbody").find("tr"), function() {
-                console.log($(this).text());
-                if($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1)
-                   $(this).hide();
-                else
-                     $(this).show();                
-            });
-        }); 
+        $(function () {
+            $("#table").DataTable();
+        });
     </script>
 @stop
