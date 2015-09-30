@@ -87,7 +87,7 @@ class TicketApiController extends Controller
                 $orFile = $file->getClientOriginalName(); 
                 $filename = $rand.$orFile;
                 $img=Image::make($file);
-                $path = public_path('uploads/' . $filename);
+                $path = 'uploads/' . $filename;
                 //$img->resize(300, null, function ($constraint){$constraint->aspectRatio();});
                 $img->save($path, $quality);
                 $fphoto = 'uploads/'.$filename;
