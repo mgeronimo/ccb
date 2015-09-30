@@ -45,9 +45,9 @@
                     <i class="fa fa-hourglass-end"></i>
                     <h3 class="box-title">Pending Tickets</h3>
                 </div><!-- /.box-header -->
-                <div class="box-body table-responsive">
+                <div class="box-body">
                     @if(count($pending_tickets)==0)
-                        <em class="no-statement"><center style="padding: 60px">No tickets added yet.</center></em>
+                        <em class="no-statement"><center style="padding: 40px">No tickets added yet.</center></em>
                     @else
                         <table id="table" class="table table-hover">
                             <thead>
@@ -70,9 +70,6 @@
                             @endforeach
                         </table>
                     @endif
-                </div>
-                <div class="box-footer clearfix no-border">
-                    {!! $pending_tickets->render() !!}
                 </div>
             </div>
         </section>
