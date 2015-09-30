@@ -148,3 +148,17 @@ a.to-members{
 .ticket-td{
 	padding: 10px 20px 20px 20px !important;
 }
+
+.no-statement{
+	padding: 60px;
+    font-size: 18px;
+    color: gray;
+}
+
+.dataTables_empty{
+	text-align: center;
+    font-style: italic;
+    color: #D2082A;
+    font-size: 14px;
+    padding: 20px;
+}

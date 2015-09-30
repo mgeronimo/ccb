@@ -40,10 +40,10 @@
                     <i class="fa fa-dashboard"></i> <span>Tickets</span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="{{ Request::is( 'unassigned-tickets') ? 'active' : '' }}"><a href="unassigned-tickets"><i class="fa fa-circle-o"></i> Unassigned</a></li>
-                    <li class="{{ Request::is( 'in-process-tickets') ? 'active' : '' }}"><a href="in-process-tickets"><i class="fa fa-circle-o"></i> In Process</a></li>
-                    <li class="{{ Request::is( 'pending-tickets') ? 'active' : '' }}"><a href="pending-tickets"><i class="fa fa-circle-o"></i> Pending</a></li>
-                    <li class="{{ Request::is( 'closed-tickets') ? 'active' : '' }}"><a href="closed-tickets"><i class="fa fa-circle-o"></i> Closed</a></li>
+                    <li class="{{ Request::is( 'unassigned-tickets') ? 'active' : '' }}"><a href="{{ url('unassigned-tickets') }}"><i class="fa fa-circle-o"></i> Unassigned</a></li>
+                    <li class="{{ Request::is( 'in-process-tickets') ? 'active' : '' }}"><a href="{{ url('in-process-tickets') }}"><i class="fa fa-circle-o"></i> In Process</a></li>
+                    <li class="{{ Request::is( 'pending-tickets') ? 'active' : '' }}"><a href="{{ url('pending-tickets') }}"><i class="fa fa-circle-o"></i> Pending</a></li>
+                    <li class="{{ Request::is( 'closed-tickets') ? 'active' : '' }}"><a href="{{ url('closed-tickets') }}"><i class="fa fa-circle-o"></i> Closed</a></li>
                 </ul>
             </li>
             @if($user->role<1)
