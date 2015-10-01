@@ -43,7 +43,7 @@
                     <i class="ion ion-plus-round"></i>
                 </div>
                 <!-- change into reports link when a reports page is already existing -->
-                <a href="tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="unassigned-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
         <div class="col-lg-3 col-xs-6">
@@ -57,7 +57,7 @@
                     <i class="ion ion-checkmark-circled"></i>
                 </div>
                 <!-- change into reports link when a reports page is already existing -->
-                <a href="tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/closed-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
         <div class="col-lg-3 col-xs-6">
@@ -65,21 +65,21 @@
             <div class="small-box bg-aqua">
                 <div class="inner">
                     <h3>{{ $ongoing_tickets }}</h3>
-                    <p>Ongoing Tickets</p>
+                    <p>Tickets In Process</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-gear-a"></i>
                 </div>
                 <!-- change into reports link when a reports page is already existing -->
-                <a href="tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/in-process-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
         <div class="col-lg-3 col-xs-6">
             <!-- small box -->
-            <div class="small-box bg-red">
+            <div class="small-box bg-orange">
                 <div class="inner">
-                    <h3>{{ $cancelled_tickets }}</h3>
-                    <p>Cancelled Tickets</p>
+                    <h3>{{ $pending_tickets }}</h3>
+                    <p>Pending Tickets</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-close-round"></i>

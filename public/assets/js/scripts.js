@@ -189,6 +189,36 @@ jQuery(document).on("click",".del-dept", function (event) {
 });
 
 /*
+ * Pending Ticket
+ */
+jQuery(document).on("click",".pending", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to change the ticket status into pending?",
+        title: "Change Ticket Status to Pending",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue",
+                className: "btn-warning",
+                callback: function () {
+                    console.log("Pending");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
  * Escalate Ticket
  */
 jQuery(document).on("click",".escalate", function (event) {
@@ -249,7 +279,7 @@ jQuery(document).on("click",".close-ticket", function (event) {
 });
 
 /*
- * Close Ticket
+ * Cancel Ticket
  */
 jQuery(document).on("click",".cancel-ticket", function (event) {
     event.preventDefault();

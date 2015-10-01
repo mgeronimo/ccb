@@ -174,16 +174,15 @@
 	        				@if($ticket->status == 5 && $user->role > 1)
 	        					<em><center>No action available. <br/>Ticket is already closed.</center></em>
 	        				@endif
-	        				@if($ticket->status == 3 && $ticket->assignee == $user->id)
-	        					<em><center>No action available. Ticket is currently waiting for department representative's acceptance.</center></em>
+	        				@if($ticket->status == 3)
+	        					<em><center>No action available. Ticket is currently waiting for public user's response.</center></em>
 	        				@endif
-	        				@if($ticket->status == 3 && $user->role == 4)
-	        					<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>
-	        				@endif
+	        					<!--<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>-->
 		                    @if($ticket->status == 2)
 		                    	@if($user->role < 4 && $user->role > 0)
-		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/3" role="button">Escalate to Dept. Representative</a>
+		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/6" role="button">Escalate to Agency</a>
 		                		@endif
+	                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Change to Pending</a>
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif
 		                	@if($user->role == 0 && $ticket->status < 4)

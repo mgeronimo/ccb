@@ -34,7 +34,7 @@ class TicketController extends Controller
 
         if($user->role > 3)
             return redirect('/');
-        else{
+        else if($user->agency_id==0){
             $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
             
             if($user->role == 0){
@@ -337,22 +337,22 @@ class TicketController extends Controller
                     //email
                     //$mailer->sendStatusChanged($created_by);
 
-                    $dept = Department::where('id', $ticket->dept_id)->first();
+                    //$dept = Department::where('id', $ticket->dept_id)->first();
 
                     $log = Comment::create([
                         'is_comment'        => 0,
-                        'comment'           => ' escalated the ticket to '.$dept->dept_name.'.',
+                        'comment'           => ' changed ticket status to pending.',
                         'user_id'           => $user->id,
                         'commenter_role'    => $user->role,
                         'ticket_id'         => $id,
                         'class'             => 'fa-ticket'
                     ]);
 
-                    return redirect('tickets')->with('message', 'Successfully escalated ticket to department representative!');
+                    return redirect('tickets')->with('message', 'Successfully changed ticket status to pending!');
                 }
-                return redirect('tickets')->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
+                return redirect('tickets')->with('error', "This ticket's cannot be changed to pending. Only tickets in process can be changed.");
             }
-            else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
+            else return redirect()->back()->with('error', "You don't have the permission to change the status of this ticket!");
         }
 
         /*
@@ -400,6 +400,37 @@ class TicketController extends Controller
                 return redirect('tickets')->with('message', 'Successfully closed ticket!');
             }
             else return redirect('tickets')->with('error', 'You have no permission to close this ticket!');
+        }
+
+        /*
+         * Escalate
+         */
+        else if($statid==6){
+            if($user->id == $ticket->assignee || $user->id == $supervisor->id){
+                if($ticket->status == 1)
+                    return redirect()->back()->with('error', "Ticket has to be assigned first before it can be escalated!");
+                else if($ticket->status == 2){
+                    $ticket->assignee = NULL;
+                    $ticket->save();
+
+                    $dept = Department::where('id', $ticket->dept_id)->first();
+
+                    $log = Comment::create([
+                        'is_comment'        => 0,
+                        'comment'           => ' escalated the ticket to '.$dept->dept_name.'.',
+                        'user_id'           => $user->id,
+                        'commenter_role'    => $user->role,
+                        'ticket_id'         => $id,
+                        'class'             => 'fa-ticket'
+                    ]);
+
+                    return redirect('tickets')->with('message', 'Successfully escalated ticket!');
+                }
+                else if($ticket->status > 2)
+                    return redirect('tickets')->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
+
+            }
+            else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
         }
 
     }    
