@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDepartmentsTable extends Migration
+class CreateRegionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,14 @@ class CreateDepartmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('region', function (Blueprint $table) {
             $table->increments('id');
-            $table->String('dept_name', 45);
-            $table->integer('is_member');
             $table->integer('regcode')->unsigned();
-            $table->integer('provcode')->nullable()->unsigned();
+            $table->string('regname');
+            $table->timestamps();
         });
     }
+
     /**
      * Reverse the migrations.
      *
@@ -27,6 +27,6 @@ class CreateDepartmentsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('departments');
+        Schema::drop('region');
     }
 }

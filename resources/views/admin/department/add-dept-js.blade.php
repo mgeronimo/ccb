@@ -5,6 +5,23 @@ $.ajaxSetup({
 });
 </script>
 <script type="text/javascript">
+ 
+ $(".checkmember").change(function() {
+ 	var ccb = $('input[name=is_member]:checked').val();
+ 	 console.log(ccb);
+ 	if(ccb==1)
+ 	{	
+ 		$('#next').html('Next');
+
+ 	}
+ 	else if(ccb==0)
+ 	{	
+ 		$('#next').html('Submit');
+
+ 	}
+ });
+</script>
+<script type="text/javascript">
 //jQuery time
 	var current_fs, next_fs, previous_fs; //fieldsets
 	var left, opacity, scale; //fieldset properties which we will animate
@@ -90,9 +107,9 @@ $.ajaxSetup({
 						{
 							required: "Department name is required.",
 						},
-						description:
+						regname:
 						{
-							required: "Description is required."
+							required: "Region is required"
 						},
 						is_national:
 						{
@@ -117,40 +134,47 @@ $.ajaxSetup({
 		
 		if(form.valid()==true)
 		{
+			var ccb = $('input[name=is_member]:checked').val();
 			a = $(this);
 			if(fcounter==0){
 				$.get( "/validateDepartment?dept_name="+document.getElementsByName('dept_name')[0].value, function( data ) {
 						if(data == 'passed'){
-							console.log('data');
-							if(animating) return false;
-							animating = true;
-				
 
-							current_fs = a.parent();
-							next_fs = a.parent().next();
-	
-							$("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
-	
-							next_fs.show(100); 
+							console.log('data');
+							if(ccb == 1)
+							{
+								if(animating) return false;
+								animating = true;
+							    current_fs = a.parent();
+							    next_fs = a.parent().next();
+							    $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");	
+							    next_fs.show(100); 
 								fcounter++;
-							current_fs.animate({opacity: 0}, {
-								step: function(now, mx) {
+							    current_fs.animate({opacity: 0}, {
+									step: function(now, mx) {
 		
-									scale = 1 - (1 - now) * 0.2;
-									left = (now * 50)+"%";
-									opacity = 1 - now;
-									current_fs.css({'transform': 'scale('+scale+')'});
-									next_fs.css({'left': left, 'opacity': opacity});
-								}, 
-								duration: 800, 
-								complete: function(){
-									current_fs.hide();
-									animating = false;
+										scale = 1 - (1 - now) * 0.2;
+										left = (now * 50)+"%";
+										opacity = 1 - now;
+										current_fs.css({'transform': 'scale('+scale+')'});
+										next_fs.css({'left': left, 'opacity': opacity});
+									}, 
+									duration: 800, 
+									complete: function(){
+										current_fs.hide();
+										animating = false;
 								}, 
 		//this comes from the custom easing plugin
 								easing: 'easeInOutBack'
 							
-							});
+								});
+
+							}
+							else if(ccb==0)
+							{
+								$('#fdesign').submit();
+								return false;
+							}
 
 						}
 						else {
