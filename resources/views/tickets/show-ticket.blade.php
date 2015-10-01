@@ -71,8 +71,15 @@
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
             		<div class="space"></div>
             		<h4 class="incident-details">Ticket Status:</h4>
-            		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span>
-            		<br/><br/>
+            		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span><br/>
+            		@if($ticket->attachments!='')
+	            		<div style="height: 15px;"></div>
+	            		<h4 class="incident-details">Attachment:</h4>
+	            		<p>
+	            			<img src="{{ url($ticket->attachments) }}" style="max-width: 100%;">
+	            		</p>
+	            	@endif
+            		<br/>
                 </div>
                 <div class="box-footer clearfix">
                 </div>
