@@ -29,10 +29,10 @@
         </div>
         <div class="box-footer clearfix no-border">
         	@if(count($tickets)==0)
-                <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
-                See All Unassigned Tickets</a>
+                <a class="btn btn-sm btn-default pull-right" href="in-process-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                See All Assigned Tickets</a>
             @elseif($all_unassigned>10)
-                <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="unassigned-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All</a>
             @endif
         </div>

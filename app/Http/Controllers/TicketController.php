@@ -34,7 +34,7 @@ class TicketController extends Controller
 
         if($user->role > 3)
             return redirect('/');
-        else{
+        else if($user->agency_id==0){
             $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
             
             if($user->role == 0){
@@ -89,7 +89,10 @@ class TicketController extends Controller
         if($user->role > 3)
             return redirect('/');
         else{
-            $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
+            if($user->agency_id==0)
+                $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
+            else
+                $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 2)->where('dept_id', $user->agency_id)->orderBy('created_at', 'DESC')->paginate(20);
         }
 
         return view('tickets.unassigned')->with('user', $user)->with('unassigned_tickets', $unassigned_tickets);
@@ -103,9 +106,13 @@ class TicketController extends Controller
     public function inProcessTickets()
     {
         $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
         if($user->role > 3)
             return redirect('/');
+        else if($user->role!=0){
+            $in_process_tickets = Ticket::where('status', 2)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
         else{
             $in_process_tickets = Ticket::where('status', 2)->orderBy('created_at', 'DESC')->paginate(20);
         }
@@ -121,9 +128,13 @@ class TicketController extends Controller
     public function pendingTickets()
     {
         $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
         if($user->role > 3)
             return redirect('/');
+        else if($user->role!=0){
+            $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
         else{
             $pending_tickets = Ticket::where('status', 3)->orderBy('created_at', 'DESC')->paginate(20);
         }
@@ -139,9 +150,13 @@ class TicketController extends Controller
     public function closedTickets()
     {
         $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
         if($user->role > 3)
             return redirect('/');
+        else if($user->role!=0){
+            $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
         else{
             $closed_tickets = Ticket::where('status', 5)->orderBy('created_at', 'DESC')->paginate(20);
         }
@@ -175,7 +190,11 @@ class TicketController extends Controller
         ]);
 
         if($ticket->assignee==NULL){
-            $agents = User::where('is_verified', 1)->where('role', 2)->get();
+            if($user->role!=0)
+                $agents = User::where('is_verified', 1)->where('role', 2)->where('agency_id', $user->agency_id)->get();
+            else
+                $agents = User::where('is_verified', 1)->where('role', 2)->get();
+
             $logs = Comment::where('ticket_id', $ticket->id)->where('is_comment', 0)->get();
 
             foreach($agents as $agent){
@@ -235,7 +254,18 @@ class TicketController extends Controller
     public function assign($id, $agentid, AppAssigned $mailer)
     {
         $user = Auth::user();
+        $assigned_agent = User::where('id', $agentid)->first();
+
+        if($user->role==1 && $user->agency_id != $assigned_agent->agency_id)
+            return redirect()->back()->with('error', "You have no permission to assign this ticket to an agent that is not a member of your group!");
+        else if($user->role==2 && $user->id != $agentid)
+            return redirect()->back()->with('error', "You have no permission to assign this ticket to anybody but your self!");
+
         $ticket = Ticket::where('id', $id)->first();
+
+        if($ticket->status == 2 && $ticket->assignee == NULL && $ticket->dept_id != $user->agency_id)
+            return redirect()->back()->with('error', 'You have no permission to this ticket! Only the people that belongs to the agency where it is associated has the permission to take action on this ticket.');
+
         $ticket->status = 2;
         $ticket->assignee = $agentid;
         $ticket->save();
@@ -245,8 +275,7 @@ class TicketController extends Controller
 
         if($user->id==$agentid) $assigned = 'self';
         else{
-            $assigned = User::where('id', $agentid)->first();
-            $assigned = $assigned->first_name.' '.$assigned->last_name;
+            $assigned = $assigned_agent->first_name.' '.$assigned_agent->last_name;
         }
 
         $log = Comment::create([
@@ -296,7 +325,7 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-                return redirect('tickets')->with('message', 'Successfully reopened ticket!');
+                return redirect('in-process-tickets')->with('message', 'Successfully reopened ticket!');
             }
             else if($ticket->status != 5 && ($user->role == 0 || $user->id == $supervisor->id)){
                 return redirect()->back()->with('error', 'The ticket you are reopening is not closed in the first place!');
@@ -337,22 +366,22 @@ class TicketController extends Controller
                     //email
                     //$mailer->sendStatusChanged($created_by);
 
-                    $dept = Department::where('id', $ticket->dept_id)->first();
+                    //$dept = Department::where('id', $ticket->dept_id)->first();
 
                     $log = Comment::create([
                         'is_comment'        => 0,
-                        'comment'           => ' escalated the ticket to '.$dept->dept_name.'.',
+                        'comment'           => ' changed ticket status to pending.',
                         'user_id'           => $user->id,
                         'commenter_role'    => $user->role,
                         'ticket_id'         => $id,
                         'class'             => 'fa-ticket'
                     ]);
 
-                    return redirect('tickets')->with('message', 'Successfully escalated ticket to department representative!');
+                    return redirect('pending-tickets')->with('message', 'Successfully changed ticket status to pending!');
                 }
-                return redirect('tickets')->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
+                return redirect()->back()->with('error', "This ticket's cannot be changed to pending. Only tickets in process can be changed.");
             }
-            else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
+            else return redirect()->back()->with('error', "You don't have the permission to change the status of this ticket!");
         }
 
         /*
@@ -374,9 +403,9 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-                return redirect('tickets')->with('message', 'Successfully cancelled ticket!');
+                return redirect('/')->with('message', 'Successfully cancelled ticket!');
             }
-            else return redirect('tickets')->with('error', "You have no permission to cancel this ticket!");
+            else return redirect()->back()->with('error', "You have no permission to cancel this ticket!");
         }
 
         /*
@@ -397,9 +426,40 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-                return redirect('tickets')->with('message', 'Successfully closed ticket!');
+                return redirect('closed-tickets')->with('message', 'Successfully closed ticket!');
             }
-            else return redirect('tickets')->with('error', 'You have no permission to close this ticket!');
+            else return redirect()->back()->with('error', 'You have no permission to close this ticket!');
+        }
+
+        /*
+         * Escalate
+         */
+        else if($statid==6){
+            if($user->id == $ticket->assignee || $user->id == $supervisor->id){
+                if($ticket->status == 1)
+                    return redirect()->back()->with('error', "Ticket has to be assigned first before it can be escalated!");
+                else if($ticket->status == 2){
+                    $ticket->assignee = NULL;
+                    $ticket->save();
+
+                    $dept = Department::where('id', $ticket->dept_id)->first();
+
+                    $log = Comment::create([
+                        'is_comment'        => 0,
+                        'comment'           => ' escalated the ticket to '.$dept->dept_name.'.',
+                        'user_id'           => $user->id,
+                        'commenter_role'    => $user->role,
+                        'ticket_id'         => $id,
+                        'class'             => 'fa-ticket'
+                    ]);
+
+                    return redirect('in-process-tickets')->with('message', 'Successfully escalated ticket!');
+                }
+                else if($ticket->status > 2)
+                    return redirect()->back()->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
+
+            }
+            else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
         }
 
     }    

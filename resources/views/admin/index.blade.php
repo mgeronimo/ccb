@@ -28,7 +28,7 @@
         </div>
         <div class="box-footer clearfix no-border">
             @if($all_unassigned>10)
-                <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="unassigned-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                     See All</a>
             @endif
         </div>

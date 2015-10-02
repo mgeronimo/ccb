@@ -71,8 +71,15 @@
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
             		<div class="space"></div>
             		<h4 class="incident-details">Ticket Status:</h4>
-            		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span>
-            		<br/><br/>
+            		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span><br/>
+            		@if($ticket->attachments!='')
+	            		<div style="height: 15px;"></div>
+	            		<h4 class="incident-details">Attachment:</h4>
+	            		<p>
+	            			<img src="{{ url($ticket->attachments) }}" style="max-width: 100%;">
+	            		</p>
+	            	@endif
+            		<br/>
                 </div>
                 <div class="box-footer clearfix">
                 </div>
@@ -86,7 +93,7 @@
 		                	<i class="fa fa-user-plus"></i>
 		                    <h2 class="box-title">Assign Agent</h2>
 		                </div><!-- /.box-header -->
-		                <div class="box-body incident-body" style="overflow: hidden; width: auto; height: 250px;">
+		                <div class="box-body incident-body" style="overflow: auto; width: auto; min-height: 200px; max-height: 400px; margin-bottom: 10px;">
 	                		@foreach($agents as $agent)
 	                			<div class="item col-lg-12" style="margin-top: 25px; padding: 0px;">
 	                				<div class="col-lg-8">
@@ -167,15 +174,16 @@
 	        				@if($ticket->status == 5 && $user->role > 1)
 	        					<em><center>No action available. <br/>Ticket is already closed.</center></em>
 	        				@endif
-	        				@if($ticket->status == 3 && $ticket->assignee == $user->id)
-	        					<em><center>No action available. Ticket is currently waiting for department representative's acceptance.</center></em>
+	        				@if($ticket->status == 3 && $user->role > 0)
+	        					<em><center>No action available. Ticket is currently waiting for public user's response.</center></em>
 	        				@endif
-	        				@if($ticket->status == 3 && $user->role == 4)
-	        					<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>
-	        				@endif
+	        					<!--<a class="btn btn-info btn-block" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Ticket</a>-->
 		                    @if($ticket->status == 2)
 		                    	@if($user->role < 4 && $user->role > 0)
-		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/3" role="button">Escalate to Dept. Representative</a>
+		                    		@if($user->agency_id != $ticket->dept_id)
+		                				<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/6" role="button">Escalate to Agency</a>
+		                			@endif
+		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Change to Pending</a>
 		                		@endif
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif
@@ -276,7 +284,7 @@
 				      		<table class="table">
 					      		@foreach($logs as $log)
 					        		<tr>
-					        			<td class="logs"><i class="fa {{$log->class}}" style="color: #3C8DBC"></i> &nbsp;&nbsp;
+					        			<td class="logs" width="75%"><i class="fa {{$log->class}}" style="color: #3C8DBC"></i> &nbsp;&nbsp;
 					        				{!! '<strong>'.$log->logger.'</strong> '.$log->comment !!}
 					        			</td>
 					        			<td><small class="pull-right log-time"><i class="fa fa-clock-o"></i> {{ $log->created_at }}</small></td>
