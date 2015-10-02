@@ -175,7 +175,7 @@ class TicketController extends Controller
         ]);
 
         if($ticket->assignee==NULL){
-            $agents = User::where('is_verified', 1)->where('role', 2)->get();
+            $agents = User::where('is_verified', 1)->where('role', 2)->where('agency_id', $user->agency_id)->get();
             $logs = Comment::where('ticket_id', $ticket->id)->where('is_comment', 0)->get();
 
             foreach($agents as $agent){

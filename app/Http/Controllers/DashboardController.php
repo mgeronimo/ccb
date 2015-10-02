@@ -59,16 +59,25 @@ class DashboardController extends Controller
         }
         else if($user->role==1){
             //$group = Group::where('id', $user->group_number)->first();
+            
             $members = User::where('role', 2)->where('agency_id', $user->agency_id)->take(5)->get();
-            $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
-            $all_unassigned = Ticket::where('assignee', NULL)->get();
             $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
+
+            if($user->agency_id==0){
+                $tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 1)->get();
+            }
+            else{
+                $tickets = Ticket::where('assignee', NULL)->where('status', 2)->where('dept_id', $user->agency_id)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 2)->where('dept_id', $user->agency_id)->get();
+            }
+
             $all_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
-                            ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
-                            ->groupBy('b.ticket_id')->take(5)->get();
+                        ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
+                        ->groupBy('b.ticket_id')->take(5)->get();
             $count_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
-                            ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
-                            ->groupBy('b.ticket_id')->get();
+                        ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
+                        ->groupBy('b.ticket_id')->get();
 
             $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
@@ -107,9 +116,16 @@ class DashboardController extends Controller
         }
         else if($user->role==2)
         {
-            $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
+            if($user->agency_id==0){
+                $tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 1)->get();
+            }
+            else{
+                $tickets = Ticket::where('assignee', NULL)->where('status', 2)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 2)->get();
+            }
+
             $assigned_tickets = Ticket::where('assignee', $user->id)->orderBy('created_at', 'ASC')->take(10)->get();
-            $all_unassigned = Ticket::where('assignee', NULL)->get();
             $all_assigned = Ticket::where('assignee', $user->id)->get();
 
             $ongoing_tickets = Ticket::where('assignee', $user->id)->where('status', 2)->get();
