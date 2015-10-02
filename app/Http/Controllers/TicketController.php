@@ -254,6 +254,13 @@ class TicketController extends Controller
     public function assign($id, $agentid, AppAssigned $mailer)
     {
         $user = Auth::user();
+        $assigned_agent = User::where('id', $agentid)->first();
+
+        if($user->role==1 && $user->agency_id != $assigned_agent->agency_id)
+            return redirect()->back()->with('error', "You have no permission to assign this ticket to an agent that is not a member of your group!");
+        else if($user->role==2 && $user->id != $id)
+            return redirect()->back()->with('error', "You have no permission to assign this ticket to anybody but your self!");
+
         $ticket = Ticket::where('id', $id)->first();
         $ticket->status = 2;
         $ticket->assignee = $agentid;
@@ -264,8 +271,7 @@ class TicketController extends Controller
 
         if($user->id==$agentid) $assigned = 'self';
         else{
-            $assigned = User::where('id', $agentid)->first();
-            $assigned = $assigned->first_name.' '.$assigned->last_name;
+            $assigned = $assigned_agent->first_name.' '.$assigned_agent->last_name;
         }
 
         $log = Comment::create([
