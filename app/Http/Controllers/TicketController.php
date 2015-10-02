@@ -258,10 +258,14 @@ class TicketController extends Controller
 
         if($user->role==1 && $user->agency_id != $assigned_agent->agency_id)
             return redirect()->back()->with('error', "You have no permission to assign this ticket to an agent that is not a member of your group!");
-        else if($user->role==2 && $user->id != $id)
+        else if($user->role==2 && $user->id != $agentid)
             return redirect()->back()->with('error', "You have no permission to assign this ticket to anybody but your self!");
 
         $ticket = Ticket::where('id', $id)->first();
+
+        if($ticket->status == 2 && $ticket->assignee == NULL && $ticket->dept_id != $user->agency_id)
+            return redirect()->back()->with('error', 'You have no permission to this ticket! Only the people that belongs to the agency where it is associated has the permission to take action on this ticket.');
+
         $ticket->status = 2;
         $ticket->assignee = $agentid;
         $ticket->save();
@@ -321,7 +325,7 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-                return redirect('tickets')->with('message', 'Successfully reopened ticket!');
+                return redirect('in-process-tickets')->with('message', 'Successfully reopened ticket!');
             }
             else if($ticket->status != 5 && ($user->role == 0 || $user->id == $supervisor->id)){
                 return redirect()->back()->with('error', 'The ticket you are reopening is not closed in the first place!');
@@ -373,9 +377,9 @@ class TicketController extends Controller
                         'class'             => 'fa-ticket'
                     ]);
 
-                    return redirect('tickets')->with('message', 'Successfully changed ticket status to pending!');
+                    return redirect('pending-tickets')->with('message', 'Successfully changed ticket status to pending!');
                 }
-                return redirect('tickets')->with('error', "This ticket's cannot be changed to pending. Only tickets in process can be changed.");
+                return redirect()->back()->with('error', "This ticket's cannot be changed to pending. Only tickets in process can be changed.");
             }
             else return redirect()->back()->with('error', "You don't have the permission to change the status of this ticket!");
         }
@@ -399,9 +403,9 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-                return redirect('tickets')->with('message', 'Successfully cancelled ticket!');
+                return redirect('/')->with('message', 'Successfully cancelled ticket!');
             }
-            else return redirect('tickets')->with('error', "You have no permission to cancel this ticket!");
+            else return redirect()->back()->with('error', "You have no permission to cancel this ticket!");
         }
 
         /*
@@ -422,9 +426,9 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-                return redirect('tickets')->with('message', 'Successfully closed ticket!');
+                return redirect('closed-tickets')->with('message', 'Successfully closed ticket!');
             }
-            else return redirect('tickets')->with('error', 'You have no permission to close this ticket!');
+            else return redirect()->back()->with('error', 'You have no permission to close this ticket!');
         }
 
         /*
@@ -449,10 +453,10 @@ class TicketController extends Controller
                         'class'             => 'fa-ticket'
                     ]);
 
-                    return redirect('tickets')->with('message', 'Successfully escalated ticket!');
+                    return redirect('in-process-tickets')->with('message', 'Successfully escalated ticket!');
                 }
                 else if($ticket->status > 2)
-                    return redirect('tickets')->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
+                    return redirect()->back()->with('error', 'This ticket cannot be escalated. Only tickets in process can be escalated.');
 
             }
             else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");

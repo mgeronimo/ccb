@@ -11,6 +11,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Comment;
 use App\User;
+use App\Ticket;
 
 class CommentController extends Controller
 {
@@ -56,6 +57,15 @@ class CommentController extends Controller
             'ticket_id'         => $id
         ]);
 
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' commented on this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $id,
+            'class'             => 'fa-comment'
+        ]);
+
         return redirect()->back()->with('message', 'Comment successfully sent!');
     }
 
@@ -85,6 +95,30 @@ class CommentController extends Controller
             'commenter_role'    => $user->role,
             'ticket_id'         => $id
         ]);
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' commented on this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $id,
+            'class'             => 'fa-comment'
+        ]);
+
+        $ticket = Ticket::where('id', $id)->first();
+        if($ticket->status ==3){
+            $ticket->status = 2;
+            $ticket->save();
+
+            $log = Comment::create([
+                'is_comment'        => 0,
+                'comment'           => ' has responded so the ticket status was brought back to "In Process".',
+                'user_id'           => $user->id,
+                'commenter_role'    => $user->role,
+                'ticket_id'         => $id,
+                'class'             => 'fa-ticket'
+            ]);
+        }
 
         return response()->json(['msg' => 'Comment was successfully submitted!'], 200);
     }
