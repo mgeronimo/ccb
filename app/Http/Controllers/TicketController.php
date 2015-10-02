@@ -439,6 +439,11 @@ class TicketController extends Controller
                 if($ticket->status == 1)
                     return redirect()->back()->with('error', "Ticket has to be assigned first before it can be escalated!");
                 else if($ticket->status == 2){
+                    $rep = User::where('agency_id', $ticket->dept_id)->where('role', 4)->get();
+
+                    if(count($rep)==0)
+                        return redirect()->back()->with('error', 'Ticket cannot be escalated since agency has no representative yet.');
+
                     $ticket->assignee = NULL;
                     $ticket->save();
 
