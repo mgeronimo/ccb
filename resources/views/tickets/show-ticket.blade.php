@@ -93,7 +93,7 @@
 		                	<i class="fa fa-user-plus"></i>
 		                    <h2 class="box-title">Assign Agent</h2>
 		                </div><!-- /.box-header -->
-		                <div class="box-body incident-body" style="overflow: hidden; width: auto; height: 250px;">
+		                <div class="box-body incident-body" style="overflow: auto; width: auto; min-height: 200px; max-height: 400px; margin-bottom: 10px;">
 	                		@foreach($agents as $agent)
 	                			<div class="item col-lg-12" style="margin-top: 25px; padding: 0px;">
 	                				<div class="col-lg-8">
@@ -181,8 +181,8 @@
 		                    @if($ticket->status == 2)
 		                    	@if($user->role < 4 && $user->role > 0)
 		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/6" role="button">Escalate to Agency</a>
+		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Change to Pending</a>
 		                		@endif
-	                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Change to Pending</a>
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif
 		                	@if($user->role == 0 && $ticket->status < 4)

@@ -89,7 +89,10 @@ class TicketController extends Controller
         if($user->role > 3)
             return redirect('/');
         else{
-            $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
+            if($user->agency_id==0)
+                $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->paginate(20);
+            else
+                $unassigned_tickets = Ticket::where('assignee', NULL)->where('status', 2)->where('dept_id', $user->agency_id)->orderBy('created_at', 'DESC')->paginate(20);
         }
 
         return view('tickets.unassigned')->with('user', $user)->with('unassigned_tickets', $unassigned_tickets);
@@ -103,9 +106,13 @@ class TicketController extends Controller
     public function inProcessTickets()
     {
         $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
         if($user->role > 3)
             return redirect('/');
+        else if($user->role!=0){
+            $in_process_tickets = Ticket::where('status', 2)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
         else{
             $in_process_tickets = Ticket::where('status', 2)->orderBy('created_at', 'DESC')->paginate(20);
         }
@@ -121,9 +128,13 @@ class TicketController extends Controller
     public function pendingTickets()
     {
         $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
         if($user->role > 3)
             return redirect('/');
+        else if($user->role!=0){
+            $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
         else{
             $pending_tickets = Ticket::where('status', 3)->orderBy('created_at', 'DESC')->paginate(20);
         }
@@ -139,9 +150,13 @@ class TicketController extends Controller
     public function closedTickets()
     {
         $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
 
         if($user->role > 3)
             return redirect('/');
+        else if($user->role!=0){
+            $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
         else{
             $closed_tickets = Ticket::where('status', 5)->orderBy('created_at', 'DESC')->paginate(20);
         }
@@ -175,7 +190,11 @@ class TicketController extends Controller
         ]);
 
         if($ticket->assignee==NULL){
-            $agents = User::where('is_verified', 1)->where('role', 2)->where('agency_id', $user->agency_id)->get();
+            if($user->role!=0)
+                $agents = User::where('is_verified', 1)->where('role', 2)->where('agency_id', $user->agency_id)->get();
+            else
+                $agents = User::where('is_verified', 1)->where('role', 2)->get();
+
             $logs = Comment::where('ticket_id', $ticket->id)->where('is_comment', 0)->get();
 
             foreach($agents as $agent){
