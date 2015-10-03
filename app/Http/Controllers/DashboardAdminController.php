@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Mailers\AppMailer;
+use App\Mailers\AppDepartment;
+
 use Mail;
 use Input;
 use App\Group;
@@ -115,7 +117,7 @@ class DashboardAdminController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function addDept(Request $request,  AppMailer $mailer)
+    public function addDept(Request $request,  AppDepartment $mailer)
 
     {
         //
@@ -136,7 +138,7 @@ class DashboardAdminController extends Controller
               $user->role = 4;
               $user->contact_number = $input['contact_number'];
               $user->save();
-              //$mailer->sendEmailConfirmationTo($user);
+              $mailer->sendEmailConfirmationTo($user);
         }
         $department->save();
         //different email
