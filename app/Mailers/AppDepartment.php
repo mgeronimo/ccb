@@ -26,7 +26,7 @@ class AppDepartment{
 	{
 		$this->to = $user->email;
 	
-		$this->view = 'emails.verification';
+		$this->view = 'emails.department';
 		$this->data = compact('user');
 		$this->deliver();
 	}

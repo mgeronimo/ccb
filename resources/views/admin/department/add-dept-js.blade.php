@@ -95,6 +95,12 @@ $.ajaxSetup({
 							nowhitespace: true,
 
 						},
+						contact_number: 
+						{
+							required: true,
+							maxlength: 45,
+						},
+			
 						email: 
 						{
 							required: true,
@@ -117,15 +123,18 @@ $.ajaxSetup({
 						},
 						firstname:
 						{
-							required: "Department representative's name is required."
+							required: "Firstname is required."
 						},
 						lastname:
 						{
-							required: "Department representative's lastname is required."
+							required: "Lastname is required."
+						},
+						contact_number:{
+						required: "Contact number is required."
 						},
 						email:
 						{
-							required: "Department representative's email is required."
+							required: "Email is required."
 						},
 					},
 		});

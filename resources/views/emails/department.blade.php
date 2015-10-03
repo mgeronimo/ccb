@@ -8,7 +8,7 @@
 	<h1>Welcome to Contact Center ng Bayan!</h1>
 	<p>
 
-		Hello, {{$user->first_name}}, You have been registered as the Agency representative. 
+		Hello {{$user->first_name}}, You have been registered as the Agency representative. 
 	</p>
 </body>
 </html>
