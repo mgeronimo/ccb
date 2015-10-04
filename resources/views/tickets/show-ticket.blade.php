@@ -185,6 +185,9 @@
 		                			@endif
 		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Change to Pending</a>
 		                		@endif
+		                		@if($user->role > 0 && $user->role < 3)
+		                			<a class="btn bg-maroon btn-block" role="button" data-toggle="modal" data-target="#reassign">Reassign Ticket</a>
+		                		@endif
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif
 		                	@if($user->role == 0 && $ticket->status < 4)
@@ -201,7 +204,6 @@
 		            <div class="box-footer clearfix no-border">
 		            </div>
 		        </div>
-		        <br/>
 		        <div class="box box-solid">
 		            <div class="box-header with-header incident-header">
 		            	<i class="fa fa-folder"></i>
@@ -234,7 +236,7 @@
 		</section>
 		<section class="col-lg-12">
 			@if($ticket->assignee!=NULL)
-				<div class="row" style="margin-top: 10px;">
+				<div class="row" style="margin-top: 20px;">
 			        <div class="col-md-12">
 			            <div class="box box-info">
 			                <div class="box-header">
@@ -312,6 +314,32 @@
 					        				{!! '<strong>'.$log->logger.'</strong> '.$log->comment !!}
 					        			</td>
 					        			<td><small class="pull-right log-time"><i class="fa fa-clock-o"></i> {{ $log->created_at }}</small></td>
+					        		</tr>
+					        	@endforeach
+				        	</table>
+				        	<!--<button type="button" class="btn btn-warning">Pending</button>
+				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+				    	</div>
+			    	</div>
+			  	</div>
+			</div>
+
+			<!-- Co-Agents Modal -->
+			<div class="modal fade" id="reassign" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			  	<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        		<h4 class="modal-title" id="myModalLabel">Reassign Ticket</h4>
+			      		</div>
+				      	<div class="modal-body" style="padding-top: 0px">
+				      		<table class="table" style="margin-bottom: 0px">
+					      		@foreach($co_agents as $co_agent)
+					        		<tr>
+					        			<td class="logs" width="75%"><i class="fa fa-user" style="color: #3C8DBC"></i> &nbsp;&nbsp;
+					        				{{ $co_agent->first_name.' '.$co_agent->last_name }}
+					        			</td>
+					        			<td><a href="/tickets/{{ $ticket->id }}/re-assign/{{ $co_agent->id }}" class="btn btn-success btn-sm btn-flat assign-agent">Re-assign</a></td>
 					        		</tr>
 					        	@endforeach
 				        	</table>

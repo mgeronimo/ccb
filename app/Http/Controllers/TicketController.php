@@ -111,8 +111,11 @@ class TicketController extends Controller
 
         if($user->role > 3)
             return redirect('/');
-        else if($user->role!=0){
+        else if($user->role==1){
             $in_process_tickets = Ticket::where('status', 2)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+        else if($user->role==2){
+            $in_process_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->orderBy('created_at', 'DESC')->paginate(20);
         }
         else{
             $in_process_tickets = Ticket::where('status', 2)->orderBy('created_at', 'DESC')->paginate(20);
@@ -133,8 +136,11 @@ class TicketController extends Controller
 
         if($user->role > 3)
             return redirect('/');
-        else if($user->role!=0){
+        else if($user->role==1){
             $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+        else if($user->role==2){
+            $pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->orderBy('created_at', 'DESC')->paginate(20);
         }
         else{
             $pending_tickets = Ticket::where('status', 3)->orderBy('created_at', 'DESC')->paginate(20);
@@ -155,8 +161,11 @@ class TicketController extends Controller
 
         if($user->role > 3)
             return redirect('/');
-        else if($user->role!=0){
+        else if($user->role==1){
             $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+        else if($user->role==2){
+            $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->orderBy('created_at', 'DESC')->paginate(20);
         }
         else{
             $closed_tickets = Ticket::where('status', 5)->orderBy('created_at', 'DESC')->paginate(20);
@@ -223,6 +232,7 @@ class TicketController extends Controller
             $agency = Department::where('id', $agent->agency_id)->first();
             $comments = Comment::where('ticket_id', $ticket->id)->where('is_comment', 1)->orderBy('created_at', 'DESC')->get();
             $logs = Comment::where('ticket_id', $ticket->id)->where('is_comment', 0)->get();
+            $co_agents = User::where('id', '!=', $user->id)->where('agency_id', $user->agency_id)->where('role', 2)->where('is_verified', 1)->get();
 
             foreach ($comments as $key => $comment) {
                 $commenter = User::where('id', $comment->user_id)->first();
@@ -242,7 +252,8 @@ class TicketController extends Controller
                 ->with('agency', $agency)
                 ->with('statuses', $statuses)
                 ->with('comments', $comments)
-                ->with('logs', $logs);
+                ->with('logs', $logs)
+                ->with('co_agents', $co_agents);
         }
     }
 
@@ -472,7 +483,39 @@ class TicketController extends Controller
             else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
         }
 
-    }    
+    }  
+
+    /**
+     * Re-assign ticket
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function reAssign($id, $agentid)
+    {
+        $user = Auth::user();
+        $ticket = Ticket::where('id', $id)->first();
+        $agent = User::where('id', $agentid)->first();
+
+        if($agent!=NULL){
+            $ticket->assignee = $agent->id;
+            $ticket->save();
+
+            $log = Comment::create([
+                'is_comment'        => 0,
+                'comment'           => ' re-assigned '.$agent->first_name.' '.$agent->last_name.' to this ticket.',
+                'user_id'           => $user->id,
+                'commenter_role'    => $user->role,
+                'ticket_id'         => $id,
+                'class'             => 'fa-ticket'
+            ]);
+
+            return redirect('in-process-tickets')->with('message', 'Ticket successfully reassigned!');
+        }
+        return redirect()->back()->with('error', 'Agent does not exist!');
+
+        
+    }  
 
     /**
      * Set ticket category
