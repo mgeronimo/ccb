@@ -187,6 +187,7 @@ class TicketController extends Controller
         $dept = Department::find($ticket->dept_id)->first();
         $ticket->status_name = Status::where('id', $ticket->status)->pluck('status');
         $ticket->class = Status::where('id', $ticket->status)->pluck('class');
+        $co_agents = User::where('id', '!=', $user->id)->where('agency_id', $user->agency_id)->where('role', 2)->where('is_verified', 1)->get();
 
         $statuses = Status::where('id', '!=', $ticket->status)->get();
 
@@ -223,7 +224,8 @@ class TicketController extends Controller
                 ->with('dept', $dept)
                 ->with('agents', $agents)
                 ->with('statuses', $statuses)
-                ->with('logs', $logs);
+                ->with('logs', $logs)
+                ->with('co_agents', $co_agents);
         }
         else{
             if($user->role == 2 && $ticket->assignee != $user->id)
@@ -232,7 +234,6 @@ class TicketController extends Controller
             $agency = Department::where('id', $agent->agency_id)->first();
             $comments = Comment::where('ticket_id', $ticket->id)->where('is_comment', 1)->orderBy('created_at', 'DESC')->get();
             $logs = Comment::where('ticket_id', $ticket->id)->where('is_comment', 0)->get();
-            $co_agents = User::where('id', '!=', $user->id)->where('agency_id', $user->agency_id)->where('role', 2)->where('is_verified', 1)->get();
 
             foreach ($comments as $key => $comment) {
                 $commenter = User::where('id', $comment->user_id)->first();
