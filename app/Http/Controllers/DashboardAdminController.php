@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use App\Mailers\AppMailer;
+use App\Mailers\AppDepartment;
+
 use Mail;
 use Input;
 use App\Group;
 use App\User;
 use App\Departments;
+use App\Region;
+use App\Province;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Announcement;
@@ -102,7 +106,9 @@ class DashboardAdminController extends Controller
     {
         //
         $user = Auth::user();
-        return view('admin.adddept')->with('user', $user);
+        $regions = Region::all();
+        $provinces =Province::all();
+        return view('admin.adddept')->with('user', $user)->with('regions',$regions)->with('provinces',$provinces);
     }
 
     /**
@@ -111,32 +117,32 @@ class DashboardAdminController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function addDept(Request $request,  AppMailer $mailer)
+    public function addDept(Request $request,  AppDepartment $mailer)
 
     {
         //
         $user = new User;
         $department = new Departments;
-
         $input = $request->all();
-        $user->first_name = $input['firstname'];
-        $user->last_name = $input['lastname'];
-        $user->email = $input['email'];
-        $user->role = 4;
-        $user->save();
         $department->dept_name = $input['dept_name'];
-
         $department->is_member = $input['is_member'];
-        $department->description = $input['description'];
-        $dep_id = User::where('email', $user->email)->firstorFail();
-        $dep_id->departments()->save($department);
-        $mailer->sendEmailConfirmationTo($user);
-          
+        $department->regcode =  $input['regname'];
+        $department->provcode =  $input['provname'];    
+        
+        if($input['is_member']==1)
 
+        {  
+              $user->first_name = $input['firstname'];
+              $user->last_name = $input['lastname'];
+              $user->email = $input['email'];
+              $user->role = 4;
+              $user->contact_number = $input['contact_number'];
+              $user->save();
+              $mailer->sendEmailConfirmationTo($user);
+        }
+        $department->save();
+        //different email
         return redirect('/')->with('message', 'Department Successfully added.');
-       // return true;
-        //return 'done';
-
     }
 
     /**

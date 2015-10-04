@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         //$this->call(GroupTableSeeder::class);
         $this->call(UserTableSeeder::class);
         $this->call(OAuthSeeder::class);
+        $this->call(RegionSeeder::class);
+        $this->call(ProvinceSeeder::class);
         $this->call(DepartmentSeeder::class);
         $this->call(StatusSeeder::class);
         Model::reguard();

@@ -16,15 +16,13 @@ class DepartmentSeeder extends Seeder
         DB::table('departments')->insert([
             'dept_name' => 'DAR',
             'is_member' => 1,
-            'description' => 'Department of Agrarian Reform',
-            'dept_rep' => 6,
+            'regcode' => 2
         ]);
 
         DB::table('departments')->insert([
             'dept_name' => 'DA',
             'is_member' => 1,
-            'description' => 'Department of Agriculture',
-            'dept_rep' => 7,
+            'regcode' => 3
         ]);
     }
 }
