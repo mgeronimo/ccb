@@ -23,13 +23,13 @@
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 				<ul id="progressbar" class="col-md-12 col-md-push-2">
-					<li class="active">Department Name</li>
-					<li>Department's representative Details</li>
+					<li class="active">Agency Name</li>
+					<li>Agency's Representative Details</li>
 				</ul>
 				<fieldset>
 					<h2 class="fs-title">Agency name</h2>
 					<div id="this-dept">
-						<input type="text" name="dept_name" placeholder="Department Shortname" required>
+						<input type="text" name="dept_name" placeholder="Agency Name" required>
 					</div> 
 					<div style= "margin-bottom:10px"> 
 					<select class="form-control" name="regname" required>

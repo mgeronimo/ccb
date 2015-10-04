@@ -202,6 +202,30 @@
 		            </div>
 		        </div>
 		        <br/>
+		        <div class="box box-solid">
+		            <div class="box-header with-header incident-header">
+		            	<i class="fa fa-folder"></i>
+		                <h2 class="box-title">Category @if($ticket->category!=NULL) : &nbsp;&nbsp;<span class="label label-{{ $ticket->class }}" style="font-size: 15px">{{ $ticket->category==1 ? 'ARTA' : 'Non-ARTA' }}</span> @endif </h2>
+		            </div><!-- /.box-header -->
+		            @if($ticket->category==NULL)
+			            <div class="box-body incident-body">
+		        			<div class="col-lg-12">
+		        				<form method="POST" action="{{url('/set-category/'.$ticket->id) }}">
+			        				<label class="radio-inline"><input type="radio" value="1" id="1" name ="category" class="checkmember" >ARTA</label><br/>
+		 	 						<label class="radio-inline"><input type="radio" value="0" id ="2" name ="category" class="checkmember" >Non-ARTA</label>
+			                </div>
+			            </div>
+			            <div class="box-footer clearfix no-border incident-body" style="padding-bottom: 20px">
+			            			<div class="col-md-12">
+			            				<button type="submit" class="btn btn-block btn-info pull-right">Set Category</button>
+			            			</div>
+			            		</form>
+			            </div>
+			        @else
+			        	<div class="box-footer clearfix no-border incident-body">
+			        	</div>
+			        @endif
+		        </div>
 	        @endif
 	        <div class="col-lg-12">
 	        	<a class="btn bg-navy btn-lg btn-block" role="button" data-toggle="modal" data-target="#changeStat">View Ticket History</a>
