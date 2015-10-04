@@ -117,6 +117,7 @@ Route::get('unassigned-tickets', 'TicketController@unassignedTickets');
 Route::get('in-process-tickets', 'TicketController@inProcessTickets');
 Route::get('pending-tickets', 'TicketController@pendingTickets');
 Route::get('closed-tickets', 'TicketController@closedTickets');
+Route::post('set-category/{id}', 'TicketController@setCategory');
 
 /*
  * ---------- Comment Routes

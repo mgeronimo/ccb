@@ -35,6 +35,13 @@ class DashboardController extends Controller
             $pending_tickets = Ticket::where('status', 3)->get();
             $all_depts = Department::orderby('dept_name')->get();
 
+            foreach ($depts as $key => $dept) {
+                $deptrep = User::where('agency_id', $dept->id)->where('role', 4)->first();
+                if($deptrep!=NULL)
+                    $dept->deptrep_name = $deptrep->first_name." ".$deptrep->last_name;
+                else $dept->deptrep_name = "None";
+            }
+
             /*foreach ($groups as $key => $group) {
                $supervisor = User::where('group_number', $group->id)
                             ->where('role', 1)->first();

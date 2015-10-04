@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Input;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -413,6 +414,10 @@ class TicketController extends Controller
          */
         else if($statid==5){
             if($user->id == $ticket->assignee || $user->role < 2){
+
+                if($ticket->category==NULL)
+                    return redirect()->back()->with('error', 'Please set category first before closing the ticket!');
+
                 $ticket->status = $statid;
                 $ticket->save();
                 //$mailer->sendStatusChanged($created_by);
@@ -468,6 +473,32 @@ class TicketController extends Controller
         }
 
     }    
+
+    /**
+     * Set ticket category
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function setCategory($id)
+    {
+        $user = Auth::user();
+        $category = Input::get('category');
+        $ticket = Ticket::where('id', $id)->first();
+        $ticket->category = $category;
+        $ticket->save();
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' set ticket category',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $id,
+            'class'             => 'fa-ticket'
+        ]);
+
+        return redirect()->back()->with('message', 'Ticket category successfully set!');
+    }
 
     /**
      * Remove the specified resource from storage.

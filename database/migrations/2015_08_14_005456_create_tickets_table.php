@@ -21,6 +21,7 @@ class CreateTicketsTable extends Migration
             $table->string('subject', 160);
             $table->string('attachments', 255);
             $table->datetime('incident_date_time', 25);
+            $table->string('category', 5);
             $table->timestamps();
         });
     }
