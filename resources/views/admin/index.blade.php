@@ -48,14 +48,13 @@
             @else
                 <table class="table table-bordered">
                     <tr>
-                        <th style="width: 30%;">Department</th>
-                        <th>Description</th>
+                        <th style="width: 50%;">Department</th>
+                        <th>Representative</th>
                     </tr>
                     @foreach($depts as $dept)
                         <tr>
-                            <td><a href="#">{{ $dept->dept_name }}</a></td>
-                            <td>{{ $dept->description }}<br>
-                            <sub> Representative: {{ $dept->dept_rep }}</sub></td>
+                            <td>{{ $dept->dept_name }}</td>
+                            <td>{{ $dept->deptrep_name }}</td>
                         </tr>
                     @endforeach
                 </table>

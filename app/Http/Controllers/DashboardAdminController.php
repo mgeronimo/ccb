@@ -11,6 +11,7 @@ use Mail;
 use Input;
 use App\Group;
 use App\User;
+use App\Department;
 use App\Departments;
 use App\Region;
 use App\Province;
@@ -136,6 +137,7 @@ class DashboardAdminController extends Controller
               $user->last_name = $input['lastname'];
               $user->email = $input['email'];
               $user->role = 4;
+              $user->agency_id = count(Department::all())+1;
               $user->contact_number = $input['contact_number'];
               $user->save();
               $mailer->sendEmailConfirmationTo($user);
