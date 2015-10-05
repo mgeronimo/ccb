@@ -162,7 +162,7 @@ class DashboardController extends Controller
                 ->with('pending_tickets', count($pending_tickets));
         }
         else if($user->role==4){
-            $dept = Department::where('dept_rep', $user->id)->first();
+            $dept = Department::where('id', $user->agency_id)->first();
             $new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->orderBy('created_at', 'DESC')->take(5)->get();
             $count_new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->get();
             $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $dept->id)->take(5)->get();
