@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Department;
+use App\Region;
+use App\Province;
 
 class DepartmentApiController extends Controller
 {
@@ -18,6 +20,11 @@ class DepartmentApiController extends Controller
     public function index()
     {
         $depts = Department::all();
+
+        foreach ($depts as $key => $dept) {
+            $dept->region = Region::where('regcode', $dept->regcode)->pluck('regname');
+            $dept->province = Province::where('provcode', $dept->provcode)->pluck('provname');
+        }
 
         return response()->json(['data' => $this->transform($depts)], 200);
     }
@@ -100,7 +107,9 @@ class DepartmentApiController extends Controller
             return [
                 'id'            => $depts['id'],
                 'name'          => $depts['dept_name'],
-                'description'   => $depts['description'],
+                'region'          => $depts['region'],
+                'province'          => $depts['province'],
+                //'description'   => $depts['description'],
                 'is_member'     => $depts['is_member']
             ];
         }, $depts->toArray());
