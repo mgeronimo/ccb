@@ -56,7 +56,7 @@ class DashboardController extends Controller
         }
         else if($user->role==1){
             $members = User::where('role', 2)->where('agency_id', $user->agency_id)->take(5)->get();
-            $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
+            //$all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
 
             if($user->agency_id==0){
                 $tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->take(10)->get();
@@ -75,6 +75,7 @@ class DashboardController extends Controller
                         ->groupBy('b.ticket_id')->get();
 
             $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
+            $all_members[count($all_members)] = $user->id;
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();

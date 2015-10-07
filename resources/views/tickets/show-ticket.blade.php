@@ -93,7 +93,7 @@
 		                	<i class="fa fa-user-plus"></i>
 		                    <h2 class="box-title">Assign Agent</h2>
 		                </div><!-- /.box-header -->
-		                <div class="box-body incident-body" style="overflow: auto; width: auto; min-height: 200px; max-height: 400px; margin-bottom: 10px;">
+		                <div class="box-body incident-body" style="overflow: auto; width: auto; max-height: 400px; margin-bottom: 10px;">
 	                		@foreach($agents as $agent)
 	                			<div class="item col-lg-12" style="margin-top: 25px; padding: 0px;">
 	                				<div class="col-lg-8">
@@ -112,6 +112,10 @@
 	                		@endforeach
 		                </div>
 		                <div class="box-footer clearfix no-border">
+		                	@if($user->role == 1)
+		                		<h5 style="text-align: center"><em>or</em></h5>
+		                		<a href="/tickets/{{ $ticket->id }}/assign/{{ $user->id }}" class="btn btn-success btn-block assign-self">Assign to Self</a>
+		                	@endif
 		                </div>
 		            </div>
 		        @elseif($user->role==2)
@@ -334,15 +338,17 @@
 			      		</div>
 				      	<div class="modal-body" style="padding-top: 0px">
 				      		<table class="table" style="margin-bottom: 0px">
-					      		@foreach($co_agents as $co_agent)
-					        		<tr>
-					        			<td class="logs" width="75%"><i class="fa fa-user" style="color: #3C8DBC"></i> &nbsp;&nbsp;
-					        				{{ $co_agent->first_name.' '.$co_agent->last_name }} &nbsp;
-					        				<small style="color: #bbb"><em>{{ $co_agent->role == 1 ? 'Supervisor' : 'Agent' }}, {{ $co_agent->dept }}</em></small>
-					        			</td>
-					        			<td><a href="/tickets/{{ $ticket->id }}/re-assign/{{ $co_agent->id }}" class="btn btn-success btn-sm btn-flat assign-agent">Re-assign</a></td>
-					        		</tr>
-					        	@endforeach
+				      			@if($co_agents!=NULL)
+						      		@foreach($co_agents as $co_agent)
+						        		<tr>
+						        			<td class="logs" width="75%"><i class="fa fa-user" style="color: #3C8DBC"></i> &nbsp;&nbsp;
+						        				{{ $co_agent->first_name.' '.$co_agent->last_name }} &nbsp;
+						        				<small style="color: #bbb"><em>{{ $co_agent->role == 1 ? 'Supervisor' : 'Agent' }}, {{ $co_agent->dept }}</em></small>
+						        			</td>
+						        			<td><a href="/tickets/{{ $ticket->id }}/re-assign/{{ $co_agent->id }}" class="btn btn-success btn-sm btn-flat assign-agent">Re-assign</a></td>
+						        		</tr>
+						        	@endforeach
+						        @endif
 				        	</table>
 				        	<!--<button type="button" class="btn btn-warning">Pending</button>
 				        	<button type="button" class="btn btn-danger">Cancelled</button>-->

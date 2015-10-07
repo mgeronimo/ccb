@@ -69,6 +69,36 @@ jQuery(document).on("click",".assign-agent", function (event) {
 });
 
 /*
+ * Assign Self
+ */
+jQuery(document).on("click",".assign-self", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to assign this ticket to your self?",
+        title: "Assign Self",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Assign",
+                className: "btn-success",
+                callback: function () {
+                    console.log("Assigned agent ");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
  * Delete Group
  */
 jQuery(document).on("click",".del-group", function (event) {
