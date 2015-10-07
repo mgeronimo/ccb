@@ -51,6 +51,7 @@
                 <div class="box-header with-header incident-header">
                 	<i class="fa fa-ticket"></i>
                     <h2 class="box-title"><strong>{{ $ticket->subject }}</strong></h2>
+                    <span class="label label-{{ $ticket->class }}" style="font-size: 15px; margin-left: 20px">{{ $ticket->status_name }}</span><br/>
                     <!--<a class="btn btn-sm btn-default pull-right" href="/addgroup" role="button">
                     Change Status</a>-->
                     @if($ticket->assignee == $user->id)
@@ -70,8 +71,7 @@
                 	<h4 class="incident-details">Person to Address:</h4>
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
             		<div class="space"></div>
-            		<h4 class="incident-details">Ticket Status:</h4>
-            		<span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status_name }}</span><br/>
+            		<!--<h4 class="incident-details">Ticket Status:</h4>-->
             		@if($ticket->attachments!='')
 	            		<div style="height: 15px;"></div>
 	            		<h4 class="incident-details">Attachment:</h4>
