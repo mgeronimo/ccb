@@ -187,7 +187,16 @@ class TicketController extends Controller
         $dept = Department::find($ticket->dept_id)->first();
         $ticket->status_name = Status::where('id', $ticket->status)->pluck('status');
         $ticket->class = Status::where('id', $ticket->status)->pluck('class');
-        $co_agents = User::where('id', '!=', $user->id)->where('agency_id', $user->agency_id)->where('role', 2)->where('is_verified', 1)->get();
+        //$co_agents = User::where('id', '!=', $user->id)->where('is_verified', 1)->where('agency_id', $user->agency_id)->orWhere('agency_id', 0)->where('role', '>', 0)->get();
+        $co_agents = User::where(function($query){
+            $user = Auth::user();
+            $query->where('agency_id', $user->agency_id)->orWhere('agency_id', 0);
+        })->where('is_verified', 1)->where('role', '>', 0)->where('role', '<', 4)->where('id', '!=', $user->id)->where('id', '!=', $ticket->assignee)->get();
+
+        foreach ($co_agents as $key => $ca) {
+            if($ca->agency_id==0) $ca->dept = 'CCB';
+            else $ca->dept = Department::where('id', $ca->agency_id)->pluck('dept_name');
+        }
 
         $statuses = Status::where('id', '!=', $ticket->status)->get();
 

@@ -337,7 +337,8 @@
 					      		@foreach($co_agents as $co_agent)
 					        		<tr>
 					        			<td class="logs" width="75%"><i class="fa fa-user" style="color: #3C8DBC"></i> &nbsp;&nbsp;
-					        				{{ $co_agent->first_name.' '.$co_agent->last_name }}
+					        				{{ $co_agent->first_name.' '.$co_agent->last_name }} &nbsp;
+					        				<small style="color: #bbb"><em>{{ $co_agent->role == 1 ? 'Supervisor' : 'Agent' }}, {{ $co_agent->dept }}</em></small>
 					        			</td>
 					        			<td><a href="/tickets/{{ $ticket->id }}/re-assign/{{ $co_agent->id }}" class="btn btn-success btn-sm btn-flat assign-agent">Re-assign</a></td>
 					        		</tr>
