@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Input;
+use Image;
 use Validator;
 
 use App\Http\Requests;
@@ -49,12 +50,31 @@ class CommentController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
+        if(Input::file('attachment') != NULL){
+            if(Input::file('attachment')->getSize()<2097152){
+                $quality = 60;  
+                $file=Input::file('attachment');
+                $rand = rand(0, 1000);
+                $orFile = $file->getClientOriginalName(); 
+                $filename = $rand.$orFile;
+                $img=Image::make($file);
+                $path = 'uploads/' . $filename;
+                //$img->resize(300, null, function ($constraint){$constraint->aspectRatio();});
+                $img->save($path, $quality);
+                $fphoto = 'uploads/'.$filename;
+
+                //return 'uploaded';
+            }
+        }
+        else $fphoto = '';
+
         $comment = Comment::create([
             'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
-            'ticket_id'         => $id
+            'ticket_id'         => $id,
+            'attachment'        => $fphoto
         ]);
 
         $log = Comment::create([
@@ -88,12 +108,31 @@ class CommentController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        if(Input::file('attachment') != NULL){
+            if(Input::file('attachment')->getSize()<2097152){
+                $quality = 60;  
+                $file=Input::file('attachment');
+                $rand = rand(0, 1000);
+                $orFile = $file->getClientOriginalName(); 
+                $filename = $rand.$orFile;
+                $img=Image::make($file);
+                $path = 'uploads/' . $filename;
+                //$img->resize(300, null, function ($constraint){$constraint->aspectRatio();});
+                $img->save($path, $quality);
+                $fphoto = 'uploads/'.$filename;
+
+                //return 'uploaded';
+            }
+        }
+        else $fphoto = '';
+
         $comment = Comment::create([
             'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
-            'ticket_id'         => $id
+            'ticket_id'         => $id,
+            'attachment'        => $fphoto
         ]);
 
         $log = Comment::create([
