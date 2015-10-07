@@ -24,8 +24,6 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         if($user->role==0){
-            //$groups = Group::orderBy('group_name')->take(5)->get();
-            //$all_groups = Group::orderBy('group_name')->get();
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $depts = Department::orderby('dept_name')->take(5)->get();
             $unassigned_tickets = Ticket::where('assignee', NULL)->get();
@@ -42,20 +40,12 @@ class DashboardController extends Controller
                 else $dept->deptrep_name = "None";
             }
 
-            /*foreach ($groups as $key => $group) {
-               $supervisor = User::where('group_number', $group->id)
-                            ->where('role', 1)->first();
-               $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
-            }*/
-
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
                 $ticket->dept_name = $deptname;
             }
 
             return view('dashboard')->with('user', $user)
-                //->with('all_groups', count($all_groups))
-                //->with('groups', $groups)
                 ->with('tickets', $tickets)
                 ->with('all_unassigned', count($unassigned_tickets))
                 ->with('closed_tickets', count($closed_tickets))
@@ -65,10 +55,8 @@ class DashboardController extends Controller
                 ->with('all_depts', count($all_depts));
         }
         else if($user->role==1){
-            //$group = Group::where('id', $user->group_number)->first();
-            
             $members = User::where('role', 2)->where('agency_id', $user->agency_id)->take(5)->get();
-            $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
+            //$all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
 
             if($user->agency_id==0){
                 $tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->take(10)->get();
@@ -87,6 +75,7 @@ class DashboardController extends Controller
                         ->groupBy('b.ticket_id')->get();
 
             $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
+            $all_members[count($all_members)] = $user->id;
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
@@ -95,10 +84,6 @@ class DashboardController extends Controller
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
                 $ticket->dept_name = $deptname;
-                /*if($memtix->status==0){ $memtix->status_name = 'New'; $memtix->class="label-success"; }
-                else if($memtix->status==1){ $memtix->status_name = 'In Process'; $memtix->class="bg-teal"; }
-                else if($memtix->status==2){ $memtix->status_name = 'Pending'; $memtix->class="bg-gray"; }
-                else if($memtix->status==3){ $memtix->status_name = 'Cancelled'; $memtix->class="label-danger"; }*/
                 $status = Status::where('id', $ticket->status)->first();
                 $ticket->status_name = $status->status;
                 $ticket->class = $status->class;
