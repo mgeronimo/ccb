@@ -279,17 +279,30 @@
 								            	<h3 class="timeline-header"><a href="#">{{ $comment->commenter }}</a></h3>
 								            	<div class="timeline-body">
 										            {{ $comment->comment }}
+										            @if($comment->attachment!="")
+										            	<br/>
+										            	<a role="button" data-toggle="modal" data-target="#attachment-{{ $comment->id }}"><img src="{{ url($comment->attachment) }}" style="width: 150px; margin: 15px" /></a>
+
+										            	<!-- Attachment Modal -->
+														<div class="modal fade" id="attachment-{{ $comment->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+														  	<div class="modal-dialog" role="document">
+														    	<div class="modal-content">
+														      		<div class="modal-header">
+														        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														        		<h4 class="modal-title" id="myModalLabel">Comment Attachment</h4>
+														      		</div>
+															      	<div class="modal-body" style="padding-top: 0px; text-align: center">
+															      		<img src="{{ url($comment->attachment) }}" style="max-width: 100%;" />
+															        	<!--<button type="button" class="btn btn-warning">Pending</button>
+															        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+															    	</div>
+														    	</div>
+														  	</div>
+														</div>
+										            @endif
 										        </div>
 									        </div>
 								        </li>
-								    @else
-								    	<li>
-						                  	<i class="fa fa-ticket bg-aqua"></i>
-						                  	<div class="timeline-item bg-log">
-						                    	<span class="time"><i class="fa fa-clock-o"></i> {{ $comment->created_at }}</span>
-						                    	<h3 class="timeline-header no-border"><a href="#">{{ $comment->commenter }}</a>{{ $comment->comment }}</h3>
-						                  	</div>
-						                </li>
 						            @endif
 							    @endforeach
 						        <li>
