@@ -5,7 +5,7 @@ $.ajaxSetup({
 });
 </script>
 <script type="text/javascript">
- 
+
  $(".checkmember").change(function() {
  	var ccb = $('input[name=is_member]:checked').val();
  	 console.log(ccb);
@@ -19,7 +19,8 @@ $.ajaxSetup({
  		$('#next2').html('Submit');
 
  	}
- });
+
+});
 </script>
 <script type="text/javascript">
 //jQuery time
@@ -46,7 +47,6 @@ $.ajaxSetup({
 			     	  $('#submit1').click();
 			    }
 			});
-		
 		
 
 	$.validator.addMethod("nowhitespace", function(value, element) {
@@ -159,7 +159,7 @@ $.ajaxSetup({
 			var ccb = $('input[name=is_member]:checked').val();
 			a = $(this);
 			if(fcounter==0){
-				$.get( "/validateDepartment?dept_name="+document.getElementsByName('dept_name')[0].value, function( data ) {
+				$.get( "/validateEditDepartment/{{$dept->id}}?dept_name="+document.getElementsByName('dept_name')[0].value, function( data ) {
 						if(data == 'passed'){
 
 							console.log('data');
@@ -209,9 +209,10 @@ $.ajaxSetup({
 		{
 			if(ccb==1)
 			{
-				$.get( "/validateAgencyEmail?agency_email="+document.getElementsByName('agency_email')[0].value, function( data ) {
+				$.get( "/validateEditEmailHead/{{$dept->id}}?agency_email="+document.getElementsByName('agency_email')[0].value, function( data ) {
 				if(data == 'passed'){
-					if(animating) return false;
+					console.log(data);
+						if(animating) return false;
 								animating = true;
 							    current_fs = a.parent();
 							    next_fs = a.parent().next();
@@ -238,6 +239,8 @@ $.ajaxSetup({
 								});
 			}
 			else {
+									console.log(data);
+
 					var span = document.createElement("span");
 					span.className = "error-block";
 					console.log('data' +data);
@@ -251,7 +254,7 @@ $.ajaxSetup({
 		}
 		else
 		{
-			$.get( "/validateAgencyEmail?agency_email="+document.getElementsByName('agency_email')[0].value, function( data ) {
+				$.get( "/validateEditEmailHead/{{$dept->id}}?agency_email="+document.getElementsByName('agency_email')[0].value, function( data ) {
 				if(data == 'passed'){
 					$('#fdesign').submit();
 				}
@@ -270,7 +273,25 @@ $.ajaxSetup({
 		
 			
 	}
-	}
+ }
+ if(fcounter==2)
+ {
+ 	$.get( "/validateEditEmail/{{$dept->id}}?email="+document.getElementsByName('email')[0].value, function( data ) {
+ 		if(data == 'passed'){
+					$('#fdesign').submit();
+				}
+				else {
+					var span = document.createElement("span");
+					span.className = "error-block";
+					console.log('data' +data);
+					var text = document.createTextNode("Email is already taken.");			
+					span.appendChild(text);
+					var element = document.getElementById('this-email');
+					element.appendChild(span);
+				} 
+ 	});
+
+ }
 
 
 });
@@ -316,29 +337,20 @@ $("#submit1").click(function(event){
 	event.preventDefault();
 	if(form.valid()==true)
 	{	
-			
-				$.get( "/validateDeptRep?email="+document.getElementsByName('email')[0].value, function( data ) { 
- 				      //console.log('data' +data);
- 				      
- 					if(data == 'passed'){
-					console.log('data' + data);
-
- 						$("#fdesign").submit();
-					}
-					else if(data=='failed')
-					{	
-								console.log('data' + data);
-							 	var span = document.createElement("span");
-						 		span.className = "error-block";
-						 		var text = document.createTextNode("Email already existing.");
-								var element = document.getElementById('this-email');
-								span.appendChild(text);		
-								element.appendChild(span);
-								return false;
-					}
-
-				});
-			
+			$.get( "/validateEditEmail/{{$dept->id}}?email="+document.getElementsByName('email')[0].value, function( data ) {
+ 		if(data == 'passed'){
+					$('#fdesign').submit();
+				}
+				else {
+					var span = document.createElement("span");
+					span.className = "error-block";
+					console.log('data' +data);
+					var text = document.createTextNode("Email is already taken.");			
+					span.appendChild(text);
+					var element = document.getElementById('this-email');
+					element.appendChild(span);
+				} 
+ 	});
 	}
 });
 

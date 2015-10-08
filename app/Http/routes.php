@@ -58,6 +58,11 @@ Route::get('users/delete/{id}', 'UserController@destroy');
  * ----------Department Routes
  */
 Route::get('departments', 'DepartmentController@index');
+Route::get('departments/{id}', 'DepartmentController@profile');
+Route::get('validateEditDepartment/{id}', 'DashboardAdminController@validateEditDepartment');
+Route::get('validateEditEmail/{id}', 'DashboardAdminController@validateEditEmail');
+Route::get('validateEditEmailHead/{id}', 'DashboardAdminController@validateEditEmailHead');
+
 Route::get('departments/delete/{id}', 'DepartmentController@destroy');
 Route::get('departments/edit/{id}', 'DepartmentController@edit');
 Route::post('update-dept', 'DepartmentController@update');
@@ -104,6 +109,8 @@ Route::get('adddept', 'DashboardAdminController@show');
 Route::post('adddept', 'DashboardAdminController@addDept');
 Route::get('validateDepartment', 'DashboardAdminController@validateDepartment');
 Route::get('validateDeptRep', 'DashboardAdminController@validateDeptRep');
+Route::get('validateAgencyEmail', 'DashboardAdminController@validateAgencyEmail');
+
 
 /*
  * ---------- Ticket Routes
