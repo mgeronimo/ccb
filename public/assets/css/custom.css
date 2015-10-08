@@ -162,3 +162,8 @@ a.to-members{
     font-size: 14px;
     padding: 20px;
 }
+
+td.deactivated{
+	font-style: italic;
+	color: gray;
+}

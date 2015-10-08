@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->integer('role')->nullable();
             $table->String('token')->nullable();
             $table->integer('is_verified')->nullable();
+            $table->integer('is_activated')->nullable();
             $table->rememberToken();
          // $table->timestamps();
         });

@@ -57,18 +57,27 @@
 					                  	<tr>
 						                    <th width="15%">User ID</th>
 						                    <th width="35%">Name</th>
-						                    <th width="35%">Agency</th>
-						                    <th width="15%">Action</th>
+						                    <th width="25%">Agency</th>
+						                    <th width="25%">Action</th>
 					                  	</tr>
 					                </thead>
 					                <tbody>
 					                	@foreach($supervisors as $supervisor)
 						                	<tr>
-						                		<td>{{ $supervisor->id }}</td>
-						                		<td>{{ $supervisor->first_name." ".$supervisor->last_name }}</td>
-						                		<td>{{ $supervisor->agency }}</td>
-						                		<td style="text-align: center">
+						                		<td @if($supervisor->is_activated==0) class="deactivated" @endif>{{ $supervisor->id }}</td>
+						                		<td @if($supervisor->is_activated==0) class="deactivated" @endif>{{ $supervisor->first_name." ".$supervisor->last_name }}</td>
+						                		<td @if($supervisor->is_activated==0) class="deactivated" @endif>{{ $supervisor->agency }}</td>
+						                		<td style="text-align: center; font-style: normal;">
 							                		<div class="btn-group">
+							                			@if($supervisor->is_activated == 0)
+								                			<a class="btn btn-success btn-sm activate" href="/users/activate/{{ $supervisor->id }}">
+								                				<i class="fa fa-check-circle-o"></i> Activate
+								                			</a>
+								                		@else
+								                			<a class="btn bg-navy btn-sm deactivate" href="/users/deactivate/{{ $supervisor->id }}">
+								                				<i class="fa fa-exclamation-circle"></i> Deactivate
+								                			</a>
+								                		@endif
 							                			<a class="btn btn-info btn-sm" href="/users/update/{{ $supervisor->id }}">
 				                    						<i class="fa fa-search"></i> Edit
 				                  						</a>
@@ -94,18 +103,27 @@
 					                  	<tr>
 						                    <th width="15%">User ID</th>
 						                    <th width="35%">Name</th>
-						                    <th width="35%">Agency</th>
-						                    <th width="15%">Action</th>
+						                    <th width="25%">Agency</th>
+						                    <th width="25%">Action</th>
 					                  	</tr>
 					                </thead>
 					                <tbody>
 					                	@foreach($agents as $agent)
 						                	<tr>
-						                		<td>{{ $agent->id }}</td>
-						                		<td>{{ $agent->first_name." ".$agent->last_name }}</td>
-						                		<td>{{ $agent->agency }}</td>
+						                		<td @if($agent->is_activated==0) class="deactivated" @endif>{{ $agent->id }}</td>
+						                		<td @if($agent->is_activated==0) class="deactivated" @endif>{{ $agent->first_name." ".$agent->last_name }}</td>
+						                		<td @if($agent->is_activated==0) class="deactivated" @endif>{{ $agent->agency }}</td>
 						                		<td style="text-align: center">
 							                		<div class="btn-group">
+							                			@if($agent->is_activated == 0)
+								                			<a class="btn btn-success btn-sm activate" href="/users/activate/{{ $agent->id }}">
+								                				<i class="fa fa-check-circle-o"></i> Activate
+								                			</a>
+								                		@else
+								                			<a class="btn bg-navy btn-sm deactivate" href="/users/deactivate/{{ $agent->id }}">
+								                				<i class="fa fa-exclamation-circle"></i> Deactivate
+								                			</a>
+								                		@endif
 							                			<a class="btn btn-info btn-sm" href="/users/update/{{ $agent->id }}">
 				                    						<i class="fa fa-search"></i> Edit
 				                  						</a>

@@ -397,3 +397,63 @@ jQuery(document).on("click",".delete-announcement", function (event) {
         }
     });
 });
+
+/*
+ * Deactivate User
+ */
+jQuery(document).on("click",".deactivate", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to deactivate this user?",
+        title: "Deactivate User",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Deactivating User",
+                className: "bg-navy",
+                callback: function () {
+                    console.log("Deactivated");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Activate User
+ */
+jQuery(document).on("click",".activate", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to activate this user?",
+        title: "Activate User",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Activating User",
+                className: "btn-success",
+                callback: function () {
+                    console.log("Activated");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});

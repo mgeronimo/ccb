@@ -6,3 +6,4 @@ Homestead.json
 .DS_Store
 /resources/views/admin/.DS_Store
 /resources/views/.DS_Store
+/public/uploads

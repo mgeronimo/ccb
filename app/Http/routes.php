@@ -52,6 +52,8 @@ Route::get('users', 'UserController@index');
 Route::get('add-user', 'UserController@create');
 Route::post('add-user', 'UserController@store');
 Route::get('users/delete/{id}', 'UserController@destroy');
+Route::get('users/activate/{id}', 'UserController@activate');
+Route::get('users/deactivate/{id}', 'UserController@deactivate');
 
 
 /*
