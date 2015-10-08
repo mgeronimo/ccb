@@ -212,7 +212,8 @@ class CommentController extends Controller
                 'user_id'           => $comments['user_id'],
                 'commenter_role'    => $comments['commenter_role'],
                 'created_at'        => $comments['created_at'],
-                'ticket_id'         => $comments['ticket_id']
+                'ticket_id'         => $comments['ticket_id'],
+                'attachment'        => $comments['attachment']
             ];
         }, $comments->toArray());
     } 
