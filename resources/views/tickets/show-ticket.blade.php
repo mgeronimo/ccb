@@ -246,12 +246,13 @@
 			                <div class="box-header">
 			                  	<h3 class="box-title"><i class="fa fa-commenting"></i> Comment</h3>
 			                </div>
-			                <form method="POST" action="{{url('/add-comment/'.$ticket->id) }}">
+			                <form method="POST" action="{{url('/add-comment/'.$ticket->id) }}" enctype="multipart/form-data">
 			                <div class="box-body">
 			                	<input type="textarea" name="ticket_comment" class="form-control" placeholder="Enter your comment">
 			                </div>
 			                <div class="box-footer clearfix no-border">
 			                	<button type="submit" class="btn btn-info pull-right">Send</button>
+			                	<input type="file" class="btn btn-default pull-right" name="attachment" style="margin-right: 10px;" />
 					        </div>
 					        </form>
 					    </div>
@@ -358,4 +359,11 @@
 			</div>
 		</section>
 	</div>
+@stop
+
+@section('scripts')
+	<script type="text/javascript">
+		$('input[type=file]').bootstrapFileInput();
+		$('.file-inputs').bootstrapFileInput();
+	</script>
 @stop
