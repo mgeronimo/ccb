@@ -205,7 +205,7 @@ $(document).ready(function(){
 						$.get( "/validateSupervisor?sfirstname="+document.getElementsByName('sfirstname')[0].value+
 							"&slastname="+document.getElementsByName('slastname')[0].value+
 							"&sEmail="+document.getElementsByName('sEmail')[0].value, function( data )*/
-						$.get( "/validateSupervisorAgent/"+fcounter+"?&sEmail="+document.getElementsByName('sEmail')[0].value, function( data ) {
+						$.get( "/validateAgencyEmail/"+fcounter+"?&sEmail="+document.getElementsByName('sEmail')[0].value, function( data ) {
 						 	if(data == 'passed'){
 						 		current_fs = a.parent();
 								next_fs = a.parent().next();

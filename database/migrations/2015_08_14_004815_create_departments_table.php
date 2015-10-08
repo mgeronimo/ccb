@@ -18,6 +18,9 @@ class CreateDepartmentsTable extends Migration
             $table->integer('is_member');
             $table->integer('regcode')->unsigned();
             $table->integer('provcode')->nullable()->unsigned();
+            $table->string('agency_head')->nullable()->default(null);
+            $table->integer('contact')->nullable()->default(null);
+            $table->string('agency_email')->nullable()->default(null);
         });
     }
     /**

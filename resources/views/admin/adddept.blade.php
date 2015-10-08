@@ -22,9 +22,11 @@
 		<form id="fdesign" method="POST" action="{{url('adddept')}}">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-				<ul id="progressbar" class="col-md-12 col-md-push-2">
-					<li class="active">Department Name</li>
-					<li>Department's representative Details</li>
+				<ul id="progressbar" class="col-md-12 ">
+					<li class="active">Agency Name</li>
+					<li>Agency's Details</li>
+
+					<li>Agency's representative Details</li>
 				</ul>
 				<fieldset>
 					<h2 class="fs-title">Agency name</h2>
@@ -52,8 +54,23 @@
 
 					</div>
 					<a href="/cancel-adddept" class="action-button btndesign" style="padding: 10px 25px">Cancel</a>
-					<button  id="next" name="next" class="button next action-button " />Submit</button>
+					<button  id="next" name="next" class="button next action-button " />Next</button>
 				</fieldset>
+				<fieldset>
+					<h2 class="fs-title">Agency's Details</h2>
+						<div id="this-person">
+						<input type="text" name="agency_head" placeholder="Agency's Head">
+					</div> 
+					<div id="this-contact">
+						<input type="number" name="contact" placeholder="Contact Number" >
+					</div> 
+					<div id="this-email2">
+						<input type="email" name="agency_email" placeholder="Email">
+					</div> 
+				<input type="button" id="previous" name="previous" class="previous action-button btndesign" value="Previous" />
+					<button  id="next2" name="next" class="button next action-button " />Submit</button>
+				</fieldset>
+
 			<fieldset>
 				<h2 class="fs-title">Agency representative details</h2>
 				<div id="this-sfirstname">
