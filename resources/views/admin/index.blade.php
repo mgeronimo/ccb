@@ -28,7 +28,7 @@
         </div>
         <div class="box-footer clearfix no-border">
             @if($all_unassigned>10)
-                <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="unassigned-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                     See All</a>
             @endif
         </div>
@@ -48,14 +48,13 @@
             @else
                 <table class="table table-bordered">
                     <tr>
-                        <th style="width: 30%;">Agency</th>
-                        <th>Description</th>
+                        <th style="width: 50%;">Department</th>
+                        <th>Representative</th>
                     </tr>
                     @foreach($depts as $dept)
                         <tr>
-                            <td><a href="departments/{{$dept->id}}">{{ $dept->dept_name }}</a></td>
-                            <td>{{ $dept->description }}<br>
-                            <sub> Representative: {{ $dept->dept_rep }}</sub></td>
+                            <td>{{ $dept->dept_name }}</td>
+                            <td>{{ $dept->deptrep_name }}</td>
                         </tr>
                     @endforeach
                 </table>

@@ -10,6 +10,7 @@ use Mail;
 use Input;
 use App\Group;
 use App\User;
+use App\Department;
 use App\Departments;
 use App\Region;
 use App\Province;
@@ -137,13 +138,16 @@ class DashboardAdminController extends Controller
         {$department->agency_email = $input['agency_email']; }
         $department->save();
         if($input['is_member']==1)
-
         {  
               $user->first_name = $input['firstname'];
               $user->last_name = $input['lastname'];
               $user->email = $input['email'];
               $user->role = 4;
+
               $user->agency_id = Departments::where('dept_name',$dept)->value('id');
+
+              //$user->agency_id = count(Department::all())+1;
+
               $user->contact_number = $input['contact_number'];
               $user->save();
               $mailer->sendEmailConfirmationTo($user);

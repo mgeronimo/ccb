@@ -18,7 +18,7 @@ class CreateTicketComments extends Migration
             $table->String('comment', 255);
             $table->integer('user_id');
             $table->integer('commenter_role');
-            //$table->String('attachment');
+            $table->string('attachment', 255);
             $table->string('class', 20);
             $table->timestamps('commented_at');
         });

@@ -52,6 +52,8 @@ Route::get('users', 'UserController@index');
 Route::get('add-user', 'UserController@create');
 Route::post('add-user', 'UserController@store');
 Route::get('users/delete/{id}', 'UserController@destroy');
+Route::get('users/activate/{id}', 'UserController@activate');
+Route::get('users/deactivate/{id}', 'UserController@deactivate');
 
 
 /*
@@ -124,6 +126,8 @@ Route::get('unassigned-tickets', 'TicketController@unassignedTickets');
 Route::get('in-process-tickets', 'TicketController@inProcessTickets');
 Route::get('pending-tickets', 'TicketController@pendingTickets');
 Route::get('closed-tickets', 'TicketController@closedTickets');
+Route::post('set-category/{id}', 'TicketController@setCategory');
+Route::get('tickets/{id}/re-assign/{agentid}', 'TicketController@reAssign');
 
 /*
  * ---------- Comment Routes

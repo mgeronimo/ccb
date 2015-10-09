@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Auth;
 use Input;
+use Image;
 use Validator;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Comment;
 use App\User;
+use App\Ticket;
 
 class CommentController extends Controller
 {
@@ -48,12 +50,40 @@ class CommentController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
+        if(Input::file('attachment') != NULL){
+            if(Input::file('attachment')->getSize()<2097152){
+                $quality = 60;  
+                $file=Input::file('attachment');
+                $rand = rand(0, 1000);
+                $orFile = $file->getClientOriginalName(); 
+                $filename = $rand.$orFile;
+                $img=Image::make($file);
+                $path = 'uploads/' . $filename;
+                //$img->resize(300, null, function ($constraint){$constraint->aspectRatio();});
+                $img->save($path, $quality);
+                $fphoto = 'uploads/'.$filename;
+
+                //return 'uploaded';
+            }
+        }
+        else $fphoto = '';
+
         $comment = Comment::create([
             'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
-            'ticket_id'         => $id
+            'ticket_id'         => $id,
+            'attachment'        => $fphoto
+        ]);
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' commented on this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $id,
+            'class'             => 'fa-comment'
         ]);
 
         return redirect()->back()->with('message', 'Comment successfully sent!');
@@ -78,13 +108,56 @@ class CommentController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
+        if(Input::file('attachment') != NULL){
+            if(Input::file('attachment')->getSize()<2097152){
+                $quality = 60;  
+                $file=Input::file('attachment');
+                $rand = rand(0, 1000);
+                $orFile = $file->getClientOriginalName(); 
+                $filename = $rand.$orFile;
+                $img=Image::make($file);
+                $path = 'uploads/' . $filename;
+                //$img->resize(300, null, function ($constraint){$constraint->aspectRatio();});
+                $img->save($path, $quality);
+                $fphoto = 'uploads/'.$filename;
+
+                //return 'uploaded';
+            }
+        }
+        else $fphoto = '';
+
         $comment = Comment::create([
             'is_comment'        => 1,
             'comment'           => $request->input('ticket_comment'),
             'user_id'           => $user->id,
             'commenter_role'    => $user->role,
-            'ticket_id'         => $id
+            'ticket_id'         => $id,
+            'attachment'        => $fphoto
         ]);
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' commented on this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $id,
+            'class'             => 'fa-comment'
+        ]);
+
+        $ticket = Ticket::where('id', $id)->first();
+        if($ticket->status ==3){
+            $ticket->status = 2;
+            $ticket->save();
+
+            $log = Comment::create([
+                'is_comment'        => 0,
+                'comment'           => ' has responded so the ticket status was brought back to "In Process".',
+                'user_id'           => $user->id,
+                'commenter_role'    => $user->role,
+                'ticket_id'         => $id,
+                'class'             => 'fa-ticket'
+            ]);
+        }
 
         return response()->json(['msg' => 'Comment was successfully submitted!'], 200);
     }
@@ -139,7 +212,8 @@ class CommentController extends Controller
                 'user_id'           => $comments['user_id'],
                 'commenter_role'    => $comments['commenter_role'],
                 'created_at'        => $comments['created_at'],
-                'ticket_id'         => $comments['ticket_id']
+                'ticket_id'         => $comments['ticket_id'],
+                'attachment'        => $comments['attachment']
             ];
         }, $comments->toArray());
     } 

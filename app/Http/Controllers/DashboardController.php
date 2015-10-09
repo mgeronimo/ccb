@@ -24,22 +24,21 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         if($user->role==0){
-            //$groups = Group::orderBy('group_name')->take(5)->get();
-            //$all_groups = Group::orderBy('group_name')->get();
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $depts = Department::orderby('dept_name')->take(5)->get();
             $unassigned_tickets = Ticket::where('assignee', NULL)->get();
 
             $closed_tickets = Ticket::where('status', 5)->get();
             $ongoing_tickets = Ticket::where('status', 2)->get();
-            $cancelled_tickets = Ticket::where('status', 4)->get();
+            $pending_tickets = Ticket::where('status', 3)->get();
             $all_depts = Department::orderby('dept_name')->get();
 
-            /*foreach ($groups as $key => $group) {
-               $supervisor = User::where('group_number', $group->id)
-                            ->where('role', 1)->first();
-               $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
-            }*/
+            foreach ($depts as $key => $dept) {
+                $deptrep = User::where('agency_id', $dept->id)->where('role', 4)->first();
+                if($deptrep!=NULL)
+                    $dept->deptrep_name = $deptrep->first_name." ".$deptrep->last_name;
+                else $dept->deptrep_name = "None";
+            }
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -47,42 +46,44 @@ class DashboardController extends Controller
             }
 
             return view('dashboard')->with('user', $user)
-                //->with('all_groups', count($all_groups))
-                //->with('groups', $groups)
                 ->with('tickets', $tickets)
                 ->with('all_unassigned', count($unassigned_tickets))
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
-                ->with('cancelled_tickets', count($cancelled_tickets))
+                ->with('pending_tickets', count($pending_tickets))
                 ->with('depts', $depts)
                 ->with('all_depts', count($all_depts));
         }
         else if($user->role==1){
-            //$group = Group::where('id', $user->group_number)->first();
             $members = User::where('role', 2)->where('agency_id', $user->agency_id)->take(5)->get();
-            $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
-            $all_unassigned = Ticket::where('assignee', NULL)->get();
-            $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
+            //$all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->get();
+
+            if($user->agency_id==0){
+                $tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 1)->get();
+            }
+            else{
+                $tickets = Ticket::where('assignee', NULL)->where('status', 2)->where('dept_id', $user->agency_id)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 2)->where('dept_id', $user->agency_id)->get();
+            }
+
             $all_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
-                            ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
-                            ->groupBy('b.ticket_id')->take(5)->get();
+                        ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
+                        ->groupBy('b.ticket_id')->take(5)->get();
             $count_assigned = DB::table('users as a')->join('tickets as b', 'a.id', '=', 'b.assignee')
-                            ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
-                            ->groupBy('b.ticket_id')->get();
+                        ->where('a.role', 2)->where('a.agency_id', $user->agency_id)
+                        ->groupBy('b.ticket_id')->get();
 
             $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
+            $all_members[count($all_members)] = $user->id;
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
-            $cancelled_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 4)->get();
+            $pending_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 3)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
                 $ticket->dept_name = $deptname;
-                /*if($memtix->status==0){ $memtix->status_name = 'New'; $memtix->class="label-success"; }
-                else if($memtix->status==1){ $memtix->status_name = 'In Process'; $memtix->class="bg-teal"; }
-                else if($memtix->status==2){ $memtix->status_name = 'Pending'; $memtix->class="bg-gray"; }
-                else if($memtix->status==3){ $memtix->status_name = 'Cancelled'; $memtix->class="label-danger"; }*/
                 $status = Status::where('id', $ticket->status)->first();
                 $ticket->status_name = $status->status;
                 $ticket->class = $status->class;
@@ -103,18 +104,25 @@ class DashboardController extends Controller
                 ->with('count_assigned', count($count_assigned))
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
-                ->with('cancelled_tickets', count($cancelled_tickets));
+                ->with('pending_tickets', count($pending_tickets));
         }
         else if($user->role==2)
         {
-            $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
+            if($user->agency_id==0){
+                $tickets = Ticket::where('assignee', NULL)->where('status', 1)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 1)->get();
+            }
+            else{
+                $tickets = Ticket::where('assignee', NULL)->where('status', 2)->orderBy('created_at', 'DESC')->take(10)->get();
+                $all_unassigned = Ticket::where('assignee', NULL)->where('status', 2)->get();
+            }
+
             $assigned_tickets = Ticket::where('assignee', $user->id)->orderBy('created_at', 'ASC')->take(10)->get();
-            $all_unassigned = Ticket::where('assignee', NULL)->get();
             $all_assigned = Ticket::where('assignee', $user->id)->get();
 
             $ongoing_tickets = Ticket::where('assignee', $user->id)->where('status', 2)->get();
             $closed_tickets = Ticket::where('assignee', $user->id)->where('status', 5)->get();
-            $cancelled_tickets = Ticket::where('assignee', $user->id)->where('status', 4)->get();
+            $pending_tickets = Ticket::where('assignee', $user->id)->where('status', 3)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -136,17 +144,17 @@ class DashboardController extends Controller
                 ->with('all_unassigned', count($all_unassigned))
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
-                ->with('cancelled_tickets', count($cancelled_tickets));
+                ->with('pending_tickets', count($pending_tickets));
         }
         else if($user->role==4){
-            $dept = Department::where('dept_rep', $user->id)->first();
+            $dept = Department::where('id', $user->agency_id)->first();
             $new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->orderBy('created_at', 'DESC')->take(5)->get();
             $count_new_tickets = Ticket::where('status', 3)->where('dept_id', $dept->id)->get();
             $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $dept->id)->take(5)->get();
             $count_ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
             $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $dept->id)->take(5)->get();
             $count_closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
-            $count_cancelled_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
+            $count_pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
             return view('dashboard')->with('user', $user)
                 ->with('new_tickets', $new_tickets)
                 ->with('all_unassigned', count($count_new_tickets))
@@ -154,7 +162,7 @@ class DashboardController extends Controller
                 ->with('ongoing_tickets', count($count_ongoing_tickets))
                 ->with('show_closed_tickets', $closed_tickets)
                 ->with('closed_tickets', count($count_closed_tickets))
-                ->with('cancelled_tickets', count($count_cancelled_tickets));
+                ->with('pending_tickets', count($count_pending_tickets));
         }
     }
 }

@@ -69,6 +69,36 @@ jQuery(document).on("click",".assign-agent", function (event) {
 });
 
 /*
+ * Assign Self
+ */
+jQuery(document).on("click",".assign-self", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to assign this ticket to your self?",
+        title: "Assign Self",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Assign",
+                className: "btn-success",
+                callback: function () {
+                    console.log("Assigned agent ");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
  * Delete Group
  */
 jQuery(document).on("click",".del-group", function (event) {
@@ -189,6 +219,36 @@ jQuery(document).on("click",".del-dept", function (event) {
 });
 
 /*
+ * Pending Ticket
+ */
+jQuery(document).on("click",".pending", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to change the ticket status into pending?",
+        title: "Change Ticket Status to Pending",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue",
+                className: "btn-warning",
+                callback: function () {
+                    console.log("Pending");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
  * Escalate Ticket
  */
 jQuery(document).on("click",".escalate", function (event) {
@@ -249,7 +309,7 @@ jQuery(document).on("click",".close-ticket", function (event) {
 });
 
 /*
- * Close Ticket
+ * Cancel Ticket
  */
 jQuery(document).on("click",".cancel-ticket", function (event) {
     event.preventDefault();
@@ -331,6 +391,66 @@ jQuery(document).on("click",".delete-announcement", function (event) {
                 className: "btn-info",
                 callback: function () {
                     console.log("Deleted");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Deactivate User
+ */
+jQuery(document).on("click",".deactivate", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to deactivate this user?",
+        title: "Deactivate User",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Deactivating User",
+                className: "bg-navy",
+                callback: function () {
+                    console.log("Deactivated");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
+ * Activate User
+ */
+jQuery(document).on("click",".activate", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to activate this user?",
+        title: "Activate User",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Activating User",
+                className: "btn-success",
+                callback: function () {
+                    console.log("Activated");
                     location.href = href;
                 }
             }

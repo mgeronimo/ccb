@@ -60,7 +60,7 @@ class UserController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $agencies = Department::lists('dept_name', 'id')->toArray();
+        $agencies = Department::where('is_member', 1)->lists('dept_name', 'id')->toArray();
 
         return view('admin.user.add-user')->with('user', $user)->with('agencies', $agencies);
     }
@@ -150,6 +150,38 @@ class UserController extends Controller
 
         return redirect('/users')->with('message', 'Successfully changed user details.');
     }
+
+    
+
+    /**
+     * Activates the user.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function activate($id)
+    {
+        $user = User::where('id', $id)->first();
+        $user->is_activated = 1;
+        $user->save();
+
+        return redirect()->back()->with('message', 'User now activated!');
+    }
+
+    /**
+     * Deactivates the user.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function deactivate($id)
+    {
+        $user = User::where('id', $id)->first();
+        $user->is_activated = 0;
+        $user->save();
+
+        return redirect()->back()->with('message', 'User now deactivated!');
+    }    
 
     /**
      * Remove the specified resource from storage.

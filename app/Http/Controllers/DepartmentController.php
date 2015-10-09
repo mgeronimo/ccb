@@ -31,8 +31,10 @@ class DepartmentController extends Controller
         $user = Auth::user();
         $departments = Department::all();
         foreach ($departments as $key => $department) {
-            $deptrep = User::where('agency_id', $department->id)->first();
-            $department->deptrep_name = $deptrep->first_name." ".$deptrep->last_name;
+            $deptrep = User::where('agency_id', $department->id)->where('role', 4)->first();
+            if($deptrep!=NULL)
+                $department->deptrep_name = $deptrep->first_name." ".$deptrep->last_name;
+            else $department->deptrep_name = "None";
         }
 
         return view('admin.department.departments')->with('user', $user)

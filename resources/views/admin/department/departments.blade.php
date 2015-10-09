@@ -41,8 +41,8 @@
             <div class="box">
                 <div class="box-header">
                   	<h3 class="box-title">Agency List</h3>
-                  	    <a class="btn btn-sm btn-primary pull-right" href="adddept" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                 Add Agency</a>
+              	    <a class="btn btn-sm btn-primary pull-right" href="adddept" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    Add Agency</a>
                 </div><!-- /.box-header -->
              	<div class="box-body">
              		<table id="example2" class="table table-bordered table-hover">

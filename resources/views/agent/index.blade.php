@@ -31,17 +31,17 @@
         </div><!-- /.box-body -->
         <div class="box-footer clearfix no-border">
             @if(count($assigned_tickets)==0)
-                <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="in-process-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All Unassigned Tickets</a>
             @elseif($all_assigned>10)
-                <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="in-process-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All</a>
             @endif
         </div>
     </div>
 </section>
 <section class="col-lg-5 connectedSortable">
-	<div class="box box-primary">
+	<div class="box box-success">
         <div class="box-header">
             <i class="fa fa-ticket"></i>
             <h3 class="box-title">Unassigned Tickets</h3>
@@ -70,7 +70,7 @@
         </div>
         <div class="box-footer clearfix no-border">
             @if($all_unassigned>10)
-                <a class="btn btn-sm btn-default pull-right" href="tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
+                <a class="btn btn-sm btn-default pull-right" href="unassigned-tickets" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                     See All</a>
             @endif
         </div>
