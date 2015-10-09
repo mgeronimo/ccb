@@ -67,6 +67,11 @@
                 </a>
             </li>
             @endif
+            <li class="{{ Request::is( 'reports') ? 'active' : '' }}">
+                <a href="/reports">
+                    <i class="glyphicon glyphicon-stats"></i> <span>Reports</span>
+                </a>
+            </li>
         </ul>
     </section>
     <!-- /.sidebar -->
