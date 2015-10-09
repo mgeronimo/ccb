@@ -135,6 +135,12 @@ Route::get('tickets/{id}/re-assign/{agentid}', 'TicketController@reAssign');
 Route::post('add-comment/{id}', 'CommentController@store');
 
 /*
+ * ---------- Reports Routes
+ */
+Route::get('reports', 'ReportController@index');
+
+
+/*
  * Announcement Routes
  */
 Route::get('announcements', 'AnnouncementController@allAnnouncements'); 
