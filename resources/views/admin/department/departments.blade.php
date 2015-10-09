@@ -9,16 +9,16 @@
 @stop
 
 @section('page-title')
-    Departments
+    Agency
 @stop
 
 @section('page-desc')
-    List of all government departments, and their respective department representatives
+    List of all government agencies, and their respective agency representatives
 @stop
 
 @section('breadcrumb')
     <li>Dashboard</li>
-    <li class="active">Departments</li>
+    <li class="active">Agency</li>
 @stop
 
 @section('content')
@@ -40,17 +40,17 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                  	<h3 class="box-title">Department List</h3>
-                  	<a class="btn btn-sm btn-primary pull-right" href="/adddept" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                    Add Department</a>
+                  	<h3 class="box-title">Agency List</h3>
+              	    <a class="btn btn-sm btn-primary pull-right" href="adddept" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
+                    Add Agency</a>
                 </div><!-- /.box-header -->
              	<div class="box-body">
              		<table id="example2" class="table table-bordered table-hover">
              			<thead>
 		                  	<tr>
-			                    <th width="15%">Department ID</th>
-			                    <th width="35%">Department Name</th>
-			                    <th width="35%">Department Representative</th>
+			                    <th width="15%">Agency ID</th>
+			                    <th width="35%">Agency Name</th>
+			                    <th width="35%">Agency Representative</th>
 			                    <th width="15%">Action</th>
 		                  	</tr>
 		                </thead>
@@ -59,7 +59,7 @@
 			                	<tr>
 			                		<td>{{ $department->id }}</td>
 			                		<td>
-			                			{{ $department->dept_name }}<br/>
+			                	<a href="departments/{{$department->id}}">		{{ $department->dept_name }}<br/>
 			                			<small>{{ $department->description }}</small>
 			                		</td>
 			                		<td>{{ $department->deptrep_name }}</td>

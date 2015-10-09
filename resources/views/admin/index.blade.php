@@ -38,13 +38,13 @@
     <div class="box box-primary">
         <div class="box-header">
             <i class="fa fa-building-o"></i>
-            <h3 class="box-title">Departments</h3>
+            <h3 class="box-title">Agency</h3>
             <a class="btn btn-sm btn-primary pull-right" href="adddept" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-            Add Department</a>
+            Add Agency</a>
         </div><!-- /.box-header -->
         <div class="box-body">
             @if(count($depts)==0)
-                <em><center>No department added yet.</center></em>
+                <em><center>No agency added yet.</center></em>
             @else
                 <table class="table table-bordered">
                     <tr>
@@ -63,7 +63,7 @@
         <div class="box-footer clearfix no-border">
             @if(count($depts)==0)
                 <a class="btn btn-sm btn-primary pull-right" href="#" role="button"><i class="ion ion-plus-round"></i> &nbsp;&nbsp;
-                Add Department</a>
+                Add Agency</a>
             @elseif($all_depts>5)
                 <a class="btn btn-sm btn-default pull-right" href="#" role="button"><i class="fa fa-search"></i> &nbsp;&nbsp;
                 See All</a>

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Mailers\AppMailer;
 use App\Mailers\AppDepartment;
-
 use Mail;
 use Input;
 use App\Group;
@@ -125,24 +124,34 @@ class DashboardAdminController extends Controller
         $user = new User;
         $department = new Departments;
         $input = $request->all();
+        $dept = $input['dept_name'];
         $department->dept_name = $input['dept_name'];
         $department->is_member = $input['is_member'];
         $department->regcode =  $input['regname'];
-        $department->provcode =  $input['provname'];    
-        
+        if(!$input['provname']=="null") 
+        {$department->provcode =  $input['provname']; }
+        if(!$input['agency_head']==null) 
+        { $department->agency_head =$input['agency_head']; }
+        if(!$input['contact']==null)
+        {$department->contact = $input['contact']; }
+        if(!$input['agency_email']==null)
+        {$department->agency_email = $input['agency_email']; }
+        $department->save();
         if($input['is_member']==1)
-
         {  
               $user->first_name = $input['firstname'];
               $user->last_name = $input['lastname'];
               $user->email = $input['email'];
               $user->role = 4;
-              $user->agency_id = count(Department::all())+1;
+
+              $user->agency_id = Departments::where('dept_name',$dept)->value('id');
+
+              //$user->agency_id = count(Department::all())+1;
+
               $user->contact_number = $input['contact_number'];
               $user->save();
               $mailer->sendEmailConfirmationTo($user);
         }
-        $department->save();
         //different email
         return redirect('/')->with('message', 'Department Successfully added.');
     }
@@ -165,6 +174,41 @@ class DashboardAdminController extends Controller
     
         //
     }
+      public function validateEditDepartment($id)
+    {
+        $validate = null;
+        $input = trim(Input::get('dept_name'));
+
+        $validate = Departments::whereNotIn('id', [$id])->where('dept_name', $input)->get();
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
+        //
+    }
+       public function validateEditEmailHead($id)
+    {
+        $validate = null;
+        $input = trim(Input::get('agency_email'));
+
+        $validate = Departments::whereNotIn('id', [$id])->where('agency_email', $input)->get();
+
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
+        //
+    }
+        public function validateEditEmail($id)
+    {
+        $validate = null;
+        $input = trim(Input::get('email'));
+
+        $validate = User::whereNotIn('agency_id', [$id])->where('email', $input)->get();
+        if(count($validate)) return 'failed';
+        else return 'passed';
+    
+        //
+    }
+
 
     public function validateDeptRep()
     {
@@ -174,6 +218,19 @@ class DashboardAdminController extends Controller
         $validate = User::where('email', $input)->get();
         
         if(count($validate)) return 'failed';
+        else return 'passed';
+    
+        //
+    }
+    public function validateAgencyEmail()
+    {
+        $validate = null;
+        $input = trim(Input::get('agency_email'));
+
+        $validate = Departments::where('agency_email', $input)->get();
+
+        if($input=="") return 'passed';
+        else if(count($validate)) return 'failed';
         else return 'passed';
     
         //

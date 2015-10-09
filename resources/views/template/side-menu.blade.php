@@ -56,7 +56,7 @@
             @if($user->role<3)
                 <li class="{{ Request::is( 'departments') ? 'active' : '' }}">
                     <a href="/departments">
-                        <i class="fa fa-building-o"></i> <span>Departments</span>
+                        <i class="fa fa-building-o"></i> <span>Agency</span>
                     </a>
                 </li>
             @endif
