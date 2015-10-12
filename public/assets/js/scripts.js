@@ -337,3 +337,33 @@ jQuery(document).on("click",".delete-announcement", function (event) {
         }
     });
 });
+
+/*
+ * waiting for agency Ticket
+ */
+jQuery(document).on("click",".wait", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want this ticket to wait for the concerned agency?",
+        title: "Concerned Agency Ticket",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Wait",
+                className: "bg-purple",
+                callback: function () {
+                    console.log("Escalated");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});

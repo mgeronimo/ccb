@@ -413,6 +413,31 @@ class TicketController extends Controller
             }
             else return redirect('tickets')->with('error', 'You have no permission to close this ticket!');
         }
+        /*
+         * Pending (Waiting for concerned agency)
+         */
+           else if($statid == 6){
+            if($user->id == $ticket->assignee || $user->id == $supervisor->id){
+                if($ticket->status == 2){
+                    $ticket->status = 3;
+                    $ticket->save();
+                    //email
+                    //$mailer->sendStatusChanged($created_by);
+                     $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => 'changed the status to waiting for concerned agency',
+                    'user_id'           => $user->id,
+                    'commenter_role'    => $user->role,
+                    'ticket_id'         => $id,
+                    'class'             => 'fa-ticket'
+                ]);
+
+                    return redirect('tickets')->with('message', 'Tickect is now waiting for the concerned agency');
+                }
+                return redirect('tickets')->with('error', 'Only tickets in process can be changed to this status .');
+            }
+            else return redirect()->back()->with('error', "You don't have the permission to changed this ticket status!");
+        }
 
     }    
 

@@ -176,6 +176,8 @@
 		                    @if($ticket->status == 2)
 		                    	@if($user->role < 4 && $user->role > 0)
 		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/3" role="button">Escalate to Dept. Representative</a>
+		                			<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/6" role="button">Waiting for concerned agency</a>
+
 		                		@endif
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif
