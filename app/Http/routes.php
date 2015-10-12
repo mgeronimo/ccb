@@ -71,6 +71,7 @@ Route::post('update-dept', 'DepartmentController@update');
 Route::get('cancel-update-dept', function(){
 	return redirect('/departments')->with('message', 'Editing department cancelled.');
 });
+Route::get('agencies', 'DepartmentApiController@getList');
 
 /*
  * ---------- Group Routes
@@ -138,6 +139,12 @@ Route::post('add-comment/{id}', 'CommentController@store');
  * ---------- Reports Routes
  */
 Route::get('reports', 'ReportController@index');
+
+/*
+ * ---------- Region Routes
+ */
+Route::get('regions', 'DepartmentApiController@getRegions');
+Route::get('provinces', 'DepartmentApiController@getProvinces');
 
 
 /*
