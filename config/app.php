@@ -147,7 +147,8 @@ return [
         'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
         Collective\Html\HtmlServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
-        'Intervention\Image\ImageServiceProvider'
+        'Intervention\Image\ImageServiceProvider',
+        'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider'
 
     ],
 

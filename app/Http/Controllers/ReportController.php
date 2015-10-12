@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use JavaScript;
+use Input;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -20,7 +22,22 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $agencies = Department::where('is_member', 1)->lists('dept_name', 'id')->toArray();
-        return view('reports.reports')->with('user', $user)->with('agencies', $agencies);
+        //$input = Input::only('startDate','endDate');
+        $input = Input::all();
+        //$startDate = ($input['startDate']) ? $input['startDate'] : date("Y-m-d", strtotime('-29 day'));
+        //$endDate = ($input['endDate']) ? $input['endDate'] : date("Y-m-d");
+
+        //dd($input);
+
+        /*JavaScript::put([
+            'startDate' => $startDate,
+            'endDate' => $endDate
+        ]);*/
+
+        return view('reports.reports')->with('user', $user)
+            ->with('agencies', $agencies);
+            //->with('startDate', $startDate)
+            //->with('endDate', $endDate);
     }
 
     /**

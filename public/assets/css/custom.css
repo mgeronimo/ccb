@@ -167,3 +167,7 @@ td.deactivated{
 	font-style: italic;
 	color: gray;
 }
+
+.reports-filter{
+	margin: 5px 0px;
+}
