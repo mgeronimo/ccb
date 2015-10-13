@@ -38,7 +38,7 @@
         </div>
     @endif
     <br/>
-	<div class="box box-primary">
+	<div class="box box-primary no-print">
 		<div class="box-header with-border">
 			<h3 class="box-title">Filters</h3>
 		</div>
@@ -118,10 +118,10 @@
                 <label>Status</label>
             </div>
             <div class="col-md-5 reports-filter">
-                <label class="radio-inline" style="padding-left: 0px"><input type="checkbox" value="1" id ="2" name ="checkmember[]" /> New</label>
-                <label class="radio-inline"><input type="checkbox" value="2" id ="2" name ="checkmember[]" /> In Process</label>
-                <label class="radio-inline"><input type="checkbox" value="3" id ="2" name ="checkmember[]" /> In Pending</label>
-                <label class="radio-inline"><input type="checkbox" value="5" id ="2" name ="checkmember[]" /> Closed</label>
+                <label class="radio-inline" style="padding-left: 0px"><input type="checkbox" value="1" id ="2" name ="status[]" /> New</label>
+                <label class="radio-inline"><input type="checkbox" value="2" id ="2" name ="status[]" /> In Process</label>
+                <label class="radio-inline"><input type="checkbox" value="3" id ="2" name ="status[]" /> Pending</label>
+                <label class="radio-inline"><input type="checkbox" value="5" id ="2" name ="status[]" /> Closed</label>
             </div>
             <div class="col-md-1 reports-filter">
                 <label>Category</label>
@@ -136,6 +136,115 @@
             </form>
         </div>
 	</div>
+
+    @if($tickets!=NULL)
+        <div class="col-md-12">
+            <h4 style="text-align: center">RESULTS</h4>
+            <h5 style="text-align: center">{{ date("F j, Y", strtotime($startDate)).' - '.date("F j, Y", strtotime($endDate)) }}</h5>
+        </div>
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-green">
+                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">New</span>
+                        <span class="info-box-number">{{ count($new_tickets) }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ (count($new_tickets)/count($tickets))*100 }}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            {{ (count($new_tickets)/count($tickets))*100 }}% of all the tickets
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-aqua">
+                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">In Process</span>
+                        <span class="info-box-number">{{ count($ongoing_tickets) }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ (count($ongoing_tickets)/count($tickets))*100 }}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            {{ (count($ongoing_tickets)/count($tickets))*100 }}% of all the tickets
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-orange">
+                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Pending</span>
+                        <span class="info-box-number">{{ count($pending_tickets) }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ (count($pending_tickets)/count($tickets))*100 }}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            {{ (count($pending_tickets)/count($tickets))*100 }}% of all the tickets
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-gray">
+                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
+                    <div class="info-box-content">
+                        <span class="info-box-text">Closed</span>
+                        <span class="info-box-number">{{ count($closed_tickets) }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ (count($closed_tickets)/count($tickets))*100 }}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            {{ (count($closed_tickets)/count($tickets))*100 }}% of all the tickets
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+        </div>
+        <div class="row">
+            <section class="col-lg-12">
+                <div class="box box-default" style="min-height: 250px">
+                    <div class="box-header">
+                        <h3 class="box-title">Tickets</h3>
+                    </div><!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="table" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Tickets</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($tickets as $ticket)
+                                <tr>
+                                    <td class="ticket-td">
+                                        <i class="fa fa-circle-o"></i>
+                                        <!-- todo text -->
+                                        <span class="text"><a href="/tickets/{{ $ticket->id }}">{{ $ticket->ticket_id }}</a> - {{ $ticket->subject }}</span><br/>
+                                        <!-- Emphasis label -->
+                                        <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
+                                        <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    @else
+        <div class="row">
+            <section class="col-lg-12">
+                <div class="callout bg-gray lead">
+                    <p style="font-size: 16px; text-align: center">No result!</p>
+                </div>
+            </section>
+        </div>
+    @endif
 @stop
 
 @section('scripts')
@@ -167,4 +276,15 @@
 
     </script>
     <script src='{{ url("assets/js/applicationController.js") }}'></script>
+    <script src='{{ url("assets/plugins/datatables/jquery.dataTables.min.js") }}'></script>
+    <script src='{{ url("assets/plugins/datatables/dataTables.bootstrap.min.js") }}'></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".pagination").addClass('pagination-sm no-margin pull-right')
+        });
+
+        $(function () {
+            $("#table").DataTable();
+        });
+    </script>
 @stop
