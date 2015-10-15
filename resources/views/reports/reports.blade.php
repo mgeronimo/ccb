@@ -153,7 +153,7 @@
                             <div class="progress-bar" style="width: {{ (count($new_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($new_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($new_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -168,7 +168,7 @@
                             <div class="progress-bar" style="width: {{ (count($ongoing_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($ongoing_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($ongoing_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -183,7 +183,7 @@
                             <div class="progress-bar" style="width: {{ (count($pending_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($pending_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($pending_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -198,7 +198,7 @@
                             <div class="progress-bar" style="width: {{ (count($closed_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($closed_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($closed_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
