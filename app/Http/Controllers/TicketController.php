@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Input;
+use DB;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -569,7 +570,13 @@ class TicketController extends Controller
         $user = Auth::user();
         $input = Input::all();
 
-        return redirect('search-tickets')->with('user', $user);
+        $results = DB::table('tickets')
+            ->where('ticket_id', 'LIKE', '%'.$input['q'].'%')
+            ->orWhere('subject', 'LIKE', '%'.$input['q'].'%')
+            ->orWhere('created_at', 'LIKE', '%'.$input['q'].'%')
+            ->get();
+
+        return view('search')->with('user', $user)->with('term', $input['q'])->with('results', $results);
     }
 
     /**
