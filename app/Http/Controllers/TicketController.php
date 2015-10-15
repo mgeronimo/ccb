@@ -560,6 +560,19 @@ class TicketController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function searchTickets()
+    {
+        $user = Auth::user();
+        $input = Input::all();
+
+        return redirect('search-tickets')->with('user', $user);
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
