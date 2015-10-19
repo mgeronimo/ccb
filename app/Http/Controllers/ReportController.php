@@ -10,6 +10,7 @@ use DB;
 use PDF;
 
 use App\User;
+use App\Ticket;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Department;
@@ -291,8 +292,17 @@ class ReportController extends Controller
             $data = $data->groupBy('t.id')->get();
             $new_tickets = $tickets->where('t.status', 1)->groupBy('t.id')->get();
 
+            foreach($data as $d){
+                $assignee = User::where('id', $d->assignee)->first();
+                if($assignee!=NULL)
+                    $d->assignee_name = $assignee->first_name.' '.$assignee->last_name;
+                else $d->assignee_name = "None";
 
-            //dd($input);
+                $date = Ticket::where('ticket_id', $d->ticket_id)->first();
+                if($date!=NULL)
+                    $d->date_time = $date->created_at;
+                else $d->date_time = "";
+            }
 
             $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'new_tickets'=>$new_tickets, 'ongoing_tickets'=>$ongoing_tickets, 'pending_tickets'=>$pending_tickets, 'closed_tickets'=>$closed_tickets, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input));
             return $pdf->stream('report.pdf');

@@ -247,8 +247,9 @@
                         <table id="table" class="table">
                             <thead>
                                 <tr>
-                                    <th width="30%">Ticket ID</th>
-                                    <th width="30%">Ticket Subject</th>
+                                    <th width="20%">Ticket ID</th>
+                                    <th width="20%">Ticket Subject</th>
+                                    <th width="20%">Created at</th>
                                     <th width="20%">Assignee</th>
                                     <th width="20%">Status</th>
                                 </tr>
@@ -263,7 +264,10 @@
                                         <span class="label label-default sub-time" style="font-size: 11px">{{ $ticket->subject }}</span>
                                     </td>
                                     <td class="ticket-td">
-                                        <span class="label label-default sub-time" style="font-size: 11px">{{ $ticket->assignee }}</span>
+                                        <span class="label label-default sub-time" style="font-size: 11px">{{ $ticket->date_time }}</span>
+                                    </td>
+                                    <td class="ticket-td">
+                                        <span class="label label-default sub-time" style="font-size: 11px">{{ $ticket->assignee_name }}</span>
                                     </td>
                                     <td class="ticket-td">
                                         <span class="label label-default sub-time" style="font-size: 11px">{{ $ticket->status }}</span>
