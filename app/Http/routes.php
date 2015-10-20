@@ -140,6 +140,8 @@ Route::post('add-comment/{id}', 'CommentController@store');
  * ---------- Reports Routes
  */
 Route::get('reports', 'ReportController@index');
+Route::post('pdf-report', 'ReportController@generatePdf');
+Route::post('csv-report', 'ReportController@generateCsv');
 
 /*
  * ---------- Region Routes

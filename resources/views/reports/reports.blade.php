@@ -133,6 +133,8 @@
 		</div>
         <div class="box-footer">
                 <input type="submit" onclick="this.form.action='/reports';" class="btn btn-primary pull-right" value="Generate Report">
+                <input type="submit" formmethod="post" onclick="this.form.action='/pdf-report';" class="btn btn-default pull-right" value="Generate PDF" style="margin-right: 10px;" />
+                <input type="submit" formmethod="post" onclick="this.form.action='/csv-report';" class="btn btn-default pull-right" value="Generate CSV" style="margin-right: 10px;" />
             </form>
         </div>
 	</div>
@@ -153,7 +155,7 @@
                             <div class="progress-bar" style="width: {{ (count($new_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($new_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($new_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -168,7 +170,7 @@
                             <div class="progress-bar" style="width: {{ (count($ongoing_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($ongoing_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($ongoing_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -183,7 +185,7 @@
                             <div class="progress-bar" style="width: {{ (count($pending_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($pending_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($pending_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -198,7 +200,7 @@
                             <div class="progress-bar" style="width: {{ (count($closed_tickets)/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ (count($closed_tickets)/count($tickets))*100 }}% of all the tickets
+                            {{ round((count($closed_tickets)/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
@@ -236,7 +238,7 @@
                 </div>
             </section>
         </div>
-    @else
+    @elseif($input!=NULL)
         <div class="row">
             <section class="col-lg-12">
                 <div class="callout bg-gray lead">
