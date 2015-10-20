@@ -133,7 +133,8 @@
 		</div>
         <div class="box-footer">
                 <input type="submit" onclick="this.form.action='/reports';" class="btn btn-primary pull-right" value="Generate Report">
-                <input type="submit" formmethod="post" onclick="this.form.action='/pdf-report';" class="btn btn-default pull-right" ng-click="generatePdf()" value="Generate PDF" style="margin-right: 10px;" />
+                <input type="submit" formmethod="post" onclick="this.form.action='/pdf-report';" class="btn btn-default pull-right" value="Generate PDF" style="margin-right: 10px;" />
+                <input type="submit" formmethod="post" onclick="this.form.action='/csv-report';" class="btn btn-default pull-right" value="Generate CSV" style="margin-right: 10px;" />
             </form>
         </div>
 	</div>
