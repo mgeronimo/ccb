@@ -72,9 +72,7 @@ angular.module('ccbApp', ["isteven-multi-select"], function($interpolateProvider
         $('#endDate').val($('#reportrange').data('daterangepicker').endDate.format('YYYY-MM-DD'));
 
     }
-
     
-
     $scope.agencies = $scope.showAllAgencies();
     $scope.regions = $scope.showRegions();
     $scope.provinces = $scope.showProvinces();

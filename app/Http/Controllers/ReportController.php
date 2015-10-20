@@ -71,7 +71,6 @@ class ReportController extends Controller
                 ->whereIn('t.category',$category)
                 ->groupBy('t.id')
                 ->get();
-
             dd($tickets);*/
 
             //dd($agencies);
