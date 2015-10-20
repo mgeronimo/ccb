@@ -9,13 +9,13 @@
                 font-family: 'Helvetica';
             }
             #pdf-header{
-                background: rgb(18,40,74);
+                /*background: rgb(18,40,74);*/
                 padding: 10px;
-                border-bottom: solid black 3px;
+                border-bottom: solid #ccc 2px;
             }
             #pdf-header span{
                 font-size: 25px;
-                color: white;
+                /*color: white;*/
                 text-transform: uppercase;
                 text-align: center;
                 display: block;
@@ -108,9 +108,10 @@
                 border-radius: 0;
             }
             .info-box .progress {
-                background: rgba(0,0,0,0.2);
+                /*background: rgba(0,0,0,0.7);*/
+                background: #fff;
                 margin: 5px -10px 5px -10px;
-                height: 2px;
+                height: 1px;
             }
             .progress-description, .info-box-text {
                 display: block;
@@ -179,7 +180,7 @@
     <body>
         <div id="pdf-header">
             <span>Contact Center ng Bayan</span>
-            <span style="text-align: center; color: white; display: block; font-size: 12px;">{{ date("F j, Y", strtotime($startDate)).' - '.date("F j, Y", strtotime($endDate)) }}</span>
+            <span style="text-align: center; color: gray; display: block; font-size: 12px;">{{ date("F j, Y", strtotime($startDate)).' - '.date("F j, Y", strtotime($endDate)) }}</span>
         </div>
         <br/>
         <div class="row">
