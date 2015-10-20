@@ -30,24 +30,60 @@ class DepartmentApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the list of agencies
      *
      * @return Response
      */
-    public function create()
+    public function getList()
     {
-        //
+        $agencies = Department::all();
+        $data = [];
+
+        foreach($agencies as $agency) {
+            $d['code'] = $agency->id;
+            $d['name'] = $agency->dept_name;
+            $d['ticked']    = false;
+            $data[] = $d;
+        }
+        return response()->json($data);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Show list of regions
      *
-     * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function getRegions()
     {
-        //
+        $regions = Region::all();
+        $data = [];
+
+        foreach($regions as $region) {
+            $d['code'] = $region->regcode;
+            $d['name'] = $region->regname;
+            $d['ticked']    = false;
+            $data[] = $d;
+        }
+        return response()->json($data);
+    }
+
+    /**
+     * Show list of provinces
+     *
+     * @return Response
+     */
+    public function getProvinces()
+    {
+        $provinces = Province::all();
+        $data = [];
+
+        foreach($provinces as $province) {
+            $d['code'] = $province->provcode;
+            $d['name'] = $province->provname;
+            $d['ticked']    = false;
+            $data[] = $d;
+        }
+        return response()->json($data);
     }
 
     /**

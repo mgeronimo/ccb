@@ -147,7 +147,9 @@ return [
         'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
         Collective\Html\HtmlServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
-        'Intervention\Image\ImageServiceProvider'
+        'Intervention\Image\ImageServiceProvider',
+        'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
+        Barryvdh\DomPDF\ServiceProvider::class
 
     ],
 
@@ -199,7 +201,8 @@ return [
         'Authorizer' => 'LucaDegasperi\OAuth2Server\Facades\Authorizer',
         'Form'      => Illuminate\Html\FormFacade::class,
         'Html'      => Illuminate\Html\HtmlFacade::class,
-        'Image'     => 'Intervention\Image\Facades\Image'
+        'Image'     => 'Intervention\Image\Facades\Image',
+        'PDF'       => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

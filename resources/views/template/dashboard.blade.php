@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="ccbApp">
     <head>
         <meta charset="UTF-8">
         <title>@yield('title')</title>
@@ -17,6 +17,11 @@
         <link rel="stylesheet" href='{{ url("assets/dist/css/skins/_all-skins.min.css") }}'>
         <!-- Custom Styles -->
         <link rel="stylesheet" href='{{ url("assets/css/custom.css") }}'>
+        <!-- Multi-select CSS -->
+        <link rel="stylesheet" href='{{ url("assets/css/isteven-multi-select.css") }}'>
+
+        <script src='{{ url("assets/bower_components/angular/angular.js") }}'></script>
+        <script src='{{ url("assets/js/isteven-multi-select.js") }}'></script>
 
         @yield('heads')
     </head>
@@ -99,11 +104,12 @@
         <script src='{{ url("assets/js/bootbox.min.js") }}'></script>
         <!-- Custom JS -->
         <script src='{{ url("assets/js/scripts.js") }}'></script>
-        <script src='{{ url("assets/bower_components/angular/angular.js") }}'></script>
+        
         <script src='{{ url("assets/bower_components/angular-animate/angular-animate.js") }}'></script>
         <script src='{{ url("assets/bower_components/angular-messages/angular-messages.js") }}'></script>
         <script src='{{ url("assets/bower_components/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js") }}'></script>
         <script src='{{ url("assets/bower_components/iCheck/icheck.js") }}'></script>
+        
 
         @yield('scripts')
     </body>
