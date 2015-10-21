@@ -56,6 +56,7 @@ Route::get('users/activate/{id}', 'UserController@activate');
 Route::get('users/deactivate/{id}', 'UserController@deactivate');
 
 
+
 /*
  * ----------Department Routes
  */
