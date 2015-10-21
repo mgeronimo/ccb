@@ -37,5 +37,10 @@ class StatusSeeder extends Seeder
             'status' => 'Closed',
             'class'  => 'default'
         ]);
+
+        DB::table('statuses')->insert([
+            'status' => 'Overdue',
+            'class'  => 'danger'
+        ]);
     }
 }

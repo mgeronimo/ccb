@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Input;
 use DB;
+//use Carbon/Carbon;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -582,6 +583,11 @@ class TicketController extends Controller
         return view('search')->with('user', $user)->with('term', $input['q'])->with('results', $results);
     }
 
+    /**
+     * Assigns ticket to self and set ticket duration
+     *
+     * @return Response
+     */
     public function assignWithSLA(){
         $input = Input::all();
         $user = Auth::user();
@@ -603,6 +609,55 @@ class TicketController extends Controller
         ]);
 
         return redirect()->back()->with('message', 'Successfully assigned ticket to self!');
+    }
+
+    /**
+     * Checks if ticket is overdue
+     *
+     * @return Response
+     */
+    public function runSLA(){
+        $tickets = Ticket::where('duration', '!=', '')->where('sla_metric', '!=', '')->get();
+
+        foreach($tickets as $ticket){
+            $date = \Carbon\Carbon::parse($ticket->created_at);
+
+            if($ticket->sla_metric==1){
+                $date->addDays($ticket->duration);
+            }
+            else if($ticket->sla_metric==2){
+                $date->addMonths($ticket->duration);
+            }
+            else if($ticket->sla_metric==3){
+                $date->addDay($ticket->duration*7);
+            }
+
+            while($date->isWeekend()){
+                $date->addDay();
+            }
+
+            var_dump($date);
+            var_dump(\Carbon\Carbon::now());
+            
+            if(\Carbon\Carbon::now()->gte($date)){
+                $ticket->status = 6;
+                $ticket->save();
+
+                var_dump(\Carbon\Carbon::now()->gte($date));
+                $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => ', this ticket is now past the due date. Please take action immediately.',
+                    'user_id'           => $ticket->assignee,
+                    'commenter_role'    => '2',
+                    'ticket_id'         => $ticket->id,
+                    'class'             => 'fa-clock-o'
+                ]);
+            }
+            else{
+                //var_dump(\Carbon\Carbon::now()->toDateTimeString());
+             var_dump('waley');
+            }
+        }
     }
 
     /**
