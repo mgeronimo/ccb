@@ -132,31 +132,31 @@ class ReportController extends Controller
             if($agencies[0]!=""){
                 $tickets = $tickets->whereIn('t.dept_id',$agencies);
                 $new_tickets = $new_tickets->whereIn('t.dept_id',$agencies);
-                /*$ongoing_tickets = $ongoing_tickets->whereIn('t.dept_id',$agencies);
+                $ongoing_tickets = $ongoing_tickets->whereIn('t.dept_id',$agencies);
                 $pending_tickets = $pending_tickets->whereIn('t.dept_id',$agencies);
-                $closed_tickets = $closed_tickets->whereIn('t.dept_id',$agencies);*/
+                $closed_tickets = $closed_tickets->whereIn('t.dept_id',$agencies);
             }
             if($provinces[0]!=""){
                 $tickets = $tickets->whereIn('d.provcode',$provinces);
                 $new_tickets = $new_tickets->whereIn('d.provcode',$provinces);
-                /*$ongoing_tickets = $ongoing_tickets->whereIn('d.provcode',$provinces);
+                $ongoing_tickets = $ongoing_tickets->whereIn('d.provcode',$provinces);
                 $pending_tickets = $pending_tickets->whereIn('d.provcode',$provinces);
-                $closed_tickets = $closed_tickets->whereIn('d.provcode',$provinces);*/
+                $closed_tickets = $closed_tickets->whereIn('d.provcode',$provinces);
             }
             if($regions[0]!=""){
                 $tickets = $tickets->whereIn('d.regcode',$regions);
                 $new_tickets = $new_tickets->whereIn('d.regcode',$regions);
-                /*$ongoing_tickets = $ongoing_tickets->whereIn('d.regcode',$regions);
+                $ongoing_tickets = $ongoing_tickets->whereIn('d.regcode',$regions);
                 $pending_tickets = $pending_tickets->whereIn('d.regcode',$regions);
-                $closed_tickets = $closed_tickets->whereIn('d.regcode',$regions);*/
+                $closed_tickets = $closed_tickets->whereIn('d.regcode',$regions);
             }
             
             if($category!=""){
                 $tickets = $tickets->whereIn('t.category',$category);
                 $new_tickets = $new_tickets->whereIn('t.category',$category);
-                /*$ongoing_tickets = $ongoing_tickets->whereIn('t.category',$category);
+                $ongoing_tickets = $ongoing_tickets->whereIn('t.category',$category);
                 $pending_tickets = $pending_tickets->whereIn('t.category',$category);
-                $closed_tickets = $closed_tickets->whereIn('t.category',$category);*/
+                $closed_tickets = $closed_tickets->whereIn('t.category',$category);
             }
 
             $data = $tickets;
@@ -165,9 +165,9 @@ class ReportController extends Controller
             }
             $data = $data->groupBy('t.id')->get();
             $new_tickets = $tickets->where('t.status', 1)->groupBy('t.id')->get();
-            //$ongoing_tickets = $tickets->where('t.status', 2)->groupBy('t.id')->get();
-            //$pending_tickets = $tickets->where('t.status', 3)->groupBy('t.id')->get();
-            //$closed_tickets = $tickets->where('t.status', 5)->groupBy('t.id')->get();
+            $ongoing_tickets = $ongoing_tickets->where('t.status', 2)->groupBy('t.id')->get();
+            $pending_tickets = $pending_tickets->where('t.status', 3)->groupBy('t.id')->get();
+            $closed_tickets = $closed_tickets->where('t.status', 5)->groupBy('t.id')->get();
 
             return view('reports.reports')->with('user', $user)
                 //->with('agencies', $agencies)

@@ -114,7 +114,8 @@
 		                <div class="box-footer clearfix no-border">
 		                	@if($user->role == 1)
 		                		<h5 style="text-align: center"><em>or</em></h5>
-		                		<a href="/tickets/{{ $ticket->id }}/assign/{{ $user->id }}" class="btn btn-success btn-block assign-self">Assign to Self</a>
+		                		<!--<a href="/tickets/{{ $ticket->id }}/assign/{{ $user->id }}" class="btn btn-success btn-block assign-self" role="button" data-toggle="modal" data-target="#assign">Assign to Self</a>-->
+		                		<a class="btn btn-success btn-block" role="button" data-toggle="modal" data-target="#assign">Assign to Self</a>
 		                	@endif
 		                </div>
 		            </div>
@@ -126,7 +127,8 @@
 		                </div><!-- /.box-header -->
 		                <div class="box-body incident-body" style="overflow: hidden; width: auto; height: 250px; text-align: center">
 	                		<img src="{{ url('assets/img/account4.png') }}" alt="user image" class="assign-self"><br/>
-	                		<a href="/tickets/{{ $ticket->id }}/assign/{{ $user->id }}" class="btn btn-info btn-flat assign-agent">Assign to Self</a>
+	                		<!--<a href="/tickets/{{ $ticket->id }}/assign/{{ $user->id }}" class="btn btn-info btn-flat assign-agent" role="button" data-toggle="modal" data-target="#assign">Assign to Self</a>-->
+	                		<a class="btn btn-info btn-flat" role="button" data-toggle="modal" data-target="#assign">Assign to Self</a>
 		                </div>
 		                <div class="box-footer clearfix no-border">
 		                </div>
@@ -372,13 +374,58 @@
 			    	</div>
 			  	</div>
 			</div>
+
+			<!-- SLA Modal -->
+			<div class="modal fade" id="assign" tabindex="-1" role="dialog" aria-labelledby="slaLabel">
+			  	<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        		<h4 class="modal-title" id="slaLabel">Ticket duration</h4>
+			      		</div>
+			      		
+				      	<div class="modal-body" style="padding-top: 13px">
+				      	<form method="post" action="/assign">
+				      		<div class="row">
+					      		<div class="col-md-6">
+						      		<input class="form-control" type="text" name="duration" id="duration" />
+						      	</div>
+						      	<div class="col-md-6" style="margin-top: 5px;">
+						      		<label class="radio-inline"><input type="radio" value="1" id="1" name ="sla" class="checkmember" checked>Days</label>
+						      		<label class="radio-inline"><input type="radio" value="2" id="1" name ="sla" class="checkmember" >Weeks</label>
+						      		<label class="radio-inline"><input type="radio" value="1" id="1" name ="sla" class="checkmember" >Months</label>
+						      	</div>
+						      	<input type="hidden" name="ticket_number" value="{{ $ticket->id }}" />
+						      	<input type="hidden" name="user_id" value="{{ $user->id }}" />
+						    </div>
+				        	<!--<button type="button" class="btn btn-warning">Pending</button>
+				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+				    	</div>
+				    	<div class="modal-footer">
+				    		<input type="submit" class="btn btn-primary pull-right set-btn" value="Set duration">
+				    	</form>
+				    	</div>
+			    	</div>
+			  	</div>
+			</div>
 		</section>
 	</div>
 @stop
 
 @section('scripts')
+	<script src='{{ url("assets/js/jquery.maskedinput-1.3.min.js") }}'></script>
 	<script type="text/javascript">
+		$("#duration").mask("9");
 		$('input[type=file]').bootstrapFileInput();
 		$('.file-inputs').bootstrapFileInput();
+		$(document).ready(function(){
+		    $('.set-btn').attr('disabled',true);
+		    $('#duration').keyup(function(){
+		        if($(this).val().length !=0)
+		            $('.set-btn').attr('disabled', false);            
+		        else
+		            $('.set-btn').attr('disabled',true);
+		    })
+		});
 	</script>
 @stop

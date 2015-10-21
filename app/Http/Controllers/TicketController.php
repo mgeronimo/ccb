@@ -582,6 +582,29 @@ class TicketController extends Controller
         return view('search')->with('user', $user)->with('term', $input['q'])->with('results', $results);
     }
 
+    public function assignWithSLA(){
+        $input = Input::all();
+        $user = Auth::user();
+
+        $ticket = Ticket::where('id', $input['ticket_number'])->first();
+        $ticket->assignee = $input['user_id'];
+        $ticket->status = 2;
+        $ticket->duration = $input['duration'];
+        $ticket->sla_metric = $input['sla'];
+        $ticket->save();
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' assigned self to this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $input['ticket_number'],
+            'class'             => 'fa-user-plus'
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully assigned ticket to self!');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
