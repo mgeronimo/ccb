@@ -221,7 +221,6 @@ class TicketController extends Controller
                 $agents = User::where('is_verified', 1)->where('role', 2)->where('agency_id', $user->agency_id)->get();
             else
                 $agents = User::where('is_verified', 1)->where('role', 2)->get();
-
             $logs = Comment::where('ticket_id', $ticket->id)->where('is_comment', 0)->get();
 
             foreach($agents as $agent){
@@ -370,6 +369,9 @@ class TicketController extends Controller
                 //email
                 //$mailer->sendStatusChanged($created_by);
 
+                //email
+                //$mailer->sendStatusChanged($created_by);
+
                 $log = Comment::create([
                     'is_comment'        => 0,
                     'comment'           => ' of '.$dept->dept_name.' is now processing the ticket.',
@@ -379,6 +381,9 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
+
+                //email
+                $mailer->sendStatusChanged($created_by);
                 return redirect()->back()->with('message', 'Ticket now in process.');                
             }
             else return redirect()->back()->with('error', "You don't have the permission to reopen a ticket!");
@@ -530,8 +535,6 @@ class TicketController extends Controller
             return redirect('in-process-tickets')->with('message', 'Ticket successfully reassigned!');
         }
         return redirect()->back()->with('error', 'Agent does not exist!');
-
-        
     }  
 
     /**

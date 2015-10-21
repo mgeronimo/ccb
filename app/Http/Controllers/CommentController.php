@@ -7,6 +7,7 @@ use Auth;
 use Input;
 use Image;
 use Validator;
+use App\Ticket;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -85,7 +86,22 @@ class CommentController extends Controller
             'ticket_id'         => $id,
             'class'             => 'fa-comment'
         ]);
+        $ticket = Ticket::where('id',$id)->first();
+        if($ticket->status==3)
+        {
+            $ticket->status = 2;
+            $ticket->save();
+            $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => $user->name.' is now processing the ticket.',
+                    'user_id'           => $user->id,
+                    'commenter_role'    => $user->role,
+                    'ticket_id'         => $id,
+                    'class'             => 'fa-ticket'
+                ]);
 
+
+        }
         return redirect()->back()->with('message', 'Comment successfully sent!');
     }
 
