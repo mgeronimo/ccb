@@ -85,7 +85,7 @@
                     <i class="ion ion-close-round"></i>
                 </div>
                 <!-- change into reports link when a reports page is already existing -->
-                <a href="tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="/pending-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
     </div><!-- /.row -->

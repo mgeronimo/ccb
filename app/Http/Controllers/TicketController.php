@@ -42,18 +42,18 @@ class TicketController extends Controller
             
             if($user->role == 0){
                 $inprocess_tickets = Ticket::where('status', 2)->paginate(10);
-                $pending_tickets = Ticket::where('status', 3)->paginate(10);    
+                $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->paginate(10);    
                 $closed_tickets = Ticket::where('status', 5)->paginate(10);
             }
             else if($user->role == 1){
                 $subs = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
                 $inprocess_tickets = Ticket::where('status', 2)->whereIn('assignee', $subs)->paginate(10);
-                $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $subs)->paginate(10);
+                $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->whereIn('assignee', $subs)->paginate(10);
                 $closed_tickets = Ticket::where('status', 5)->whereIn('assignee', $subs)->paginate(10);
             }
             else if($user->role == 2){
                 $inprocess_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->paginate(10);
-                $pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->paginate(10);
+                $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->where('assignee', $user->id)->paginate(10);
                 $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->paginate(10);
             }
 
@@ -141,13 +141,13 @@ class TicketController extends Controller
         if($user->role > 3)
             return redirect('/');
         else if($user->role==1){
-            $pending_tickets = Ticket::where('status', 3)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+            $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
         }
         else if($user->role==2){
-            $pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->orderBy('created_at', 'DESC')->paginate(20);
+            $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->where('assignee', $user->id)->orderBy('created_at', 'DESC')->paginate(20);
         }
         else{
-            $pending_tickets = Ticket::where('status', 3)->orderBy('created_at', 'DESC')->paginate(20);
+            $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->orderBy('created_at', 'DESC')->paginate(20);
         }
 
         return view('tickets.pending')->with('user', $user)->with('pending_tickets', $pending_tickets);
@@ -387,6 +387,27 @@ class TicketController extends Controller
                 $mailer->sendStatusChanged($created_by);
                 return redirect()->back()->with('message', 'Ticket now in process.');                
             }
+            if($ticket->status == 7 && $user->role < 4){
+                if($ticket->assignee==$user->id){
+                    $ticket->status = $statid;
+                    $ticket->save();
+                    //email
+                    $status = 'Re-process ticket';
+                    //$mailer->sendStatusChanged($created_by);
+
+                    $log = Comment::create([
+                        'is_comment'        => 0,
+                        'comment'           => ' re-process ticket.',
+                        'user_id'           => $user->id,
+                        'commenter_role'    => $user->role,
+                        'ticket_id'         => $id,
+                        'class'             => 'fa-ticket'
+                    ]);
+
+                    return redirect('in-process-tickets')->with('message', 'Now re-processing ticket!');
+                }
+                else redirect()->back()->with('error', "You don't have the permission to process this ticket!");
+            }
             else return redirect()->back()->with('error', "You don't have the permission to reopen a ticket!");
         }
 
@@ -446,7 +467,7 @@ class TicketController extends Controller
         /*
          * Close
          */
-        else if($statid==5){
+        /*else if($statid==5){
             if($user->id == $ticket->assignee || $user->role < 2){
 
                 if($ticket->category==NULL)
@@ -468,7 +489,7 @@ class TicketController extends Controller
                 return redirect('closed-tickets')->with('message', 'Successfully closed ticket!');
             }
             else return redirect()->back()->with('error', 'You have no permission to close this ticket!');
-        }
+        }*/
 
         /*
          * Escalate
@@ -504,6 +525,35 @@ class TicketController extends Controller
 
             }
             else return redirect()->back()->with('error', "You don't have the permission to escalate this ticket!");
+        }
+
+        else if($statid==7){
+            if($user->id == $ticket->assignee || $user->id == $supervisor->id){
+                if($ticket->status == 1)
+                    return redirect()->back()->with('error', "Ticket has to be assigned first before it can change status to pending!");
+                else if($ticket->status == 2){
+
+                    $ticket->status = 7;
+                    $ticket->save();
+
+                    $dept = Department::where('id', $ticket->dept_id)->first();
+
+                    $log = Comment::create([
+                        'is_comment'        => 0,
+                        'comment'           => " is now awaiting for ".$dept->dept_name."'s response.",
+                        'user_id'           => $user->id,
+                        'commenter_role'    => $user->role,
+                        'ticket_id'         => $id,
+                        'class'             => 'fa-ticket'
+                    ]);
+
+                    return redirect('pending-tickets')->with('message', 'Now awaiting the agency for responses.');
+                }
+                else if($ticket->status > 2)
+                    return redirect()->back()->with('error', 'This ticket cannot change status to pending. Only tickets in process can do so.');
+
+            }
+            else return redirect()->back()->with('error', "You don't have the permission to change this ticket's status!");
         }
 
     }  
