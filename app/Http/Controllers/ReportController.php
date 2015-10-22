@@ -249,8 +249,8 @@ class ReportController extends Controller
                 })
                 ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-                ->where('t.status', 1);
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+                //->where('t.status', 1);
 
             $ongoing_tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
@@ -260,8 +260,8 @@ class ReportController extends Controller
                 })
                 ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-                ->where('t.status', 2);
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+                //->where('t.status', 2);
 
             $pending_tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
@@ -271,8 +271,8 @@ class ReportController extends Controller
                 })
                 ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-                ->where('t.status', 3)->orWhere('t.status', 7);
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+                //->where('t.status', 3)->orWhere('t.status', 7);
 
             $closed_tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
@@ -282,8 +282,8 @@ class ReportController extends Controller
                 })
                 ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-                ->where('t.status', 5);
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+                //->where('t.status', 5);
 
             if($agencies[0]!=""){
                 $tickets = $tickets->whereIn('t.dept_id',$agencies);
@@ -478,7 +478,7 @@ class ReportController extends Controller
         if($data!=NULL){
             $csv = Writer::createFromFileObject(new \SplTempFileObject());
 
-            $siteheader = ['id', 'ticket_id', 'subject', 'message' ,'status', 'dept_name', 'incident_date_time', 'created_at', 'category', 'sender_firstname', 'sender_lastname', 'sender_email', 'sender_contactnumber'];
+            $siteheader = ['id', 'ticket_id', 'subject', 'message' ,'status', 'incident_date_time', 'created_at', 'category', 'sender_firstname', 'sender_lastname', 'sender_email', 'sender_contactnumber', 'dept_name',];
             $csv->insertOne($siteheader);
 
             foreach($data as $d){
