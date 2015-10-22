@@ -85,7 +85,7 @@ class ReportController extends Controller
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
                 ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
 
-            /*$new_tickets = DB::table('tickets as t')
+            $new_tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
                 ->leftJoin('statuses as s', 't.status', '=', 's.id')
                 ->leftJoin('users as u', function($join){
@@ -93,8 +93,8 @@ class ReportController extends Controller
                 })
                 ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-                ->where('t.status', 1);*/
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+                //->where('t.status', 1);
 
             $ongoing_tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')

@@ -60,20 +60,6 @@ class UserTableSeeder extends Seeder
             'remember_token' => str_random(60),
         ]);
 
-        DB::table('users')->insert([
-            'email' => 'agent2@gmail.com',
-            'password' => bcrypt('agent2'),
-            'first_name' => 'Pedro',
-            'last_name' => 'Dela Cruz',
-            'username' => 'agent2',
-            'role' => 2,
-            'agency_id' => 0,
-            'is_verified' => 1,
-            'is_activated' => 1,
-            //'group_number' => 1,
-            'remember_token' => str_random(60),
-        ]);
-
         //Public Users
         DB::table('users')->insert([
             'email' => 'juan@gmail.com',
@@ -86,14 +72,14 @@ class UserTableSeeder extends Seeder
             'contact_number' => '09152222222',
         ]);
 
-        //Department Representative
+        //Department Supervisors
         DB::table('users')->insert([
             'email' => 'deptrep@gmail.com',
             'password' => bcrypt('deptrep'),
             'first_name' => 'Pedro',
             'last_name' => 'Cruz',
             'username' => 'deptrep',
-            'role'  => 4,
+            'role'  => 1,
             'agency_id' => 1,
             'is_verified' => 1,
             'is_activated' => 1,
@@ -106,11 +92,26 @@ class UserTableSeeder extends Seeder
             'first_name' => 'Jose',
             'last_name' => 'Santos',
             'username' => 'deptrep2',
-            'role'  => 4,
+            'role'  => 1,
             'agency_id' => 2,
             'is_verified' => 1,
             'is_activated' => 1,
             'contact_number' => '09152222222',
+        ]);
+
+        //Department Agent
+        DB::table('users')->insert([
+            'email' => 'agent2@gmail.com',
+            'password' => bcrypt('agent2'),
+            'first_name' => 'Pedro',
+            'last_name' => 'Dela Cruz',
+            'username' => 'agent2',
+            'role' => 2,
+            'agency_id' => 1,
+            'is_verified' => 1,
+            'is_activated' => 1,
+            //'group_number' => 1,
+            'remember_token' => str_random(60),
         ]);
     }
 }

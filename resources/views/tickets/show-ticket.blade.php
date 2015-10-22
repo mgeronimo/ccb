@@ -47,6 +47,12 @@
     <br/>
 	<div class="row">
 		<section class="col-lg-8">
+			@if($ticket->resolution!="")
+				<div class="callout callout-warning">
+		        	<h4>Resolution</h4>
+		        	<p>{{ $ticket->resolution }}</p>
+		      	</div>
+		    @endif
 			<div class="box box-solid">
                 <div class="box-header with-header incident-header">
                 	<i class="fa fa-ticket"></i>
@@ -195,7 +201,8 @@
 		                		@if($user->role > 0 && $user->role < 3)
 		                			<a class="btn bg-maroon btn-block" role="button" data-toggle="modal" data-target="#reassign">Reassign Ticket</a>
 		                		@endif
-		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
+		                		<!--<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>-->
+		                		<a class="btn btn-default btn-block" role="button" data-toggle="modal" data-target="#resolve">Close Ticket</a>
 		                	@endif
 		                	@if($user->role == 0 && $ticket->status < 4)
 	                			<a class="btn btn-danger btn-block cancel-ticket" href="/tickets/{{ $ticket->id }}/status/4" role="button">Cancel Ticket</a>
@@ -402,6 +409,35 @@
 				    	</div>
 				    	<div class="modal-footer">
 				    		<input type="submit" class="btn btn-primary pull-right set-btn" value="Set duration">
+				    	</form>
+				    	</div>
+			    	</div>
+			  	</div>
+			</div>
+
+			<!-- Resolution Modal -->
+			<div class="modal fade" id="resolve" tabindex="-1" role="dialog" aria-labelledby="resolutionLabel">
+			  	<div class="modal-dialog" role="document">
+			    	<div class="modal-content">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        		<h4 class="modal-title" id="resolutionLabel">Resolution</h4>
+			      		</div>
+			      		
+				      	<div class="modal-body" style="padding-top: 13px">
+				      	<form method="post" action="/resolve">
+				      		<div class="row">
+					      		<div class="col-md-12">
+					      			<textarea class="form-control" type="textarea" name="resolution" placeholder="Please include your resolution for closing the ticket." rows="3"></textarea>
+					      		</div>
+						      	<input type="hidden" name="ticket_number" value="{{ $ticket->id }}" />
+						      	<input type="hidden" name="user_id" value="{{ $user->id }}" />
+						    </div>
+				        	<!--<button type="button" class="btn btn-warning">Pending</button>
+				        	<button type="button" class="btn btn-danger">Cancelled</button>-->
+				    	</div>
+				    	<div class="modal-footer">
+				    		<input type="submit" class="btn btn-primary pull-right set-btn" value="Submit">
 				    	</form>
 				    	</div>
 			    	</div>

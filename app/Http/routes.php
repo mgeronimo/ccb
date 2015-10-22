@@ -131,6 +131,7 @@ Route::get('closed-tickets', 'TicketController@closedTickets');
 Route::post('set-category/{id}', 'TicketController@setCategory');
 Route::get('tickets/{id}/re-assign/{agentid}', 'TicketController@reAssign');
 Route::get('search-tickets', 'TicketController@searchTickets');
+Route::post('resolve', 'TicketController@resolveTicket');
 Route::post('assign', 'TicketController@assignWithSLA');
 
 /*

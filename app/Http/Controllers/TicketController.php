@@ -509,6 +509,44 @@ class TicketController extends Controller
     }  
 
     /**
+     * Close ticket with resolution
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function resolveTicket()
+    {
+        $input = Input::all();
+        $user = User::where('id', $input['user_id'])->first();
+        $ticket = Ticket::where('id', $input['ticket_number'])->first();
+
+        if($user->id == $ticket->assignee || $user->role < 2){
+
+            if($ticket->category==NULL)
+                return redirect()->back()->with('error', 'Please set category first before closing the ticket!');
+
+            if($input['resolution']=="") return redirect()->back()->with('error', 'Resolution is required when closing a ticket.');
+
+            $ticket->resolution = $input['resolution'];
+            $ticket->status = 5;
+            $ticket->save();
+            //$mailer->sendStatusChanged($created_by);
+
+            $log = Comment::create([
+                'is_comment'        => 0,
+                'comment'           => ' closed the ticket.',
+                'user_id'           => $user->id,
+                'commenter_role'    => $user->role,
+                'ticket_id'         => $ticket->id,
+                'class'             => 'fa-ticket'
+            ]);
+
+            return redirect('closed-tickets')->with('message', 'Successfully closed ticket!');
+        }
+        else return redirect()->back()->with('error', 'You have no permission to close this ticket!');
+    }
+
+    /**
      * Re-assign ticket
      *
      * @param  int  $id
