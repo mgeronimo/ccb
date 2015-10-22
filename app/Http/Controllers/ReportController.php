@@ -163,17 +163,31 @@ class ReportController extends Controller
             $data = $tickets;
             if($status!=""){
                 $data = $data->whereIn('t.status',$status);
+                $new_tickets = $new_tickets->whereIn('t.status',$status);
+                $ongoing_tickets = $ongoing_tickets->whereIn('t.status',$status);
+                $pending_tickets = $pending_tickets->whereIn('t.status',$status);
+                $closed_tickets = $closed_tickets->whereIn('t.status',$status);
             }
+
             $data = $data->groupBy('t.id')->get();
             $new_tickets = $tickets->where('t.status', 1)->groupBy('t.id')->get();
             $ongoing_tickets = $ongoing_tickets->where('t.status', 2)->groupBy('t.id')->get();
             $pending_tickets = $pending_tickets->where('t.status', 3)->orWhere('t.status', 7)->groupBy('t.id')->get();
             $closed_tickets = $closed_tickets->where('t.status', 5)->groupBy('t.id')->get();
 
+            $n = 0;
+            $o = 0;
+            $p = 0;
+            $c = 0;
 
             foreach($data as $d){
                 $t = Ticket::where('ticket_id', $d->ticket_id)->first();
                 $d->id = $t->id;
+
+                if($d->status=="New") $n++;
+                else if($d->status=="In Process") $o++;
+                else if($d->status=="Waiting for Client" || $d->status=="Waiting for Agency") $p++;
+                else if($d->status=="Closed") $c++;
             }
 
             //dd($data);
@@ -187,7 +201,11 @@ class ReportController extends Controller
                 ->with('closed_tickets', $closed_tickets)
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
-                ->with('input', $input);
+                ->with('input', $input)
+                ->with('n', $n)
+                ->with('o', $o)
+                ->with('p', $p)
+                ->with('c', $c);
         }
 
         //$pdf = PDF::loadView('reports.reports-pdf');
@@ -325,6 +343,11 @@ class ReportController extends Controller
             $pending_tickets = $tickets->where('t.status', 3)->orWhere('t.status', 7)->groupBy('t.id')->get();
             $closed_tickets = $tickets->where('t.status', 5)->groupBy('t.id')->get();
 
+            $n = 0;
+            $o = 0;
+            $p = 0;
+            $c = 0;
+
             foreach($data as $d){
                 $assignee = User::where('id', $d->assignee)->first();
                 if($assignee!=NULL)
@@ -335,9 +358,14 @@ class ReportController extends Controller
                 if($date!=NULL)
                     $d->date_time = $date->created_at;
                 else $d->date_time = "";
+
+                if($d->status=="New") $n++;
+                else if($d->status=="In Process") $o++;
+                else if($d->status=="Waiting for Client" || $d->status=="Waiting for Agency") $p++;
+                else if($d->status=="Closed") $c++;
             }
 
-            $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'new_tickets'=>$new_tickets, 'ongoing_tickets'=>$ongoing_tickets, 'pending_tickets'=>$pending_tickets, 'closed_tickets'=>$closed_tickets, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input));
+            $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'new_tickets'=>$new_tickets, 'ongoing_tickets'=>$ongoing_tickets, 'pending_tickets'=>$pending_tickets, 'closed_tickets'=>$closed_tickets, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input, 'n'=>$n, 'o'=>$o, 'p'=>$p, 'c'=>$c));
             return $pdf->stream('report.pdf');
         }
 
