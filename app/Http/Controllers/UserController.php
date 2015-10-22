@@ -7,6 +7,7 @@ use Auth;
 use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Mailers\AppMailer;
 
 use App\User;
 use App\Group;
@@ -71,7 +72,7 @@ class UserController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request,  AppMailer $mailer)
     {
         $input = $request->all();
 
@@ -82,6 +83,8 @@ class UserController extends Controller
         $user->agency_id = $input['agency_id'];
         $user->role = $input['role'];
         $user->save();
+
+        $mailer->sendEmailConfirmationTo($user);
 
         return redirect('/')->with('message', 'Successfully created user!');
     }
