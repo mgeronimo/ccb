@@ -24,7 +24,7 @@ class StatusSeeder extends Seeder
         ]);
 
         DB::table('statuses')->insert([
-            'status' => 'Pending',
+            'status' => 'Awaiting for Client',
             'class'  => 'warning'
         ]);
 
@@ -41,6 +41,11 @@ class StatusSeeder extends Seeder
         DB::table('statuses')->insert([
             'status' => 'Overdue',
             'class'  => 'danger'
+        ]);
+
+        DB::table('statuses')->insert([
+            'status' => 'Awaiting for Agency',
+            'class'  => 'warning'
         ]);
     }
 }

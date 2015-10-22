@@ -188,7 +188,7 @@
 		                    	@if($user->role < 4 && $user->role > 0)
 		                    		@if($user->agency_id != $ticket->dept_id)
 		                				<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/6" role="button">Escalate to Agency</a>
-		                				<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/6" role="button">Awaiting for Agency (Pending)</a>
+		                				<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/7" role="button">Awaiting for Agency (Pending)</a>
 		                			@endif
 		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Awaiting for Client (Pending)</a>
 		                		@endif
@@ -205,6 +205,13 @@
 	        				@endif
 	                		@if($user->role < 2 && $ticket->status == 5)
 	                			<a class="btn btn-info btn-block reopen-ticket" href="/tickets/{{ $ticket->id }}/status/2" role="button">Reopen Ticket</a>
+	                		@endif
+	                		@if($user->role < 3 && $ticket->status == 7)
+	                			@if($user->id==$ticket->assignee)
+	                				<a class="btn btn-info btn-block process-ticket" href="/tickets/{{ $ticket->id }}/status/2" role="button">Process Again</a>
+	                			@else
+	                				<em><center>No action available. Ticket is currently waiting for agency's response.</center></em>
+	                			@endif
 	                		@endif
 		                </div>
 		            </div>

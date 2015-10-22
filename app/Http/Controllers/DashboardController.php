@@ -30,7 +30,7 @@ class DashboardController extends Controller
 
             $closed_tickets = Ticket::where('status', 5)->get();
             $ongoing_tickets = Ticket::where('status', 2)->get();
-            $pending_tickets = Ticket::where('status', 3)->get();
+            $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->get();
             $all_depts = Department::orderby('dept_name')->get();
 
             foreach ($depts as $key => $dept) {
@@ -79,7 +79,7 @@ class DashboardController extends Controller
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
-            $pending_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 3)->get();
+            $pending_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 3)->orWhere('status', 7)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -122,7 +122,7 @@ class DashboardController extends Controller
 
             $ongoing_tickets = Ticket::where('assignee', $user->id)->where('status', 2)->get();
             $closed_tickets = Ticket::where('assignee', $user->id)->where('status', 5)->get();
-            $pending_tickets = Ticket::where('assignee', $user->id)->where('status', 3)->get();
+            $pending_tickets = Ticket::where('assignee', $user->id)->where('status', 3)->orWhere('status', 7)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -154,7 +154,7 @@ class DashboardController extends Controller
             $count_ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
             $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $dept->id)->take(5)->get();
             $count_closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
-            $count_pending_tickets = Ticket::where('status', 3)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
+            $count_pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->where('assignee', $user->id)->where('dept_id', $dept->id)->get();
             return view('dashboard')->with('user', $user)
                 ->with('new_tickets', $new_tickets)
                 ->with('all_unassigned', count($count_new_tickets))

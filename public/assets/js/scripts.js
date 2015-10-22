@@ -369,6 +369,36 @@ jQuery(document).on("click",".reopen-ticket", function (event) {
 });
 
 /*
+ * Process Ticket
+ */
+jQuery(document).on("click",".process-ticket", function (event) {
+    event.preventDefault();
+    var href = $(this).attr("href");
+
+    bootbox.dialog({
+        message: "Are you sure you want to process this ticket again? You cannot undo this action and the user who logged this ticket will be notified regarding this change.",
+        title: "Process Ticket",
+        buttons: {
+            cancel: {
+                label: "Cancel",
+                className: "btn-default",
+                callback: function () {
+                    console.log("Cancelled");
+                }
+            },
+            danger: {
+                label: "Continue Processing Ticket",
+                className: "btn-info",
+                callback: function () {
+                    console.log("Processing");
+                    location.href = href;
+                }
+            }
+        }
+    });
+});
+
+/*
  * Delete Announcement
  */
 jQuery(document).on("click",".delete-announcement", function (event) {
@@ -418,7 +448,7 @@ jQuery(document).on("click",".wait", function (event) {
             },
             danger: {
                 label: "Wait",
-                className: "bg-purple",
+                className: "bg-olive",
                 callback: function () {
                     console.log("Escalated");
                     location.href = href;
