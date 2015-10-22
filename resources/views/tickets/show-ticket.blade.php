@@ -66,7 +66,7 @@
                 		<p>{{ $ticket->message }}</p>
                 	</blockquote>
                 	<h4 class="incident-details">Agency:</h4>
-                	<p class="incident-data">{{ $dept->dept_name }} - {{ $dept->description }}</p>
+                	<p class="incident-data">{{ $dept->dept_name }}</p>
                 	<div class="space"></div>
                 	<h4 class="incident-details">Person to Address:</h4>
             		<p class="incident-data">{{ is_null($ticket->complainee) ? 'None' : $ticket->complainee }}</p>
@@ -188,13 +188,12 @@
 		                    	@if($user->role < 4 && $user->role > 0)
 		                    		@if($user->agency_id != $ticket->dept_id)
 		                				<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/6" role="button">Escalate to Agency</a>
+		                				<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/6" role="button">Awaiting for Agency (Pending)</a>
 		                			@endif
 		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Awaiting for Client (Pending)</a>
 		                		@endif
 		                		@if($user->role > 0 && $user->role < 3)
 		                			<a class="btn bg-maroon btn-block" role="button" data-toggle="modal" data-target="#reassign">Reassign Ticket</a>
-		                			<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/3" role="button">Escalate to Dept. Representative</a>
-		                			<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/6" role="button">Waiting for concerned agency</a>
 		                		@endif
 		                		<a class="btn btn-default btn-block close-ticket" href="/tickets/{{ $ticket->id }}/status/5" role="button">Close Ticket</a>
 		                	@endif

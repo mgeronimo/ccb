@@ -13,7 +13,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Comment;
 use App\User;
-use App\Ticket;
 
 class CommentController extends Controller
 {

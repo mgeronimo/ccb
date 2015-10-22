@@ -23,7 +23,7 @@ class TicketController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('notassign_agent', ['only' => 'show']);
+        //$this->middleware('notassign_agent', ['only' => 'show']);
         $this->middleware('auth');
     }
     /**
@@ -617,7 +617,7 @@ class TicketController extends Controller
      * @return Response
      */
     public function runSLA(){
-        $tickets = Ticket::where('duration', '!=', '')->where('sla_metric', '!=', '')->get();
+        $tickets = Ticket::where('duration', '!=', '')->where('sla_metric', '!=', '')->where('status', 2)->get();
 
         foreach($tickets as $ticket){
             $date = \Carbon\Carbon::parse($ticket->created_at);
@@ -636,14 +636,10 @@ class TicketController extends Controller
                 $date->addDay();
             }
 
-            var_dump($date);
-            var_dump(\Carbon\Carbon::now());
-            
-            if(\Carbon\Carbon::now()->gte($date)){
+            if(\Carbon\Carbon::now()->diffInDays($date)>0){
                 $ticket->status = 6;
                 $ticket->save();
 
-                var_dump(\Carbon\Carbon::now()->gte($date));
                 $log = Comment::create([
                     'is_comment'        => 0,
                     'comment'           => ', this ticket is now past the due date. Please take action immediately.',
@@ -652,10 +648,6 @@ class TicketController extends Controller
                     'ticket_id'         => $ticket->id,
                     'class'             => 'fa-clock-o'
                 ]);
-            }
-            else{
-                //var_dump(\Carbon\Carbon::now()->toDateTimeString());
-             var_dump('waley');
             }
         }
     }
