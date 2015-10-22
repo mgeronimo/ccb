@@ -131,6 +131,8 @@ Route::get('closed-tickets', 'TicketController@closedTickets');
 Route::post('set-category/{id}', 'TicketController@setCategory');
 Route::get('tickets/{id}/re-assign/{agentid}', 'TicketController@reAssign');
 Route::get('search-tickets', 'TicketController@searchTickets');
+Route::post('resolve', 'TicketController@resolveTicket');
+Route::post('assign', 'TicketController@assignWithSLA');
 
 /*
  * ---------- Comment Routes
@@ -177,6 +179,50 @@ Route::get('cancel-edit-announcement', function(){
 Route::post('oauth/access_token', function() {
     return Response::json(Authorizer::issueAccessToken());
 });
+
+Route::get('/testcarbon', function() {
+
+    // a couple of holidays as timestamps
+    $holidays[] = strtotime("01/23/15");
+    $holidays[] = strtotime("01/28/15");
+
+    var_dump($holidays);
+
+    // test date
+    $date = "01/21/15";
+
+    // convert to carbon
+    $MyDateCarbon = \Carbon\Carbon::parse($date);
+    echo "entered date : " . $MyDateCarbon->timestamp . ' - ' . $MyDateCarbon->toRfc2822String(). '<BR>';
+
+    // add three days to selected date
+    $MyDateCarbon->addDays(3);
+    echo "query date : " .  $MyDateCarbon->timestamp . ' - ' .($MyDateCarbon->toRfc2822String()). '<BR>';
+
+    while (true) {
+
+        // verify date,  not in holiday and is not weekend
+        if (in_array($MyDateCarbon->timestamp, $holidays) || $MyDateCarbon->isWeekend()) {
+
+            echo "-- is holiday or weekend ". $MyDateCarbon->toRfc2822String() . " <BR>";
+
+            // the day is either in the holidays array or is a weekend
+            // add one day
+            $MyDateCarbon->addDay();
+        } else {
+            // ok, day should be good, exit while
+            break;
+        }
+
+    }
+
+    echo "final date: " . $MyDateCarbon->toRfc2822String(). '<BR>';
+
+    echo "<hr>done";
+
+});
+
+Route::get('/test', 'TicketController@runSla');
 
 
 /*

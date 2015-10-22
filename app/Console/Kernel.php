@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        /*$schedule->command('inspire')
+                 ->hourly();*/
+
+        //$schedule->call('TicketController@runS')->weekdays()->twiceDaily(8, 17);
+        $schedule->call('TicketController@runSLA')->weekdays()->everyMinute();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Input;
 use DB;
+//use Carbon/Carbon;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -22,7 +23,7 @@ class TicketController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('notassign_agent', ['only' => 'show']);
+        //$this->middleware('notassign_agent', ['only' => 'show']);
         $this->middleware('auth');
     }
     /**
@@ -508,6 +509,44 @@ class TicketController extends Controller
     }  
 
     /**
+     * Close ticket with resolution
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function resolveTicket()
+    {
+        $input = Input::all();
+        $user = User::where('id', $input['user_id'])->first();
+        $ticket = Ticket::where('id', $input['ticket_number'])->first();
+
+        if($user->id == $ticket->assignee || $user->role < 2){
+
+            if($ticket->category==NULL)
+                return redirect()->back()->with('error', 'Please set category first before closing the ticket!');
+
+            if($input['resolution']=="") return redirect()->back()->with('error', 'Resolution is required when closing a ticket.');
+
+            $ticket->resolution = $input['resolution'];
+            $ticket->status = 5;
+            $ticket->save();
+            //$mailer->sendStatusChanged($created_by);
+
+            $log = Comment::create([
+                'is_comment'        => 0,
+                'comment'           => ' closed the ticket.',
+                'user_id'           => $user->id,
+                'commenter_role'    => $user->role,
+                'ticket_id'         => $ticket->id,
+                'class'             => 'fa-ticket'
+            ]);
+
+            return redirect('closed-tickets')->with('message', 'Successfully closed ticket!');
+        }
+        else return redirect()->back()->with('error', 'You have no permission to close this ticket!');
+    }
+
+    /**
      * Re-assign ticket
      *
      * @param  int  $id
@@ -580,6 +619,75 @@ class TicketController extends Controller
             ->get();
 
         return view('search')->with('user', $user)->with('term', $input['q'])->with('results', $results);
+    }
+
+    /**
+     * Assigns ticket to self and set ticket duration
+     *
+     * @return Response
+     */
+    public function assignWithSLA(){
+        $input = Input::all();
+        $user = Auth::user();
+
+        $ticket = Ticket::where('id', $input['ticket_number'])->first();
+        $ticket->assignee = $input['user_id'];
+        $ticket->status = 2;
+        $ticket->duration = $input['duration'];
+        $ticket->sla_metric = $input['sla'];
+        $ticket->save();
+
+        $log = Comment::create([
+            'is_comment'        => 0,
+            'comment'           => ' assigned self to this ticket.',
+            'user_id'           => $user->id,
+            'commenter_role'    => $user->role,
+            'ticket_id'         => $input['ticket_number'],
+            'class'             => 'fa-user-plus'
+        ]);
+
+        return redirect()->back()->with('message', 'Successfully assigned ticket to self!');
+    }
+
+    /**
+     * Checks if ticket is overdue
+     *
+     * @return Response
+     */
+    public function runSLA(){
+        $tickets = Ticket::where('duration', '!=', '')->where('sla_metric', '!=', '')->where('status', 2)->get();
+
+        foreach($tickets as $ticket){
+            $date = \Carbon\Carbon::parse($ticket->created_at);
+
+            if($ticket->sla_metric==1){
+                $date->addDays($ticket->duration);
+            }
+            else if($ticket->sla_metric==2){
+                $date->addMonths($ticket->duration);
+            }
+            else if($ticket->sla_metric==3){
+                $date->addDay($ticket->duration*7);
+            }
+
+            while($date->isWeekend()){
+                $date->addDay();
+            }
+
+            if(\Carbon\Carbon::now()->diffInDays($date)>0){
+                $ticket->status = 6;
+                $ticket->save();
+
+                $log = Comment::create([
+                    'is_comment'        => 0,
+                    'comment'           => ', this ticket is now past the due date. Please take action immediately.',
+                    'user_id'           => $ticket->assignee,
+                    'commenter_role'    => '2',
+                    'ticket_id'         => $ticket->id,
+                    'class'             => 'fa-clock-o'
+                ]);
+            }
+        }
     }
 
     /**

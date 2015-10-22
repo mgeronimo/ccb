@@ -22,6 +22,9 @@ class CreateTicketsTable extends Migration
             $table->string('attachments', 255);
             $table->datetime('incident_date_time', 25);
             $table->string('category', 5);
+            $table->string('duration', 5);
+            $table->string('sla_metric', 5);
+            $table->string('resolution', 255);
             $table->timestamps();
         });
     }

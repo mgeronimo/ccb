@@ -184,7 +184,8 @@ class TicketApiController extends Controller
                 'status'                => $tickets['status'],
                 'date'                  => $tickets['created_at'],
                 'assignee'              => $tickets['assignee'],
-                'attachment'           => $tickets['attachments'],
+                'attachment'            => $tickets['attachments'],
+                'resolution'            => $tickets['resolution'],
                 'updated_at'            => $tickets['updated_at']
             ];
         }, $tickets->toArray());
