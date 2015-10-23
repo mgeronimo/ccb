@@ -30,14 +30,6 @@ class ReportController extends Controller
         $status = "";
         $category = "";
 
-        /*$tickets = DB::table('tickets as t')
-            ->join('departments as d', 't.dept_id', '=', 'd.id')
-            ->join('statuses as s', 't.status', '=', 's.id')
-            ->join('users as u', 't.created_by', '=', 'u.id')
-            ->join('region as r', 'd.regcode', '=', 'r.regcode')
-            ->join('province as p', 'd.provcode', '=', 'p.provcode')
-            ->select('t.id')
-            ->get();*/
         if(count($input)>0){
             $startDate = ($input['startDate']) ? $input['startDate'] : date("Y-m-d", strtotime('-29 day'));
             $endDate = ($input['endDate']) ? $input['endDate'] : date("Y-m-d");
@@ -47,33 +39,16 @@ class ReportController extends Controller
             $provinces = explode(';', rtrim($input['provinces'],';'));
             if(isset($input['status'])){
                 $status = $input['status'];
+                if(in_array("3", $status))
+                    array_push($status, "7");
             }
+
             if(isset($input['category'])){
                 $category = $input['category'];
             }
 
             if(count($provinces)==1 && $provinces[0]=="")
                 $provinces[0] = NULL;
-
-            /*$tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-                ->whereIn('t.dept_id',$agencies)
-                ->whereIn('d.regcode',$regions)
-                ->whereIn('t.status',$status)
-                ->whereIn('d.provcode',$provinces)
-                ->whereIn('t.category',$category)
-                ->groupBy('t.id')
-                ->get();
-            dd($tickets);*/
-
-            //dd($agencies);
 
             $tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
@@ -85,95 +60,27 @@ class ReportController extends Controller
                 ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
                 ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
 
-            $new_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 1);
-
-            $ongoing_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 2);
-
-            $pending_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 3);
-
-            $closed_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 5);
-
             if($agencies[0]!=""){
                 $tickets = $tickets->whereIn('t.dept_id',$agencies);
-                $new_tickets = $new_tickets->whereIn('t.dept_id',$agencies);
-                $ongoing_tickets = $ongoing_tickets->whereIn('t.dept_id',$agencies);
-                $pending_tickets = $pending_tickets->whereIn('t.dept_id',$agencies);
-                $closed_tickets = $closed_tickets->whereIn('t.dept_id',$agencies);
             }
             if($provinces[0]!=""){
                 $tickets = $tickets->whereIn('d.provcode',$provinces);
-                $new_tickets = $new_tickets->whereIn('d.provcode',$provinces);
-                $ongoing_tickets = $ongoing_tickets->whereIn('d.provcode',$provinces);
-                $pending_tickets = $pending_tickets->whereIn('d.provcode',$provinces);
-                $closed_tickets = $closed_tickets->whereIn('d.provcode',$provinces);
             }
             if($regions[0]!=""){
                 $tickets = $tickets->whereIn('d.regcode',$regions);
-                $new_tickets = $new_tickets->whereIn('d.regcode',$regions);
-                $ongoing_tickets = $ongoing_tickets->whereIn('d.regcode',$regions);
-                $pending_tickets = $pending_tickets->whereIn('d.regcode',$regions);
-                $closed_tickets = $closed_tickets->whereIn('d.regcode',$regions);
 
             }
             
             if($category!=""){
                 $tickets = $tickets->whereIn('t.category',$category);
-                $new_tickets = $new_tickets->whereIn('t.category',$category);
-                $ongoing_tickets = $ongoing_tickets->whereIn('t.category',$category);
-                $pending_tickets = $pending_tickets->whereIn('t.category',$category);
-                $closed_tickets = $closed_tickets->whereIn('t.category',$category);
             }
 
             $data = $tickets;
             if($status!=""){
                 $data = $data->whereIn('t.status',$status);
-                $new_tickets = $new_tickets->whereIn('t.status',$status);
-                $ongoing_tickets = $ongoing_tickets->whereIn('t.status',$status);
-                $pending_tickets = $pending_tickets->whereIn('t.status',$status);
-                $closed_tickets = $closed_tickets->whereIn('t.status',$status);
             }
 
             $data = $data->groupBy('t.id')->get();
-            $new_tickets = $tickets->where('t.status', 1)->groupBy('t.id')->get();
-            $ongoing_tickets = $ongoing_tickets->where('t.status', 2)->groupBy('t.id')->get();
-            $pending_tickets = $pending_tickets->where('t.status', 3)->orWhere('t.status', 7)->groupBy('t.id')->get();
-            $closed_tickets = $closed_tickets->where('t.status', 5)->groupBy('t.id')->get();
 
             $n = 0;
             $o = 0;
@@ -190,15 +97,8 @@ class ReportController extends Controller
                 else if($d->status=="Closed") $c++;
             }
 
-            //dd($data);
-
             return view('reports.reports')->with('user', $user)
-                //->with('agencies', $agencies)
                 ->with('tickets', $data)
-                ->with('new_tickets', $new_tickets)
-                ->with('ongoing_tickets', $ongoing_tickets)
-                ->with('pending_tickets', $pending_tickets)
-                ->with('closed_tickets', $closed_tickets)
                 ->with('startDate', $startDate)
                 ->with('endDate', $endDate)
                 ->with('input', $input)
@@ -208,15 +108,9 @@ class ReportController extends Controller
                 ->with('c', $c);
         }
 
-        //$pdf = PDF::loadView('reports.reports-pdf');
-        //return $pdf->stream('report.pdf');
-
         return view('reports.reports')->with('user', $user)
-            //->with('agencies', $agencies)
             ->with('tickets', NULL)
             ->with('input', $input);
-            //->with('startDate', $startDate)
-            //->with('endDate', $endDate);
     }
 
     /**
@@ -230,7 +124,6 @@ class ReportController extends Controller
         $input = Input::all();
         $status = "";
         $category = "";
-
         
         $startDate = ($input['startDate']) ? $input['startDate'] : date("Y-m-d", strtotime('-29 day'));
         $endDate = ($input['endDate']) ? $input['endDate'] : date("Y-m-d");
@@ -240,7 +133,10 @@ class ReportController extends Controller
         $provinces = explode(';', rtrim($input['provinces'],';'));
         if(isset($input['status'])){
             $status = $input['status'];
+            if(in_array("3", $status))
+                array_push($status, "7");
         }
+
         if(isset($input['category'])){
             $category = $input['category'];
         }
@@ -259,78 +155,19 @@ class ReportController extends Controller
             ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
 
         if($tickets!=NULL){
-            $new_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 1);
-
-            $ongoing_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 2);
-
-            $pending_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 3)->orWhere('t.status', 7);
-
-            $closed_tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
-                //->where('t.status', 5);
 
             if($agencies[0]!=""){
                 $tickets = $tickets->whereIn('t.dept_id',$agencies);
-                $new_tickets = $new_tickets->whereIn('t.dept_id',$agencies);
-                $ongoing_tickets = $ongoing_tickets->whereIn('t.dept_id',$agencies);
-                $pending_tickets = $pending_tickets->whereIn('t.dept_id',$agencies);
-                $closed_tickets = $closed_tickets->whereIn('t.dept_id',$agencies);
             }
             if($provinces[0]!=""){
                 $tickets = $tickets->whereIn('d.provcode',$provinces);
-                $new_tickets = $new_tickets->whereIn('d.provcode',$provinces);
-                $ongoing_tickets = $ongoing_tickets->whereIn('d.provcode',$provinces);
-                $pending_tickets = $pending_tickets->whereIn('d.provcode',$provinces);
-                $closed_tickets = $closed_tickets->whereIn('d.provcode',$provinces);
             }
             if($regions[0]!=""){
                 $tickets = $tickets->whereIn('d.regcode',$regions);
-                $new_tickets = $new_tickets->whereIn('d.regcode',$regions);
-                $ongoing_tickets = $ongoing_tickets->whereIn('d.regcode',$regions);
-                $pending_tickets = $pending_tickets->whereIn('d.regcode',$regions);
-                $closed_tickets = $closed_tickets->whereIn('d.regcode',$regions);
             }
             
             if($category!=""){
                 $tickets = $tickets->whereIn('t.category',$category);
-                $new_tickets = $new_tickets->whereIn('t.category',$category);
-                $ongoing_tickets = $ongoing_tickets->whereIn('t.category',$category);
-                $pending_tickets = $pending_tickets->whereIn('t.category',$category);
-                $closed_tickets = $closed_tickets->whereIn('t.category',$category);
             }
 
             $data = $tickets;
@@ -338,10 +175,6 @@ class ReportController extends Controller
                 $data = $data->whereIn('t.status',$status);
             }
             $data = $data->groupBy('t.id')->get();
-            $new_tickets = $tickets->where('t.status', 1)->groupBy('t.id')->get();
-            $ongoing_tickets = $tickets->where('t.status', 2)->groupBy('t.id')->get();
-            $pending_tickets = $tickets->where('t.status', 3)->orWhere('t.status', 7)->groupBy('t.id')->get();
-            $closed_tickets = $tickets->where('t.status', 5)->groupBy('t.id')->get();
 
             $n = 0;
             $o = 0;
@@ -365,7 +198,7 @@ class ReportController extends Controller
                 else if($d->status=="Closed") $c++;
             }
 
-            $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'new_tickets'=>$new_tickets, 'ongoing_tickets'=>$ongoing_tickets, 'pending_tickets'=>$pending_tickets, 'closed_tickets'=>$closed_tickets, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input, 'n'=>$n, 'o'=>$o, 'p'=>$p, 'c'=>$c));
+            $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input, 'n'=>$n, 'o'=>$o, 'p'=>$p, 'c'=>$c));
             return $pdf->stream('report.pdf');
         }
 
@@ -396,7 +229,10 @@ class ReportController extends Controller
         $provinces = explode(';', rtrim($input['provinces'],';'));
         if(isset($input['status'])){
             $status = $input['status'];
+            if(in_array("3", $status))
+                array_push($status, "7");
         }
+
         if(isset($input['category'])){
             $category = $input['category'];
         }
@@ -416,79 +252,18 @@ class ReportController extends Controller
             ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
             ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
 
-        //if($tickets!=NULL){
-        $new_tickets = DB::table('tickets as t')
-            ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-            ->leftJoin('statuses as s', 't.status', '=', 's.id')
-            ->leftJoin('users as u', function($join){
-                $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-            })
-            ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-            ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-            ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-            ->where('t.status', 1);
-
-        $ongoing_tickets = DB::table('tickets as t')
-            ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-            ->leftJoin('statuses as s', 't.status', '=', 's.id')
-            ->leftJoin('users as u', function($join){
-                $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-            })
-            ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-            ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-            ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-            ->where('t.status', 2);
-
-        $pending_tickets = DB::table('tickets as t')
-            ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-            ->leftJoin('statuses as s', 't.status', '=', 's.id')
-            ->leftJoin('users as u', function($join){
-                $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-            })
-            ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-            ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-            ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-            ->where('t.status', 3)->orWhere('t.status', 7);
-
-        $closed_tickets = DB::table('tickets as t')
-            ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-            ->leftJoin('statuses as s', 't.status', '=', 's.id')
-            ->leftJoin('users as u', function($join){
-                $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-            })
-            ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-            ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-            ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
-            ->where('t.status', 5);
-
         if($agencies[0]!=""){
             $tickets = $tickets->whereIn('t.dept_id',$agencies);
-            $new_tickets = $new_tickets->whereIn('t.dept_id',$agencies);
-            $ongoing_tickets = $ongoing_tickets->whereIn('t.dept_id',$agencies);
-            $pending_tickets = $pending_tickets->whereIn('t.dept_id',$agencies);
-            $closed_tickets = $closed_tickets->whereIn('t.dept_id',$agencies);
         }
         if($provinces[0]!=""){
             $tickets = $tickets->whereIn('d.provcode',$provinces);
-            $new_tickets = $new_tickets->whereIn('d.provcode',$provinces);
-            $ongoing_tickets = $ongoing_tickets->whereIn('d.provcode',$provinces);
-            $pending_tickets = $pending_tickets->whereIn('d.provcode',$provinces);
-            $closed_tickets = $closed_tickets->whereIn('d.provcode',$provinces);
         }
         if($regions[0]!=""){
             $tickets = $tickets->whereIn('d.regcode',$regions);
-            $new_tickets = $new_tickets->whereIn('d.regcode',$regions);
-            $ongoing_tickets = $ongoing_tickets->whereIn('d.regcode',$regions);
-            $pending_tickets = $pending_tickets->whereIn('d.regcode',$regions);
-            $closed_tickets = $closed_tickets->whereIn('d.regcode',$regions);
         }
         
         if($category!=""){
             $tickets = $tickets->whereIn('t.category',$category);
-            $new_tickets = $new_tickets->whereIn('t.category',$category);
-            $ongoing_tickets = $ongoing_tickets->whereIn('t.category',$category);
-            $pending_tickets = $pending_tickets->whereIn('t.category',$category);
-            $closed_tickets = $closed_tickets->whereIn('t.category',$category);
         }
 
         $data = $tickets;
@@ -497,11 +272,6 @@ class ReportController extends Controller
         }
         $data = $data->groupBy('t.id')->get();
         DB::setFetchMode(\PDO::FETCH_CLASS);
-        //dd($data);
-        $new_tickets = $tickets->where('t.status', 1)->groupBy('t.id')->get();
-        $ongoing_tickets = $tickets->where('t.status', 2)->groupBy('t.id')->get();
-        $pending_tickets = $tickets->where('t.status', 3)->orWhere('t.status', 7)->groupBy('t.id')->get();
-        $closed_tickets = $tickets->where('t.status', 5)->groupBy('t.id')->get();
 
         if($data!=NULL){
             $csv = Writer::createFromFileObject(new \SplTempFileObject());
