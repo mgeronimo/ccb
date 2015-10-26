@@ -188,12 +188,12 @@
                 <div class="info-box bg-green">
                     <div class="info-box-content">
                         <span class="info-box-text">New</span>
-                        <span class="info-box-number">{{ /*count($new_tickets)*/$n }}</span>
+                        <span class="info-box-number">{{ $n }}</span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: {{ round((/*count($new_tickets)*/ $n/count($tickets))*100, 2) }}%"></div>
+                            <div class="progress-bar" style="width: {{ round(($n/count($tickets))*100, 2) }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ round((/*count($new_tickets)*/ $n/count($tickets))*100, 2) }}% of the tickets
+                            {{ round(($n/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div>
                 </div>
@@ -202,12 +202,12 @@
                 <div class="info-box bg-aqua">
                     <div class="info-box-content">
                         <span class="info-box-text">Ongoing</span>
-                        <span class="info-box-number">{{ /*count($ongoing_tickets)*/ $o }}</span>
+                        <span class="info-box-number">{{ $o }}</span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: {{ round((/*count($ongoing_tickets)*/ $o/count($tickets))*100, 2) }}%"></div>
+                            <div class="progress-bar" style="width: {{ round(($o/count($tickets))*100, 2) }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ round((/*count($ongoing_tickets)*/ $o/count($tickets))*100, 2) }}% of the tickets
+                            {{ round(($o/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div>
                 </div>
@@ -216,12 +216,12 @@
                 <div class="info-box bg-orange">
                     <div class="info-box-content">
                         <span class="info-box-text">Pending</span>
-                        <span class="info-box-number">{{ /*count($pending_tickets)*/ $p }}</span>
+                        <span class="info-box-number">{{ $p }}</span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: {{ round((/*count($pending_tickets)*/ $p/count($tickets))*100, 2) }}%"></div>
+                            <div class="progress-bar" style="width: {{ round(($p/count($tickets))*100, 2) }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ round((/*count($pending_tickets)*/ $p/count($tickets))*100, 2) }}% of the tickets
+                            {{ round(($p/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div>
                 </div>
@@ -230,12 +230,12 @@
                 <div class="info-box bg-gray">
                     <div class="info-box-content">
                         <span class="info-box-text">Closed</span>
-                        <span class="info-box-number">{{ /*count($closed_tickets)*/ $c }}</span>
+                        <span class="info-box-number">{{ $c }}</span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: {{ round((/*count($closed_tickets)*/ $c/count($tickets))*100, 2) }}%"></div>
+                            <div class="progress-bar" style="width: {{ round(($c/count($tickets))*100, 2) }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ round((/*count($closed_tickets)*/ $c/count($tickets))*100, 2) }}% of the tickets
+                            {{ round(($c/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div>
                 </div>

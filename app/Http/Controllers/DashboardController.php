@@ -79,7 +79,10 @@ class DashboardController extends Controller
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
-            $pending_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 3)->orWhere('status', 7)->get();
+            $pending_tickets = Ticket::whereIn('assignee', $all_members)->where(function($query){
+                $query->where('status', 3);
+                $query->orWhere('status', 7);
+            })->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -120,9 +123,9 @@ class DashboardController extends Controller
             $assigned_tickets = Ticket::where('assignee', $user->id)->orderBy('created_at', 'ASC')->take(10)->get();
             $all_assigned = Ticket::where('assignee', $user->id)->get();
 
-            $ongoing_tickets = Ticket::where('assignee', $user->id)->where('status', 2)->get();
-            $closed_tickets = Ticket::where('assignee', $user->id)->where('status', 5)->get();
-            $pending_tickets = Ticket::where('assignee', $user->id)->where('status', 3)->orWhere('status', 7)->get();
+            $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->get();
+            $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->get();
+            $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->where('assignee', $user->id)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');

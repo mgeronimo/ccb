@@ -194,9 +194,9 @@
 		                    	@if($user->role < 4 && $user->role > 0)
 		                    		@if($user->agency_id != $ticket->dept_id)
 		                				<a class="btn bg-purple btn-block escalate" href="/tickets/{{ $ticket->id }}/status/6" role="button">Escalate to Agency</a>
-		                				<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/7" role="button">Awaiting for Agency (Pending)</a>
+		                				<a class="btn bg-olive btn-block wait" href="/tickets/{{ $ticket->id }}/status/7" role="button">Waiting for Agency (Pending)</a>
 		                			@endif
-		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Awaiting for Client (Pending)</a>
+		                			<a class="btn btn-warning btn-block pending" href="/tickets/{{ $ticket->id }}/status/3" role="button">Waiting for Client (Pending)</a>
 		                		@endif
 		                		@if($user->role > 0 && $user->role < 3)
 		                			<a class="btn bg-maroon btn-block" role="button" data-toggle="modal" data-target="#reassign">Reassign Ticket</a>
