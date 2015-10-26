@@ -50,15 +50,43 @@ class ReportController extends Controller
             if(count($provinces)==1 && $provinces[0]=="")
                 $provinces[0] = NULL;
 
-            $tickets = DB::table('tickets as t')
-                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-                ->leftJoin('statuses as s', 't.status', '=', 's.id')
-                ->leftJoin('users as u', function($join){
-                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-                })
-                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+            if($user->role==0){
+                $tickets = DB::table('tickets as t')
+                    ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                    ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                    ->leftJoin('users as u', function($join){
+                        $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                    })
+                    ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                    ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                    ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+            }
+            else if($user->role==1){
+                $members = User::where('agency_id', $user->agency_id)->where('role', 2)->lists('id');
+                
+                $tickets = DB::table('tickets as t')
+                    ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                    ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                    ->leftJoin('users as u', function($join){
+                        $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                    })
+                    ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                    ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                    ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
+                    ->whereIn('t.assignee', $members);
+            }
+            else if($user->role==2){
+                $tickets = DB::table('tickets as t')
+                    ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                    ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                    ->leftJoin('users as u', function($join){
+                        $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                    })
+                    ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                    ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                    ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
+                    ->where('t.assignee', $user->id);
+            }
 
             if($agencies[0]!=""){
                 $tickets = $tickets->whereIn('t.dept_id',$agencies);
@@ -81,6 +109,8 @@ class ReportController extends Controller
             }
 
             $data = $data->groupBy('t.id')->get();
+
+            //dd($data);
 
             $n = 0;
             $o = 0;
@@ -144,15 +174,43 @@ class ReportController extends Controller
         if(count($provinces)==1 && $provinces[0]=="")
             $provinces[0] = NULL;
 
-        $tickets = DB::table('tickets as t')
-            ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-            ->leftJoin('statuses as s', 't.status', '=', 's.id')
-            ->leftJoin('users as u', function($join){
-                $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-            })
-            ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-            ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-            ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+        if($user->role==0){
+            $tickets = DB::table('tickets as t')
+                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                ->leftJoin('users as u', function($join){
+                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                })
+                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+        }
+        else if($user->role==1){
+            $members = User::where('agency_id', $user->agency_id)->where('role', 2)->lists('id');
+            
+            $tickets = DB::table('tickets as t')
+                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                ->leftJoin('users as u', function($join){
+                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                })
+                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
+                ->whereIn('t.assignee', $members);
+        }
+        else if($user->role==2){
+            $tickets = DB::table('tickets as t')
+                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                ->leftJoin('users as u', function($join){
+                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                })
+                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
+                ->where('t.assignee', $user->id);
+        }
 
         if($tickets!=NULL){
 
@@ -242,15 +300,43 @@ class ReportController extends Controller
 
         DB::setFetchMode(\PDO::FETCH_ASSOC);
 
-        $tickets = DB::table('tickets as t')
-            ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
-            ->leftJoin('statuses as s', 't.status', '=', 's.id')
-            ->leftJoin('users as u', function($join){
-                $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
-            })
-            ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
-            ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
-            ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+        if($user->role==0){
+            $tickets = DB::table('tickets as t')
+                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                ->leftJoin('users as u', function($join){
+                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                })
+                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']]);
+        }
+        else if($user->role==1){
+            $members = User::where('agency_id', $user->agency_id)->where('role', 2)->lists('id');
+            
+            $tickets = DB::table('tickets as t')
+                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                ->leftJoin('users as u', function($join){
+                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                })
+                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
+                ->whereIn('t.assignee', $members);
+        }
+        else if($user->role==2){
+            $tickets = DB::table('tickets as t')
+                ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
+                ->leftJoin('statuses as s', 't.status', '=', 's.id')
+                ->leftJoin('users as u', function($join){
+                    $join->on('t.created_by', '=', 'u.id')->orOn('t.assignee', '=', 'u.id');
+                })
+                ->leftJoin('region as r', 'd.regcode', '=', 'r.regcode')
+                ->leftJoin('province as p', 'd.provcode', '=', 'p.provcode')
+                ->whereBetween(DB::raw('CAST(t.created_at AS DATE)'),[$input['startDate'],$input['endDate']])
+                ->where('t.assignee', $user->id);
+        }
 
         if($agencies[0]!=""){
             $tickets = $tickets->whereIn('t.dept_id',$agencies);

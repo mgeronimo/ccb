@@ -230,6 +230,7 @@
                                         <!-- Emphasis label -->
                                         <span class="label label-default sub-time" style="font-size: 11px"><i class="fa fa-clock-o"></i> {{ $ticket->created_at }}</span>
                                         <span class="label label-info" style="font-size: 11px"><i class="fa fa-briefcase"></i> {{ $ticket->dept_name }}</span>
+                                        <span class="label label-{{ $ticket->class }}" style="font-size: 11px">{{ $ticket->status }}</span>
                                     </td>
                                 </tr>
                             @endforeach

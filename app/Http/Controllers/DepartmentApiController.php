@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -36,7 +37,12 @@ class DepartmentApiController extends Controller
      */
     public function getList()
     {
-        $agencies = Department::all();
+        $user = Auth::user();
+        
+        if($user->agency_id>0)
+            $agencies = Department::where('id', $user->agency_id)->get();
+        else $agencies = Department::all();
+
         $data = [];
 
         foreach($agencies as $agency) {
