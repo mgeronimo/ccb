@@ -1,7 +1,7 @@
 @extends('template.dashboard')
 
 @section('title')
-	Tickets In Process
+    Cancelled Tickets
 @stop
 
 @section('heads')
@@ -10,16 +10,16 @@
 @stop
 
 @section('page-title')
-	Tickets In Process
+    Cancelled Tickets
 @stop
 
 @section('page-desc')
-	All tickets that are currenty in process
+    All closed tickets
 @stop
 
 @section('breadcrumb')
-	<li>Tickets</li>
-	<li class="active">Tickets In Process</li>
+    <li>Tickets</li>
+    <li class="active">Cancelled Tickets</li>
 @stop
 
 @section('content')
@@ -38,25 +38,25 @@
         </div>
     @endif
     <br/>
-	<div class="row">
+    <div class="row">
         <section class="col-lg-12">
-            <div class="box box-info" style="min-height: 250px">
+            <div class="box box-danger" style="min-height: 250px">
                 <div class="box-header">
-                    <i class="fa fa-hourglass-half"></i>
-                    <h3 class="box-title">Tickets In Process</h3>
+                    <i class="fa fa-power-off"></i>
+                    <h3 class="box-title">Cancelled Tickets</h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                	@if(count($in_process_tickets)==0)
-                        <em class="no-statement"><center style="padding: 40px">No tickets in process yet.</center></em>
+                    @if(count($cancelled_tickets)==0)
+                        <em class="no-statement"><center style="padding: 40px">No cancelled tickets yet.</center></em>
                     @else
-                    	<table id="table" class="table table-hover">
+                        <table id="table" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>Tasks</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach($in_process_tickets as $ticket)
+                            @foreach($cancelled_tickets as $ticket)
                                 <tr>
                                     <td class="ticket-td">
                                         <i class="fa fa-circle-o"></i>
@@ -68,7 +68,6 @@
                                     </td>
                                 </tr>
                             @endforeach
-                            </tbody>
                         </table>
                     @endif
                 </div>
@@ -78,16 +77,16 @@
 @stop
 
 @section('scripts')
-	<script src='{{ url("assets/js/jquery-1.11.1.min.js") }}'></script>
+    <script src='{{ url("assets/js/jquery-1.11.1.min.js") }}'></script>]
     <script src='{{ url("assets/plugins/datatables/jquery.dataTables.min.js") }}'></script>
     <script src='{{ url("assets/plugins/datatables/dataTables.bootstrap.min.js") }}'></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$(".pagination").addClass('pagination-sm no-margin pull-right')
-		});
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(".pagination").addClass('pagination-sm no-margin pull-right')
+        });
 
         $(function () {
             $("#table").DataTable();
         });
-	</script>
+    </script>
 @stop

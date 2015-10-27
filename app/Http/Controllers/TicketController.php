@@ -180,6 +180,32 @@ class TicketController extends Controller
     }
 
     /**
+     * Displays list of all cancelled tickets.
+     *
+     * @return Response
+     */
+    public function cancelledTickets()
+    {
+        $user = Auth::user();
+        $all_members = User::where('role', 2)->where('agency_id', $user->agency_id)->lists('id');
+        $all_members[count($all_members)] = $user->id;
+
+        if($user->role > 3)
+            return redirect('/');
+        else if($user->role==1){
+            $cancelled_tickets = Ticket::where('status', 4)->whereIn('assignee', $all_members)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+        else if($user->role==2){
+            $cancelled_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+        else{
+            $cancelled_tickets = Ticket::where('status', 4)->orderBy('created_at', 'DESC')->paginate(20);
+        }
+
+        return view('tickets.cancelled')->with('user', $user)->with('cancelled_tickets', $cancelled_tickets);
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
