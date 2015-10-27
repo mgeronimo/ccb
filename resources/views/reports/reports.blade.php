@@ -132,7 +132,8 @@
                     <label class="radio-inline"><input type="checkbox" value="1" id ="2" name ="status[]" /> New</label><br/>
                     <label class="radio-inline"><input type="checkbox" value="2" id ="2" name ="status[]" /> In Process</label><br/>
                     <label class="radio-inline"><input type="checkbox" value="3" id ="2" name ="status[]" /> Pending</label><br/>
-                    <label class="radio-inline"><input type="checkbox" value="5" id ="2" name ="status[]" /> Closed</label>
+                    <label class="radio-inline"><input type="checkbox" value="5" id ="2" name ="status[]" /> Closed</label><br/>
+                    <label class="radio-inline"><input type="checkbox" value="4" id ="2" name ="status[]" /> Cancelled</label>
                 </div>
             </div>
             <div class="row">
@@ -141,7 +142,7 @@
                 </div>
                 <div class="col-md-12 filter-values" style="margin-top: -5px;">
                     <label class="radio-inline" ><input type="checkbox" value="1" id ="2" name ="category[]" /> ARTA</label><br/>
-                    <label class="radio-inline" ><input type="checkbox" value="2" id ="2" name ="category[]" /> non-ARTA</label>
+                    <label class="radio-inline" ><input type="checkbox" value="2" id ="2" name ="category[]" /> Non-ARTA</label>
                 </div>
             </div>
 		</div>
@@ -222,12 +223,12 @@
                 <div class="info-box bg-red">
                     <div class="info-box-content">
                         <span class="info-box-text">Cancelled</span>
-                        <span class="info-box-number">{{ $c }}</span>
+                        <span class="info-box-number">{{ $x }}</span>
                         <div class="progress">
-                            <div class="progress-bar" style="width: {{ ($c/count($tickets))*100 }}%"></div>
+                            <div class="progress-bar" style="width: {{ ($x/count($tickets))*100 }}%"></div>
                         </div>
                         <span class="progress-description">
-                            {{ round(($c/count($tickets))*100, 2) }}% of the tickets
+                            {{ round(($x/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
