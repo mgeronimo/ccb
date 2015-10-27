@@ -172,6 +172,10 @@ td.deactivated{
 	margin: 5px 0px;
 }
 
+.filter-values{
+	margin-bottom: 10px;
+}
+
 .col-xs-15,
 .col-sm-15,
 .col-md-15,

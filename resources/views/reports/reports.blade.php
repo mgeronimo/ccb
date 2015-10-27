@@ -77,7 +77,7 @@
     		    <div class="col-md-12 reports-filter">
                     <label>Agencies</label>
                 </div>
-                <div class="col-md-12 reports-filter"> 
+                <div class="col-md-12 filter-values"> 
                     <div
                         isteven-multi-select 
                         input-model="agencies" 
@@ -94,7 +94,7 @@
                 <div class="col-md-12 reports-filter">
                     <label>Region</label>
                 </div>
-                <div class="col-md-12 reports-filter">
+                <div class="col-md-12 filter-values">
                     <div
                         isteven-multi-select 
                         input-model="regions" 
@@ -111,7 +111,7 @@
                 <div class="col-md-12 reports-filter">
                     <label>Provinces</label>
                 </div>
-                <div class="col-md-12 reports-filter">
+                <div class="col-md-12 filter-values">
                     <div
                         isteven-multi-select 
                         input-model="provinces" 
@@ -128,7 +128,7 @@
                 <div class="col-md-12 reports-filter">
                     <label>Status</label>
                 </div>
-                <div class="col-md-12 reports-filter">
+                <div class="col-md-12 filter-values" style="margin-top: -5px;">
                     <label class="radio-inline"><input type="checkbox" value="1" id ="2" name ="status[]" /> New</label><br/>
                     <label class="radio-inline"><input type="checkbox" value="2" id ="2" name ="status[]" /> In Process</label><br/>
                     <label class="radio-inline"><input type="checkbox" value="3" id ="2" name ="status[]" /> Pending</label><br/>
@@ -139,7 +139,7 @@
                 <div class="col-md-12 reports-filter">
                     <label>Category</label>
                 </div>
-                <div class="col-md-12 reports-filter">
+                <div class="col-md-12 filter-values" style="margin-top: -5px;">
                     <label class="radio-inline" ><input type="checkbox" value="1" id ="2" name ="category[]" /> ARTA</label><br/>
                     <label class="radio-inline" ><input type="checkbox" value="2" id ="2" name ="category[]" /> non-ARTA</label>
                 </div>
