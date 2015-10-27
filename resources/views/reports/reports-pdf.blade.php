@@ -70,7 +70,7 @@
                 width: 100%;
             }
             .col-md-3{
-                width: 23%;
+                width: 18.5%;
                 /*float: left;
                 position: relative;*/
                 position: absolute;
@@ -132,6 +132,9 @@
             .bg-gray {
                 color: #000;
                 background-color: #d2d6de !important;
+            }
+            .bg-red{
+                background-color: #dd4b39 !important;
             }
             .box {
                 position: relative;
@@ -198,7 +201,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3" style="top: 88px; left: 22.5%">
+            <div class="col-md-3" style="top: 88px; left: 17.5%">
                 <div class="info-box bg-aqua">
                     <div class="info-box-content">
                         <span class="info-box-text">Ongoing</span>
@@ -212,7 +215,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3" style="top: 88px; left: 47%">
+            <div class="col-md-3" style="top: 88px; left: 37%">
                 <div class="info-box bg-orange">
                     <div class="info-box-content">
                         <span class="info-box-text">Pending</span>
@@ -226,7 +229,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3" style="top: 88px; left: 71.5%">
+            <div class="col-md-3" style="top: 88px; left: 56.5%">
                 <div class="info-box bg-gray">
                     <div class="info-box-content">
                         <span class="info-box-text">Closed</span>
@@ -236,6 +239,20 @@
                         </div>
                         <span class="progress-description">
                             {{ round(($c/count($tickets))*100, 2) }}% of the tickets
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="top: 88px; left: 76%">
+                <div class="info-box bg-red">
+                    <div class="info-box-content">
+                        <span class="info-box-text">Cancelled</span>
+                        <span class="info-box-number">{{ $x }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ round(($x/count($tickets))*100, 2) }}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            {{ round(($x/count($tickets))*100, 2) }}% of the tickets
                         </span>
                     </div>
                 </div>

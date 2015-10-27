@@ -241,6 +241,7 @@ class ReportController extends Controller
             $o = 0;
             $p = 0;
             $c = 0;
+            $x = 0;
 
             foreach($data as $d){
                 $assignee = User::where('id', $d->assignee)->first();
@@ -257,9 +258,10 @@ class ReportController extends Controller
                 else if($d->status=="In Process") $o++;
                 else if($d->status=="Waiting for Client" || $d->status=="Waiting for Agency") $p++;
                 else if($d->status=="Closed") $c++;
+                else if($d->status=="Cancelled") $x++;
             }
 
-            $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input, 'n'=>$n, 'o'=>$o, 'p'=>$p, 'c'=>$c));
+            $pdf = PDF::loadView('reports.reports-pdf', array('tickets'=>$data, 'startDate'=>$startDate, 'endDate'=>$endDate, 'input'=>$input, 'n'=>$n, 'o'=>$o, 'p'=>$p, 'c'=>$c, 'x'=>$x));
             return $pdf->stream('report.pdf');
         }
 
