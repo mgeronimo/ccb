@@ -128,6 +128,7 @@ Route::get('unassigned-tickets', 'TicketController@unassignedTickets');
 Route::get('in-process-tickets', 'TicketController@inProcessTickets');
 Route::get('pending-tickets', 'TicketController@pendingTickets');
 Route::get('closed-tickets', 'TicketController@closedTickets');
+Route::get('cancelled-tickets', 'TicketController@cancelledTickets');
 Route::post('set-category/{id}', 'TicketController@setCategory');
 Route::get('tickets/{id}/re-assign/{agentid}', 'TicketController@reAssign');
 Route::get('search-tickets', 'TicketController@searchTickets');

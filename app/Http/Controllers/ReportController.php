@@ -116,6 +116,7 @@ class ReportController extends Controller
             $o = 0;
             $p = 0;
             $c = 0;
+            $x = 0;
 
             foreach($data as $d){
                 $t = Ticket::where('ticket_id', $d->ticket_id)->first();
@@ -125,6 +126,7 @@ class ReportController extends Controller
                 else if($d->status=="In Process") $o++;
                 else if($d->status=="Waiting for Client" || $d->status=="Waiting for Agency") $p++;
                 else if($d->status=="Closed") $c++;
+                else if($d->status=="Cancelled") $x++;
             }
 
             return view('reports.reports')->with('user', $user)
@@ -135,7 +137,8 @@ class ReportController extends Controller
                 ->with('n', $n)
                 ->with('o', $o)
                 ->with('p', $p)
-                ->with('c', $c);
+                ->with('c', $c)
+                ->with('x', $x);
         }
 
         return view('reports.reports')->with('user', $user)
@@ -313,7 +316,7 @@ class ReportController extends Controller
         }
         else if($user->role==1){
             $members = User::where('agency_id', $user->agency_id)->where('role', 2)->lists('id');
-            
+
             $tickets = DB::table('tickets as t')
                 ->leftJoin('departments as d', 't.dept_id', '=', 'd.id')
                 ->leftJoin('statuses as s', 't.status', '=', 's.id')

@@ -47,7 +47,7 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     @if(count($closed_tickets)==0)
-                        <em class="no-statement"><center style="padding: 40px">No tickets added yet.</center></em>
+                        <em class="no-statement"><center style="padding: 40px">No closed tickets yet.</center></em>
                     @else
                         <table id="table" class="table table-hover">
                             <thead>

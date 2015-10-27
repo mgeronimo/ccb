@@ -31,6 +31,7 @@ class DashboardController extends Controller
             $closed_tickets = Ticket::where('status', 5)->get();
             $ongoing_tickets = Ticket::where('status', 2)->get();
             $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->get();
+            $cancelled_tickets = Ticket::where('status', 4)->get();
             $all_depts = Department::orderby('dept_name')->get();
 
             foreach ($depts as $key => $dept) {
@@ -51,6 +52,7 @@ class DashboardController extends Controller
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
                 ->with('pending_tickets', count($pending_tickets))
+                ->with('cancelled_tickets', count($cancelled_tickets))
                 ->with('depts', $depts)
                 ->with('all_depts', count($all_depts));
         }
@@ -79,6 +81,7 @@ class DashboardController extends Controller
 
             $ongoing_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 2)->get();
             $closed_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 5)->get();
+            $cancelled_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 4)->get();
             $pending_tickets = Ticket::whereIn('assignee', $all_members)->where(function($query){
                 $query->where('status', 3);
                 $query->orWhere('status', 7);
@@ -107,7 +110,8 @@ class DashboardController extends Controller
                 ->with('count_assigned', count($count_assigned))
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
-                ->with('pending_tickets', count($pending_tickets));
+                ->with('pending_tickets', count($pending_tickets))
+                ->with('cancelled_tickets', count($cancelled_tickets));
         }
         else if($user->role==2)
         {
@@ -126,6 +130,7 @@ class DashboardController extends Controller
             $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->get();
             $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->get();
             $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->where('assignee', $user->id)->get();
+            $cancelled_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 4)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');
@@ -147,7 +152,8 @@ class DashboardController extends Controller
                 ->with('all_unassigned', count($all_unassigned))
                 ->with('closed_tickets', count($closed_tickets))
                 ->with('ongoing_tickets', count($ongoing_tickets))
-                ->with('pending_tickets', count($pending_tickets));
+                ->with('pending_tickets', count($pending_tickets))
+                ->with('cancelled_tickets', count($cancelled_tickets));
         }
         else if($user->role==4){
             $dept = Department::where('id', $user->agency_id)->first();

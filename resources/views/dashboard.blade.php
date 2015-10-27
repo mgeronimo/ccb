@@ -32,7 +32,7 @@
     <br/>
     <!-- Small boxes (Stat box) -->
     <div class="row">
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-md-15 col-sm-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
@@ -46,7 +46,7 @@
                 <a href="unassigned-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-md-15 col-sm-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-gray">
                 <div class="inner">
@@ -60,7 +60,7 @@
                 <a href="/closed-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-md-15 col-sm-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
@@ -74,7 +74,7 @@
                 <a href="/in-process-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-md-15 col-sm-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-orange">
                 <div class="inner">
@@ -82,10 +82,24 @@
                     <p>Pending Tickets</p>
                 </div>
                 <div class="icon">
-                    <i class="ion ion-close-round"></i>
+                    <i class="fa fa-clock-o"></i>
                 </div>
                 <!-- change into reports link when a reports page is already existing -->
                 <a href="/pending-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div><!-- ./col -->
+        <div class="col-md-15 col-sm-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+                <div class="inner">
+                    <h3>{{ $cancelled_tickets }}</h3>
+                    <p>Cancelled Tickets</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-close-round"></i>
+                </div>
+                <!-- change into reports link when a reports page is already existing -->
+                <a href="/cancelled-tickets" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
             </div>
         </div><!-- ./col -->
     </div><!-- /.row -->

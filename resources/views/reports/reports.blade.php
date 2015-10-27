@@ -38,116 +38,131 @@
         </div>
     @endif
     <br/>
+    <div class="row">
+        <div class="col-md-3">
 	<div class="box box-primary no-print">
 		<div class="box-header with-border">
 			<h3 class="box-title">Filters</h3>
 		</div>
 		<div class="box-body" style="font-size: 15px" ng-controller="ApplicationController">
             <form method="get" action="{{url('reports')}}" ng-submit="filterReport()">
-			<div class="col-md-1 reports-filter">
-				<label>Date</label>
-			</div>
-			<div class="col-md-5 reports-filter">
-				<div style="overflow:hidden">
-                    <div id="reportrange" class="pull-left">
-                        <i class="fa fa-calendar fa-lg"></i>
-                        <span>
-                        @if(isset($startDate))
-                            {{date("F j, Y", strtotime($startDate))}}
-                            @else
-                            {{date("F j, Y", strtotime('-29 day'))}}
-                        @endif
-                            -
-                            @if(isset($endDate))
-                                {{date("F j, Y", strtotime($endDate))}}
-                            @else
-                                {{date("F j, Y")}}
+    		<div class="row">
+            	<div class="col-md-12 reports-filter">
+    				<label>Date</label>
+    			</div>
+    			<div class="col-md-12 reports-filter">
+    				<div style="overflow:hidden">
+                        <div id="reportrange" class="pull-left">
+                            <i class="fa fa-calendar fa-lg"></i>
+                            <span>
+                            @if(isset($startDate))
+                                {{date("F j, Y", strtotime($startDate))}}
+                                @else
+                                {{date("F j, Y", strtotime('-29 day'))}}
                             @endif
-                        </span> <b class="caret"></b>
+                                -
+                                @if(isset($endDate))
+                                    {{date("F j, Y", strtotime($endDate))}}
+                                @else
+                                    {{date("F j, Y")}}
+                                @endif
+                            </span> <b class="caret"></b>
+                        </div>
                     </div>
+                    <input type="hidden" name="startDate" id="startDate"/>
+                    <input type="hidden" name="endDate" id="endDate"/>
+    			</div>
+            </div>
+            <div class="row">
+    		    <div class="col-md-12 reports-filter">
+                    <label>Agencies</label>
                 </div>
-                <input type="hidden" name="startDate" id="startDate"/>
-                <input type="hidden" name="endDate" id="endDate"/>
-			</div>
-		    <div class="col-md-1 reports-filter">
-                <label>Agencies</label>
-            </div>
-            <div class="col-md-5 reports-filter"> 
-                <div
-                    isteven-multi-select 
-                    input-model="agencies" 
-                    output-model="selected_agencies"
-                    button-label="icon name"        
-                    item-label="icon name maker"        
-                    tick-property="ticked"                        
-                >
+                <div class="col-md-12 reports-filter"> 
+                    <div
+                        isteven-multi-select 
+                        input-model="agencies" 
+                        output-model="selected_agencies"
+                        button-label="icon name"        
+                        item-label="icon name maker"        
+                        tick-property="ticked"                        
+                    >
+                    </div>
+                    <input type="hidden" name="agencies" id="agencies" ng-value="agency_input" />
                 </div>
-                <input type="hidden" name="agencies" id="agencies" ng-value="agency_input" />
             </div>
-            <div class="col-md-1 reports-filter">
-                <label>Region</label>
-            </div>
-            <div class="col-md-5 reports-filter">
-                <div
-                    isteven-multi-select 
-                    input-model="regions" 
-                    output-model="selected_regions"
-                    button-label="icon name"        
-                    item-label="icon name maker"        
-                    tick-property="ticked"                        
-                >
+            <div class="row">
+                <div class="col-md-12 reports-filter">
+                    <label>Region</label>
                 </div>
-                <input type="hidden" name="regions" id="regions" ng-value="region_input"/>
-            </div>
-            <div class="col-md-1 reports-filter">
-                <label>Provinces</label>
-            </div>
-            <div class="col-md-5 reports-filter">
-                <div
-                    isteven-multi-select 
-                    input-model="provinces" 
-                    output-model="selected_provinces"
-                    button-label="icon name"        
-                    item-label="icon name maker"        
-                    tick-property="ticked"                        
-                >
+                <div class="col-md-12 reports-filter">
+                    <div
+                        isteven-multi-select 
+                        input-model="regions" 
+                        output-model="selected_regions"
+                        button-label="icon name"        
+                        item-label="icon name maker"        
+                        tick-property="ticked"                        
+                    >
+                    </div>
+                    <input type="hidden" name="regions" id="regions" ng-value="region_input"/>
                 </div>
-                <input type="hidden" name="provinces" id="provinces" ng-value="province_input"/>
             </div>
-            <div class="col-md-1 reports-filter">
-                <label>Status</label>
+            <div class="row">
+                <div class="col-md-12 reports-filter">
+                    <label>Provinces</label>
+                </div>
+                <div class="col-md-12 reports-filter">
+                    <div
+                        isteven-multi-select 
+                        input-model="provinces" 
+                        output-model="selected_provinces"
+                        button-label="icon name"        
+                        item-label="icon name maker"        
+                        tick-property="ticked"                        
+                    >
+                    </div>
+                    <input type="hidden" name="provinces" id="provinces" ng-value="province_input"/>
+                </div>
             </div>
-            <div class="col-md-5 reports-filter">
-                <label class="radio-inline" style="padding-left: 0px"><input type="checkbox" value="1" id ="2" name ="status[]" /> New</label>
-                <label class="radio-inline"><input type="checkbox" value="2" id ="2" name ="status[]" /> In Process</label>
-                <label class="radio-inline"><input type="checkbox" value="3" id ="2" name ="status[]" /> Pending</label>
-                <label class="radio-inline"><input type="checkbox" value="5" id ="2" name ="status[]" /> Closed</label>
+            <div class="row">
+                <div class="col-md-12 reports-filter">
+                    <label>Status</label>
+                </div>
+                <div class="col-md-12 reports-filter">
+                    <label class="radio-inline"><input type="checkbox" value="1" id ="2" name ="status[]" /> New</label><br/>
+                    <label class="radio-inline"><input type="checkbox" value="2" id ="2" name ="status[]" /> In Process</label><br/>
+                    <label class="radio-inline"><input type="checkbox" value="3" id ="2" name ="status[]" /> Pending</label><br/>
+                    <label class="radio-inline"><input type="checkbox" value="5" id ="2" name ="status[]" /> Closed</label>
+                </div>
             </div>
-            <div class="col-md-1 reports-filter">
-                <label>Category</label>
-            </div>
-            <div class="col-md-5 reports-filter">
-                <label class="radio-inline" style="padding-left: 0px"><input type="checkbox" value="1" id ="2" name ="category[]" /> ARTA</label>
-                <label class="radio-inline" style="padding-left: 0px"><input type="checkbox" value="2" id ="2" name ="category[]" /> non-ARTA</label>
+            <div class="row">
+                <div class="col-md-12 reports-filter">
+                    <label>Category</label>
+                </div>
+                <div class="col-md-12 reports-filter">
+                    <label class="radio-inline" ><input type="checkbox" value="1" id ="2" name ="category[]" /> ARTA</label><br/>
+                    <label class="radio-inline" ><input type="checkbox" value="2" id ="2" name ="category[]" /> non-ARTA</label>
+                </div>
             </div>
 		</div>
         <div class="box-footer">
-                <input type="submit" onclick="this.form.action='/reports';" class="btn btn-primary pull-right" value="Generate Report">
-                <input type="submit" formmethod="post" onclick="this.form.action='/pdf-report';" class="btn btn-default pull-right" value="Generate PDF" style="margin-right: 10px;" />
-                <input type="submit" formmethod="post" onclick="this.form.action='/csv-report';" class="btn btn-default pull-right" value="Generate CSV" style="margin-right: 10px;" />
+                <input type="submit" onclick="this.form.action='/reports';" class="btn btn-block btn-primary pull-right" value="Generate Report">
+                <input type="submit" formmethod="post" onclick="this.form.action='/pdf-report';" class="btn btn-block btn-default pull-right" value="Generate PDF"/>
+                <input type="submit" formmethod="post" onclick="this.form.action='/csv-report';" class="btn btn-block btn-default pull-right" value="Generate CSV"/>
             </form>
         </div>
 	</div>
+    </div>
 
+    <div class="col-md-9">
     @if($tickets!=NULL)
         <div class="col-md-12">
             <h4 style="text-align: center">RESULTS</h4>
             <h5 style="text-align: center">{{ date("F j, Y", strtotime($startDate)).' - '.date("F j, Y", strtotime($endDate)) }}</h5>
         </div>
         <div class="row">
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-15 col-sm-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-green">
-                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">New</span>
                         <span class="info-box-number">{{ 
@@ -161,9 +176,8 @@
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-15 col-sm-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-aqua">
-                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">In Process</span>
                         <span class="info-box-number">{{ $o }}</span>
@@ -176,9 +190,8 @@
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-15 col-sm-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-orange">
-                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Pending</span>
                         <span class="info-box-number">{{ $p }}</span>
@@ -191,11 +204,24 @@
                     </div><!-- /.info-box-content -->
                 </div><!-- /.info-box -->
             </div>
-            <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="col-md-15 col-sm-3 col-sm-6 col-xs-12">
                 <div class="info-box bg-gray">
-                    <span class="info-box-icon"><i class="fa fa-bookmark-o"></i></span>
                     <div class="info-box-content">
                         <span class="info-box-text">Closed</span>
+                        <span class="info-box-number">{{ $c }}</span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: {{ ($c/count($tickets))*100 }}%"></div>
+                        </div>
+                        <span class="progress-description">
+                            {{ round(($c/count($tickets))*100, 2) }}% of the tickets
+                        </span>
+                    </div><!-- /.info-box-content -->
+                </div><!-- /.info-box -->
+            </div>
+            <div class="col-md-15 col-sm-3 col-sm-6 col-xs-12">
+                <div class="info-box bg-red">
+                    <div class="info-box-content">
+                        <span class="info-box-text">Cancelled</span>
                         <span class="info-box-number">{{ $c }}</span>
                         <div class="progress">
                             <div class="progress-bar" style="width: {{ ($c/count($tickets))*100 }}%"></div>
@@ -249,6 +275,8 @@
             </section>
         </div>
     @endif
+    </div>
+    </div>
 @stop
 
 @section('scripts')
