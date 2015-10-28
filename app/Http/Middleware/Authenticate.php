@@ -46,12 +46,11 @@ class Authenticate
             } else {
                 return redirect()->guest('/login');
             }
-        
-
-           
-
         }
 
-        return $next($request);
+        if($this->auth->user()->is_activated==1){
+            return $next($request);
+        }
+        return redirect('logout');
     }
 }

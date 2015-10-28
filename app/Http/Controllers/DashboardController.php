@@ -23,6 +23,8 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        //if($user->is_activated==0) return redirect('logout');
+
         if($user->role==0){
             $tickets = Ticket::where('assignee', NULL)->orderBy('created_at', 'DESC')->take(10)->get();
             $depts = Department::orderby('dept_name')->take(5)->get();
@@ -101,7 +103,6 @@ class DashboardController extends Controller
             }
 
             return view('dashboard')->with('user', $user)
-                //->with('group', $group)
                 ->with('all_members', count($all_members))
                 ->with('members', $members)
                 ->with('all_assigned', $all_assigned)

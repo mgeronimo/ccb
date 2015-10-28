@@ -162,11 +162,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function activate($id)
+    public function activate($id, AppMailer $mailer)
     {
         $user = User::where('id', $id)->first();
         $user->is_activated = 1;
         $user->save();
+
+        $mailer->activateUser($user);
 
         return redirect()->back()->with('message', 'User now activated!');
     }
@@ -177,11 +179,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function deactivate($id)
+    public function deactivate($id, AppMailer $mailer)
     {
         $user = User::where('id', $id)->first();
         $user->is_activated = 0;
         $user->save();
+
+        $mailer->deactivateUser($user);
 
         return redirect()->back()->with('message', 'User now deactivated!');
     }    

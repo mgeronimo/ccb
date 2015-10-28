@@ -43,6 +43,11 @@
                                 
                                 </div>
                                 @endif
+                                @if(Session::has('error'))
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="fa fa-fw fa-danger-circle"></i> &nbsp;{{ Session::get("error") }}
+                                    </div>
+                                @endif
 		                        <button type="submit" class="btn raised">Sign in!</button>
 		                    </form>
 	                    </div>

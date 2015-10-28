@@ -326,7 +326,7 @@ class TicketController extends Controller
         $ticket->save();
 
         $created_by = User::where('id', $ticket->created_by)->first();
-        //$mailer->sendStatus($created_by);
+        $mailer->sendStatus($created_by);
 
         if($user->id==$agentid) $assigned = 'self';
         else{
@@ -351,7 +351,7 @@ class TicketController extends Controller
      * @param  int  $id, int  $agentid
      * @return Response
      */
-    public function changeStatus($id, $statid, AppAssigned $mailer)
+    public function changeStatus($id, $statid, AppAssigned $mailer, AppStatus $mailer_2)
     {
         $user = Auth::user();
         $ticket = Ticket::where('id', $id)->first();
@@ -369,7 +369,7 @@ class TicketController extends Controller
                 $ticket->save();
                 //email
                 $status = 'Reopened ticket';
-                //$mailer->sendStatusChanged($created_by);
+                $mailer_2->sendStatusChanged($created_by);
 
                 $log = Comment::create([
                     'is_comment'        => 0,
@@ -394,7 +394,7 @@ class TicketController extends Controller
 
                 $ticket->save();
                 //email
-                //$mailer->sendStatusChanged($created_by);
+                $mailer_2->sendStatusChanged($created_by);
 
                 //email
                 //$mailer->sendStatusChanged($created_by);
@@ -408,9 +408,6 @@ class TicketController extends Controller
                     'class'             => 'fa-ticket'
                 ]);
 
-
-                //email
-                $mailer->sendStatusChanged($created_by);
                 return redirect()->back()->with('message', 'Ticket now in process.');                
             }
             if($ticket->status == 7 && $user->role < 4){
@@ -419,7 +416,7 @@ class TicketController extends Controller
                     $ticket->save();
                     //email
                     $status = 'Re-process ticket';
-                    //$mailer->sendStatusChanged($created_by);
+                    $mailer_2->sendStatusChanged($created_by);
 
                     $log = Comment::create([
                         'is_comment'        => 0,
@@ -446,7 +443,7 @@ class TicketController extends Controller
                     $ticket->status = $statid;
                     $ticket->save();
                     //email
-                    //$mailer->sendStatusChanged($created_by);
+                    $mailer_2->sendStatusChanged($created_by);
 
                     //$dept = Department::where('id', $ticket->dept_id)->first();
 
@@ -474,7 +471,7 @@ class TicketController extends Controller
                 $ticket->status = $statid;
                 $ticket->save();
                 //email
-                //$mailer->sendStatusChanged($created_by);
+                $mailer_2->sendStatusChanged($created_by);
 
                 $log = Comment::create([
                     'is_comment'        => 0,
@@ -491,33 +488,6 @@ class TicketController extends Controller
         }
 
         /*
-         * Close
-         */
-        /*else if($statid==5){
-            if($user->id == $ticket->assignee || $user->role < 2){
-
-                if($ticket->category==NULL)
-                    return redirect()->back()->with('error', 'Please set category first before closing the ticket!');
-
-                $ticket->status = $statid;
-                $ticket->save();
-                //$mailer->sendStatusChanged($created_by);
-
-                $log = Comment::create([
-                    'is_comment'        => 0,
-                    'comment'           => ' closed the ticket.',
-                    'user_id'           => $user->id,
-                    'commenter_role'    => $user->role,
-                    'ticket_id'         => $id,
-                    'class'             => 'fa-ticket'
-                ]);
-
-                return redirect('closed-tickets')->with('message', 'Successfully closed ticket!');
-            }
-            else return redirect()->back()->with('error', 'You have no permission to close this ticket!');
-        }*/
-
-        /*
          * Escalate
          */
         else if($statid==6){
@@ -532,6 +502,8 @@ class TicketController extends Controller
 
                     $ticket->assignee = NULL;
                     $ticket->save();
+
+                    $mailer_2->sendStatusChanged($created_by);
 
                     $dept = Department::where('id', $ticket->dept_id)->first();
 
@@ -562,6 +534,8 @@ class TicketController extends Controller
                     $ticket->status = 7;
                     $ticket->save();
 
+                    $mailer_2->sendStatusChanged($created_by);
+
                     $dept = Department::where('id', $ticket->dept_id)->first();
 
                     $log = Comment::create([
@@ -590,7 +564,7 @@ class TicketController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function resolveTicket()
+    public function resolveTicket(AppStatus $mailer)
     {
         $input = Input::all();
         $user = User::where('id', $input['user_id'])->first();
@@ -606,7 +580,7 @@ class TicketController extends Controller
             $ticket->resolution = $input['resolution'];
             $ticket->status = 5;
             $ticket->save();
-            //$mailer->sendStatusChanged($created_by);
+            $mailer->sendStatusChanged($created_by);
 
             $log = Comment::create([
                 'is_comment'        => 0,
@@ -764,16 +738,5 @@ class TicketController extends Controller
                 ]);
             }
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

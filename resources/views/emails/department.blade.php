@@ -7,8 +7,10 @@
 <body>
 	<h1>Welcome to Contact Center ng Bayan!</h1>
 	<p>
-
-		Hello {{$user->first_name}}, You have been registered as the Agency representative. 
+		Hello, {{$user->first_name}}!
+	</p>
+	<p>
+		You have been registered as an Agency representative. Please log in to <a href='{{ url("login") }}' >CCB web application</a> to start.
 	</p>
 </body>
 </html>

@@ -34,6 +34,7 @@ class AppMailer{
 			$this->view='emails.publicuser';
 		}
 		$this->data = compact('user');
+		$this->subject = 'Verify your account';
 		$this->deliver();
 	}
 
@@ -42,7 +43,25 @@ class AppMailer{
 		$this->mailer->send($this->view, $this->data, function($message){
 			$message->from($this->from, 'Contact Center ng Bayan')
 
-					->to($this->to)->subject('Verify your account');
+					->to($this->to)->subject($this->subject);
 		});
+	}
+
+	public function deactivateUser(User $user)
+	{
+		$this->to = $user->email;
+		$this->view='emails.deactivate';
+		$this->data = compact('user');
+		$this->subject = 'CCB Account Deactivated';
+		$this->deliver();
+	}
+
+	public function activateUser(User $user)
+	{
+		$this->to = $user->email;
+		$this->view='emails.activate';
+		$this->data = compact('user');
+		$this->subject = 'CCB Account Reactivated';
+		$this->deliver();
 	}
 } 
