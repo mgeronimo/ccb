@@ -21,6 +21,7 @@ class DepartmentController extends Controller
         $this->middleware('auth');
         $this->middleware('admin',['except'=>'index']);
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -112,20 +113,9 @@ class DepartmentController extends Controller
     public function update(Request $request, AppDepartment $mailer)
     {
         $input = $request->all();
-/*
-        $validator = Validator::make($request->all(), [
-            'dept_name'     => 'required|max:45|unique:departments,dept_name',
-            'description'   => 'required|max:255',
-            'is_member'     => 'required'
-        ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator->errors());
-            //dd($validator->errors());
-        }*/
-
-         $department = Department::where('id', $input['dept'])->first();
-         $dept = $input['dept_name'];
+        $department = Department::where('id', $input['dept'])->first();
+        $dept = $input['dept_name'];
 
         $department->dept_name = $input['dept_name'];
         $department->is_member = $input['is_member'];
@@ -146,28 +136,26 @@ class DepartmentController extends Controller
 
               if($user=="")
            {       
-                        $user = new User;
-                         $user->first_name = $input['firstname'];
-                         $user->last_name = $input['lastname'];
-                         $user->email = $input['email'];
-                         $user->role = 4;
-                         $user->agency_id = Department::where('dept_name',$dept)->value('id');
-                         $user->contact_number = $input['contact_number'];
-                         $user->save();
-                         $mailer->sendEmailConfirmationTo($user);
+                $user = new User;
+                $user->first_name = $input['firstname'];
+                $user->last_name = $input['lastname'];
+                $user->email = $input['email'];
+                $user->role = 4;
+                $user->agency_id = Department::where('dept_name',$dept)->value('id');
+                $user->contact_number = $input['contact_number'];
+                $user->save();
+                $mailer->sendEmailConfirmationTo($user);
             }
             else
             {
-                        $user->first_name = $input['firstname'];
-                         $user->last_name = $input['lastname'];
-                         $user->email = $input['email'];
-                         $user->role = 4;
-                         $user->agency_id = Department::where('dept_name',$dept)->value('id');
-                         $user->contact_number = $input['contact_number'];
-                            if(!($email ==  $input['email']))
-                        {  $mailer->sendEmailConfirmationTo($user); }
-                         $user->save();
-
+                $user->first_name = $input['firstname'];
+                $user->last_name = $input['lastname'];
+                $user->email = $input['email'];
+                $user->role = 4;
+                $user->agency_id = Department::where('dept_name',$dept)->value('id');
+                $user->contact_number = $input['contact_number'];
+                if(!($email ==  $input['email'])){  $mailer->sendEmailConfirmationTo($user); }
+                $user->save();
             }
         }
 
