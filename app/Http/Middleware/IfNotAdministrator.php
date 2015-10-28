@@ -21,7 +21,7 @@ class IfNotAdministrator
         {
             return redirect('/');
         }
-    return $next($request);
+        return $next($request);
 
     }
 }

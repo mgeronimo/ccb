@@ -35,20 +35,15 @@ class DashboardAdminController extends Controller
      */
     public function index()
     {
-        /*$users = User::all();
-        foreach ($users as $key => $user) {
-            var_dump($user);
-        }
-        dd(count($users));*/
-
         $user = Auth::user();
         $groups = Group::orderBy('group_name')->get();
-        //return $groups;
-                foreach ($groups as $key => $group) {
-                   $supervisor = User::where('group_number', $group->id)
-                                ->where('role', 1)->first();
-                   $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
-                   }
+        
+        foreach ($groups as $key => $group) {
+           $supervisor = User::where('group_number', $group->id)
+                        ->where('role', 1)->first();
+           $group->supervisor = $supervisor->first_name." ".$supervisor->last_name;
+        }
+
         return view('admin.dashboard-admin')->with('user', $user)->with('groups', $groups);
     }
 
@@ -59,13 +54,18 @@ class DashboardAdminController extends Controller
      */
     public function addgroup()
     {
-        //
         $user = Auth::user();
         return view('admin.addgroup')->with('user', $user);
     }
+
+    /**
+     * Store a newly created group in storage.
+     *
+     * @param  Request  $request
+     * @return Response
+     */
     public function storegroup(Request $request)
     {
-        //
         $group = new Group;
         $user = new User;
         $group->group_name = $request->input('groupname');
@@ -76,8 +76,6 @@ class DashboardAdminController extends Controller
         $user->email = $input['sEmail'];
         $groups = Group::where('group_name', $group->group_name)->firstOrFail();
         $groups->users()->save($user);
-        //$user->save();
-       // $agentuser = new User;
 
         $agent = count($input['agentfname']);
         for($i=0; $agent > $i; $i++)
@@ -97,14 +95,12 @@ class DashboardAdminController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Shoes the add department page
      *
-     * @param  Request  $request
      * @return Response
      */
     public function show()
     {
-        //
         $user = Auth::user();
         $regions = Region::all();
         $provinces =Province::all();
@@ -118,9 +114,7 @@ class DashboardAdminController extends Controller
      * @return Response
      */
     public function addDept(Request $request,  AppDepartment $mailer)
-
     {
-        //
         $user = new User;
         $department = new Departments;
         $input = $request->all();
@@ -139,15 +133,16 @@ class DashboardAdminController extends Controller
         $department->save();
         if($input['is_member']==1)
         {  
-              $user->first_name = $input['firstname'];
-              $user->last_name = $input['lastname'];
-              $user->email = $input['email'];
-              $user->role = 4;
-              $user->agency_id = Departments::where('dept_name',$dept)->value('id');
-              $user->contact_number = $input['contact_number'];
-              $user->save();
-              $mailer->sendEmailConfirmationTo($user);
+            $user->first_name = $input['firstname'];
+            $user->last_name = $input['lastname'];
+            $user->email = $input['email'];
+            $user->role = 4;
+            $user->agency_id = Departments::where('dept_name',$dept)->value('id');
+            $user->contact_number = $input['contact_number'];
+            $user->save();
+            $mailer->sendEmailConfirmationTo($user);
         }
+
         //different email
         return redirect('/')->with('message', 'Department Successfully added.');
     }
@@ -167,10 +162,9 @@ class DashboardAdminController extends Controller
         
         if(count($validate)) return 'failed';
         else return 'passed';
-    
-        //
     }
-      public function validateEditDepartment($id)
+
+    public function validateEditDepartment($id)
     {
         $validate = null;
         $input = trim(Input::get('dept_name'));
@@ -178,10 +172,9 @@ class DashboardAdminController extends Controller
         $validate = Departments::whereNotIn('id', [$id])->where('dept_name', $input)->get();
         if(count($validate)) return 'failed';
         else return 'passed';
-    
-        //
     }
-       public function validateEditEmailHead($id)
+
+    public function validateEditEmailHead($id)
     {
         $validate = null;
         $input = trim(Input::get('agency_email'));
@@ -190,10 +183,9 @@ class DashboardAdminController extends Controller
 
         if(count($validate)) return 'failed';
         else return 'passed';
-    
-        //
     }
-        public function validateEditEmail($id)
+
+    public function validateEditEmail($id)
     {
         $validate = null;
         $input = trim(Input::get('email'));
@@ -201,8 +193,6 @@ class DashboardAdminController extends Controller
         $validate = User::whereNotIn('agency_id', [$id])->where('email', $input)->get();
         if(count($validate)) return 'failed';
         else return 'passed';
-    
-        //
     }
 
 
@@ -215,9 +205,8 @@ class DashboardAdminController extends Controller
         
         if(count($validate)) return 'failed';
         else return 'passed';
-    
-        //
     }
+
     public function validateAgencyEmail()
     {
         $validate = null;
@@ -228,9 +217,8 @@ class DashboardAdminController extends Controller
         if($input=="") return 'passed';
         else if(count($validate)) return 'failed';
         else return 'passed';
-    
-        //
     }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -239,7 +227,6 @@ class DashboardAdminController extends Controller
      */
     public function announcement()
     {
-        //
         $user = Auth::user();
         return view('admin.announcement')->with('user', $user);
     }
@@ -254,6 +241,7 @@ class DashboardAdminController extends Controller
          $announcement->save();
          return redirect('/announcements')->with('message','Announcement successfully added!');
     }
+
     public function draftAnnouncement(AnnouncementDraftRequest $request)
     {
          $input = $request->all();

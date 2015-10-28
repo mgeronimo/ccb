@@ -130,7 +130,7 @@ class DashboardController extends Controller
             $ongoing_tickets = Ticket::where('status', 2)->where('assignee', $user->id)->get();
             $closed_tickets = Ticket::where('status', 5)->where('assignee', $user->id)->get();
             $pending_tickets = Ticket::where('status', 3)->orWhere('status', 7)->where('assignee', $user->id)->get();
-            $cancelled_tickets = Ticket::whereIn('assignee', $all_members)->where('status', 4)->get();
+            $cancelled_tickets = Ticket::where('status', 4)->where('assignee', $user->id)->get();
 
             foreach ($tickets as $key => $ticket) {
                 $deptname = Department::find($ticket->dept_id)->pluck('dept_name');

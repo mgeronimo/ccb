@@ -9,13 +9,11 @@
                 font-family: 'Helvetica';
             }
             #pdf-header{
-                /*background: rgb(18,40,74);*/
                 padding: 10px;
                 border-bottom: solid #ccc 2px;
             }
             #pdf-header span{
                 font-size: 25px;
-                /*color: white;*/
                 text-transform: uppercase;
                 text-align: center;
                 display: block;
@@ -108,7 +106,6 @@
                 border-radius: 0;
             }
             .info-box .progress {
-                /*background: rgba(0,0,0,0.7);*/
                 background: #fff;
                 margin: 5px -10px 5px -10px;
                 height: 1px;

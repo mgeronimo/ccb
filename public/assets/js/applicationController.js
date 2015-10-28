@@ -8,7 +8,6 @@ angular.module('ccbApp', ["isteven-multi-select"], function($interpolateProvider
             function (response) {
 
                 $scope.agencies = response.data;
-                //$scope.switchSource( 'modernBrowsers' );
 
             },
             function (error) {
@@ -23,7 +22,6 @@ angular.module('ccbApp', ["isteven-multi-select"], function($interpolateProvider
             function (response) {
 
                 $scope.regions = response.data;
-                //$scope.switchSource( 'regions' );
 
             },
             function (error) {
@@ -38,7 +36,6 @@ angular.module('ccbApp', ["isteven-multi-select"], function($interpolateProvider
             function (response) {
 
                 $scope.provinces = response.data;
-                //$scope.switchSource( 'regions' );
 
             },
             function (error) {
@@ -53,7 +50,6 @@ angular.module('ccbApp', ["isteven-multi-select"], function($interpolateProvider
         var provinces = "";
 
         angular.forEach($scope.selected_agencies, function(value, key) {
-            //console.log(value);
             agencies = agencies + value.code  + ";";
         });
 
