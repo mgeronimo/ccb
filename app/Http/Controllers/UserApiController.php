@@ -61,6 +61,7 @@ class UserApiController extends Controller
             'contact_number' => $request->input('contact_number'),
             'role'           => '3',
             'is_verified'    => '0',
+            'gender'         => $request->input('gender'),
             'remember_token' => str_random(60)
         ]);
 
