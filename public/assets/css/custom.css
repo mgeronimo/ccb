@@ -2,7 +2,7 @@
 Custom CSS
  */
 .smlogo{
-	width: 140px;
+	width: 130px;
     margin: auto;
     margin-top: 4px;
 }
@@ -42,6 +42,7 @@ Custom CSS
 
 .incident-body{
 	padding: 5px 20px;
+
 }
 
 .incident-details{

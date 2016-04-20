@@ -6,6 +6,7 @@
 
 @section('heads')
     <link rel="stylesheet" href='{{ url("assets/css/styleadmin.css") }}'>
+    
 @stop
 
 @section('page-title')
@@ -235,9 +236,31 @@
 		        			<div class="col-lg-12">
 		        				<form method="POST" action="{{url('/set-category/'.$ticket->id) }}">
 			        				<label class="radio-inline"><input type="radio" value="1" id="1" name ="category" class="checkmember" >ARTA</label><br/>
+
+
+									    <div class="row">
+						    		    <div class="col-md-12 reports-filter">
+						                    <label>Sub-categories</label>
+						                </div>
+						                <div disabled="disabled" class="col-md-12 filter-values"> 
+						                    <div
+						                        isteven-multi-select 
+						                        input-model="agencies" 
+						                        output-model="selected_agencies"
+						                        button-label="icon name"        
+						                        item-label="icon name maker"        
+						                        tick-property="ticked"   
+						                        disabled="disabled"                     
+						                    >
+						                    </div>
+						                    <input type="hidden" name="Sub-categories" id="agencies" ng-value="agency_input" />
+						                </div>
+						            </div
+
 		 	 						<label class="radio-inline"><input type="radio" value="0" id ="2" name ="category" class="checkmember" >Non-ARTA</label>
 			                </div>
 			            </div>
+
 			            <div class="box-footer clearfix no-border incident-body" style="padding-bottom: 20px">
 			            			<div class="col-md-12">
 			            				<button type="submit" class="btn btn-block btn-info pull-right">Set Category</button>
@@ -470,4 +493,8 @@
 		    })
 		});
 	</script>
+	 <script src='{{ url("assets/js/applicationController.js") }}'></script>
+    <script src='{{ url("assets/plugins/datatables/jquery.dataTables.min.js") }}'></script>
+    <script src='{{ url("assets/plugins/datatables/dataTables.bootstrap.min.js") }}'></script>
+   
 @stop

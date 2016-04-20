@@ -38,7 +38,7 @@ class DepartmentApiController extends Controller
     public function getList()
     {
         $user = Auth::user();
-        
+        return dd($user);//no prblem
         if($user->agency_id>0)
             $agencies = Department::where('id', $user->agency_id)->get();
         else $agencies = Department::all();

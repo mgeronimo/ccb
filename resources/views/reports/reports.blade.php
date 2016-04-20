@@ -1,4 +1,4 @@
-@extends('template.dashboard')
+ @extends('template.dashboard')
 
 @section('title')
 	Reports

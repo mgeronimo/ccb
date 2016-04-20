@@ -222,7 +222,10 @@ footer{
 @media (max-width: 767px) {
 	
 	.inner-bg { padding: 60px 0 0 0; }
-	.img-responsive.logo{ margin: auto; }
+	.img-responsive.logo{ margin: auto; 
+
+		align: center;
+	}
 
 }
 

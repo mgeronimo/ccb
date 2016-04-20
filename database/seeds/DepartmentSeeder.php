@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use League\Csv\Reader;
+use App\Department;
 
 class DepartmentSeeder extends Seeder
 {
@@ -11,18 +13,24 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('departments')->delete();
 
-        DB::table('departments')->insert([
-            'dept_name' => 'DAR',
-            'is_member' => 1,
-            'regcode' => 2
-        ]);
+       
+      /* DB::table('departments')->delete();
+       // $file = File::get('database/seeds/agencies.csv');
+        $file = 'agencies.csv';
+       $reader = Reader::createFromPath($file);
+    
+       $data = array();
+       $count_elements = 0;
 
-        DB::table('departments')->insert([
-            'dept_name' => 'DA',
-            'is_member' => 1,
-            'regcode' => 3
-        ]);
+       foreach($reader as $index => $row)
+       {
+           $data[$count_elements] = array('regcode'=>$row[0],'dept_name'=>$row[1],
+            'location'=>$row[2]);
+           $count_elements++;
+       }
+       
+       $cr = new Department;
+       $cr::insert($data);*/
     }
 }
