@@ -23,7 +23,6 @@ class CreateTicketComments extends Migration
             $table->timestamps('commented_at');
         });
     }
-
     /**
      * Reverse the migrations.
      *

@@ -273,7 +273,6 @@
 			            			<data></data><div class="col-md-12">
 			            				<button type="button" ng-click="saveCategory()" class="btn btn-block btn-info pull-right">Set Category</button>
 			            			</div>
-			            	
 			            </div>
 			           </form>
 			        @else

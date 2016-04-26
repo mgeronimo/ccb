@@ -665,14 +665,10 @@ class TicketController extends Controller
         $allCate = Category::where('category_id', $data)->first();
         // $ticket = Ticket::where('id', $id)->first();
         return response()->json($allCate);
-        
         // $ticket->category = $category;
         // $ticket->save();
-
-
         // $request_arr = json_decode( file_get_contents('php://input') );
         // $category = $request_arr->category;
-
         // echo $id;
         exit;
         print($category);
