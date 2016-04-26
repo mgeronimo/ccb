@@ -73,7 +73,8 @@ class TicketApiController extends Controller
             'message'        => $request->input('incident_details'),
             'status'         => 1,
             'created_by'     => $request->input('user_id'),
-            'complainee'     => $request->input('complainee')
+            'complainee'     => $request->input('complainee'),
+            'anonymous'      => $request->input('anonymous')
         ]);
 
         $prev_ticket = Ticket::orderBy('id', 'DESC')->first();
@@ -187,7 +188,8 @@ class TicketApiController extends Controller
                 'assignee'              => $tickets['assignee'],
                 'attachment'            => $tickets['attachments'],
                 'resolution'            => $tickets['resolution'],
-                'updated_at'            => $tickets['updated_at']
+                'updated_at'            => $tickets['updated_at'],
+                'anonymous'             => $tickets['anonymous']
             ];
         }, $tickets->toArray());
     }

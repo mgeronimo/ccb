@@ -43,6 +43,7 @@ class CommentController extends Controller
     {
         $user = Auth::user();
         $validator = Validator::make($request->all(), [
+           // 'ticket_comment'     => 'required|max:255',
             'ticket_comment'     => 'required|max:255',
         ]);
 
@@ -116,7 +117,8 @@ class CommentController extends Controller
         $user = User::where('id', $userid)->first();
 
         $validator = Validator::make($request->all(), [
-            'ticket_comment'     => 'required|max:255',
+            //'ticket_comment'     => 'required|max:255',
+            'ticket_comment'     => 'required',
         ]);
 
         if ($validator->fails()) {
