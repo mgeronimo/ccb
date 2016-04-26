@@ -15,7 +15,6 @@ class CreateTicketsTable extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->increments('id');
             $table->string('ticket_id');
-            $table->string('category_id');
             $table->text('message');
             $table->integer('status');
             $table->string('complainee', 100)->nullable();
@@ -23,6 +22,7 @@ class CreateTicketsTable extends Migration
             $table->string('attachments', 255);
             $table->datetime('incident_date_time', 25);
             $table->string('category', 5);
+            $table->string('sub_category_details', 255);
             $table->string('duration', 5);
             $table->string('sla_metric', 5);
             $table->string('resolution', 255);

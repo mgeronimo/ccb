@@ -14,6 +14,7 @@ use Input;
 use Image;
 use Validator;
 use App\Mailers\AppTicketSubmitted;
+use App\Category;
 class TicketApiController extends Controller
 {
     /**
@@ -189,5 +190,20 @@ class TicketApiController extends Controller
                 'updated_at'            => $tickets['updated_at']
             ];
         }, $tickets->toArray());
-    }    
+    }
+
+public function getCategory()
+    {
+        $category = Category::all();
+        $data = [];
+
+        foreach($category as $category) {
+            $d['code'] = $category->category_id;
+            $d['name'] = $category->arta_sub_category;
+            $d['ticked']    = false;
+            $data[] = $d;
+        }
+        return response()->json($data);
+    }
+
 }

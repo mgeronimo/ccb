@@ -46,7 +46,7 @@
     @endif
 
     <br/>
-	<div class="row">
+	<div class="row" ng-controller="ApplicationController ">
 		<section class="col-lg-8">
 			@if($ticket->resolution!="")
 				<div class="callout callout-warning">
@@ -232,41 +232,50 @@
 		                <h2 class="box-title">Category @if($ticket->category!=NULL) : &nbsp;&nbsp;<span class="label label-{{ $ticket->class }}" style="font-size: 15px">{{ $ticket->category==1 ? 'ARTA' : 'Non-ARTA' }}</span> @endif </h2>
 		            </div><!-- /.box-header -->
 		            @if($ticket->category==NULL)
+		            <form method="POST" action="{{url('/set-category/'.$ticket->id) }}">
 			            <div class="box-body incident-body">
 		        			<div class="col-lg-12">
-		        				<form method="POST" action="{{url('/set-category/'.$ticket->id) }}">
-			        				<label class="radio-inline"><input type="radio" value="1" id="1" name ="category" class="checkmember" >ARTA</label><br/>
+		        				
+			        				<label class="radio-inline"><input type="radio" value="1" id="1" name ="category" class="checkmember" ng-click="disableDir = false; disableButton = false;" >ARTA</label><br/>
 
 
 									    <div class="row">
 						    		    <div class="col-md-12 reports-filter">
 						                    <label>Sub-categories</label>
 						                </div>
-						                <div disabled="disabled" class="col-md-12 filter-values"> 
-						                    <div
+						                <div class="col-md-12 filter-values"> 
+						                    <div class="test-multi-select"
 						                        isteven-multi-select 
-						                        input-model="agencies" 
-						                        output-model="selected_agencies"
+						                        input-model="category"
+						                        output-model="selected_category"
 						                        button-label="icon name"        
 						                        item-label="icon name maker"        
-						                        tick-property="ticked"   
-						                        disabled="disabled"                     
+						                        tick-property="ticked"
+						                        disable-property="disabled"
+            									is-disabled="disableDir"  
+            									disable-button="disableButton"              
 						                    >
 						                    </div>
-						                    <input type="hidden" name="Sub-categories" id="agencies" ng-value="agency_input" />
+						                    <input type="hidden" name="category" id="category" ng-value="cate_input" />
 						                </div>
 						            </div
 
-		 	 						<label class="radio-inline"><input type="radio" value="0" id ="2" name ="category" class="checkmember" >Non-ARTA</label>
+		 	 						<label class="radio-inline"><input type="radio" value="0" id ="2" name ="category" class="checkmember"  ng-click="resetDirective(); disableDir = true; disableButton = true; ">Non-ARTA</label>
+		 	 					
+					                <div class="box-body">
+					                	<input type="textarea" name="non_arta_details" class="form-control" placeholder="Enter details">
+					                </div>
+					                
 			                </div>
 			            </div>
 
 			            <div class="box-footer clearfix no-border incident-body" style="padding-bottom: 20px">
-			            			<div class="col-md-12">
-			            				<button type="submit" class="btn btn-block btn-info pull-right">Set Category</button>
+			            			<data></data><div class="col-md-12">
+			            				<button type="button" ng-click="saveCategory()" class="btn btn-block btn-info pull-right">Set Category</button>
 			            			</div>
-			            		</form>
+			            	
 			            </div>
+			           </form>
 			        @else
 			        	<div class="box-footer clearfix no-border incident-body">
 			        	</div>

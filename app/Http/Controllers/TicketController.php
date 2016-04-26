@@ -18,7 +18,7 @@ use App\Comment;
 use Auth;
 use App\Mailers\AppStatus;
 use App\Mailers\AppAssigned;
-
+use App\Category;
 class TicketController extends Controller
 {
     public function __construct()
@@ -497,7 +497,7 @@ class TicketController extends Controller
             if($user->id == $ticket->assignee || $user->role < 2){
 
                 if($ticket->category==NULL)
-                    return redirect()->back()->with('error', 'Please set category first before closing the ticket!');
+                    return redirect()->back()->with('error', 'Please category first before closing the ticket!');
 
                 $ticket->status = $statid;
                 $ticket->save();
@@ -658,13 +658,25 @@ class TicketController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function setCategory($id)
+    public function setCategory($data)
     {
-        $user = Auth::user();
-        $category = Input::get('category');
-        $ticket = Ticket::where('id', $id)->first();
-        $ticket->category = $category;
-        $ticket->save();
+        // $user = Auth::user();
+        // $category = Input::get('category');
+        $allCate = Category::where('category_id', $data)->first();
+        // $ticket = Ticket::where('id', $id)->first();
+        return response()->json($allCate);
+        
+        // $ticket->category = $category;
+        // $ticket->save();
+
+
+        // $request_arr = json_decode( file_get_contents('php://input') );
+        // $category = $request_arr->category;
+
+        // echo $id;
+        exit;
+        print($category);
+
 
         $log = Comment::create([
             'is_comment'        => 0,
@@ -673,6 +685,7 @@ class TicketController extends Controller
             'commenter_role'    => $user->role,
             'ticket_id'         => $id,
             'class'             => 'fa-ticket'
+
         ]);
 
         return redirect()->back()->with('message', 'Ticket category successfully set!');

@@ -153,7 +153,10 @@ Route::post('csv-report', 'ReportController@generateCsv');
 Route::get('regions', 'DepartmentApiController@getRegions');
 Route::get('provinces', 'DepartmentApiController@getProvinces');
 
-
+/*
+ * ---------- Category Routes
+ */
+Route::get('category', 'TicketApiController@getCategory');
 /*
  * Announcement Routes
  */
